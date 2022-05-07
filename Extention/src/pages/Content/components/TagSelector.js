@@ -1,8 +1,7 @@
 import { MultiSelect } from '@mantine/core';
 import React, { useState }  from 'react';
 
-function TagSelector() {
-  const [Tags, setTags] = useState(['Keepsee','Note'])
+function TagSelector({Tags, setTags}) {
   console.log(Tags)
   return (
     <MultiSelect

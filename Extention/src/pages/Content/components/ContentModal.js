@@ -3,22 +3,8 @@ import React, { useState }  from 'react';
 import TagSelector from './TagSelector'
 
 
-function ContentModal() {
-  chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      console.log(sender.tab ?
-                  "from a content script:" + sender.tab.url :
-                  "from the extension?????");
-      if (request)
-      setOpened(true)
-      setSelectionText(request.data.selectionText)
-      setPageUrl(request.data.pageUrl)
-      console.log(request)
-    }
-  );
-    const [opened, setOpened] = useState(false);
-    const [selectionText,setSelectionText] = useState('')
-    const [pageUrl,setPageUrl] = useState()
+function ContentModal({selectionText,setSelectionText, pageUrl,setPageUrl,Tags, setTags, opened, setOpened}) {
+
     return(
         <>
       <Modal
@@ -31,21 +17,18 @@ function ContentModal() {
       position={{ top: 20, left: 20 }}
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Introduce yourself!"
-        
+        title="Save"
       >
         <Stack spacing="sm">
         <Blockquote color={'cyan'} cite={`- ${pageUrl}`} icon={null}>
           <Mark  color="cyan">{selectionText}</Mark>
         </Blockquote>
-        <TagSelector />
+        <TagSelector setTags={setTags} Tags={Tags} />
 
         <Group position="right">
         <Button variant="light" radius="lg" color="cyan" onClick={() => setOpened(false)}>Save</Button>
       </Group>
         </Stack>
-        
-      
       </Modal>
     </>
     )
