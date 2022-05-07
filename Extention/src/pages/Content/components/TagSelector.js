@@ -5,7 +5,7 @@ function TagSelector({Tags, setTags}) {
   console.log(Tags)
   return (
     <MultiSelect
-      label="Tag your snippet"
+      label="Add Some Related Tags"
       data={Tags}
       placeholder="Add Some Tags"
       radius="lg"

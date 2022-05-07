@@ -19,9 +19,19 @@ const Content = ({ title }) => {
   const [selectionText,setSelectionText] = useState('')
   const [pageUrl,setPageUrl] = useState()
   const [Tags, setTags] = useState(['Keepsee','Note'])
+  const [loading,setLoading] = useState(false)
+  const saveData = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setOpened(false)
+      setLoading(false)
+    }, [1000]);
+  }
   return(
     <>
-    <ContentModal 
+    <ContentModal
+    saveData={()=> saveData()}
+    loading={loading}
     opened={opened}
     setOpened={setOpened}
     selectionText={selectionText} 

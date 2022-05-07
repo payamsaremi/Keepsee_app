@@ -1,18 +1,22 @@
 import React from 'react';
-import logo from '../../assets/img/logo.svg';
-import './Newtab.css';
-import './Newtab.scss';
 
-const Newtab = () => {
+
+import { AppShell, Navbar, Header } from '@mantine/core';
+
+function Newtab() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>👋</h1>
-        <h3>Hello, Payam.</h3>
-      </header>
-    
-    </div>
+    <AppShell
+      padding="md"
+      navbar={<Navbar width={{ base: 300 }} height={500} p="xs">{/* Navbar content */}</Navbar>}
+      header={<Header height={60} p="xs">{/* Header content */}</Header>}
+      styles={(theme) => ({
+        main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+      })}
+    >
+      {/* Your application here */}
+    </AppShell>
   );
-};
+}
 
 export default Newtab;
+

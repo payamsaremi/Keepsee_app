@@ -10,31 +10,31 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log('Default background color set to %cgreen', `color: ${color}`);
 });
 
-contextMenuItem = {
-  id: 'keepText',
-  title: 'Keep text',
-  contexts: ['all'],
-};
+// contextMenuItem = {
+//   id: 'keepText',
+//   title: 'Keep text',
+//   contexts: ['all'],
+// };
 
-chrome.contextMenus.create(contextMenuItem);
-chrome.contextMenus.onClicked.addListener((clickData) => {
-  if (clickData.menuItemId === 'keepText' && clickData.selectionText) {
-    console.log(clickData);
-  }
-});
+// chrome.contextMenus.create(contextMenuItem);
+// chrome.contextMenus.onClicked.addListener((clickData) => {
+//   if (clickData.menuItemId === 'keepText' && clickData.selectionText) {
+//     console.log(clickData);
+//   }
+// });
 
-contextMenuItem = {
-  id: 'saveTab',
-  title: 'Save Tab',
-  contexts: ['all'],
-};
+// contextMenuItem = {
+//   id: 'saveTab',
+//   title: 'Save Tab',
+//   contexts: ['all'],
+// };
 
-chrome.contextMenus.create(contextMenuItem);
-chrome.contextMenus.onClicked.addListener((clickData) => {
-  if (clickData.menuItemId === 'saveTab' && clickData.selectionText) {
-    console.log(clickData);
-  }
-});
+// chrome.contextMenus.create(contextMenuItem);
+// chrome.contextMenus.onClicked.addListener((clickData) => {
+//   if (clickData.menuItemId === 'saveTab' && clickData.selectionText) {
+//     console.log(clickData);
+//   }
+// });
 
 contextMenuItem = {
   id: 'openModal',
