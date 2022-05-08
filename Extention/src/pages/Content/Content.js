@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 import ContentModal from './components/ContentModal'
 console.log('Content script Loaded!');
 
-const Content = ({ title }) => {
+const Content = ({ metaTitle, metaDescription, metaImage,metaSiteName, metaCreatorTwitter, metaAuthor }) => {
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       console.log(sender.tab ?
@@ -30,6 +30,10 @@ const Content = ({ title }) => {
   return(
     <>
     <ContentModal
+    metaCreatorTwitter={metaCreatorTwitter}
+    metaAuthor={metaAuthor}
+    metaImage={metaImage}
+    metaTitle={metaTitle}
     saveData={()=> saveData()}
     loading={loading}
     opened={opened}
@@ -40,6 +44,7 @@ const Content = ({ title }) => {
     setPageUrl={setPageUrl} 
     Tags={Tags} 
     setTags={setTags}
+    metaSiteName={metaSiteName}
     />
     </>
   )
