@@ -22,6 +22,7 @@ const Content = ({ metaTitle, metaDescription, metaImage,metaSiteName, metaCreat
   const [loading,setLoading] = useState(false)
   const saveData = () => {
     setLoading(true)
+    console.log('data saved')
     setTimeout(() => {
       setOpened(false)
       setLoading(false)
