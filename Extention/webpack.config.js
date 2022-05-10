@@ -1,3 +1,5 @@
+const Dotenv = require('dotenv-webpack');
+
 var webpack = require('webpack'),
   path = require('path'),
   fileSystem = require('fs-extra'),
@@ -110,6 +112,7 @@ var options = {
       .concat(['.js', '.jsx', '.ts', '.tsx', '.css']),
   },
   plugins: [
+    new Dotenv(),
     new CleanWebpackPlugin({ verbose: false }),
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
@@ -208,5 +211,6 @@ if (env.NODE_ENV === 'development') {
     ],
   };
 }
+
 
 module.exports = options;

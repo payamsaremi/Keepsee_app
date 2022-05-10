@@ -1,20 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Card from './components/SnippetCard';
 
+import { SimpleGrid } from '@mantine/core';
 
-import { AppShell, Navbar, Header } from '@mantine/core';
-
+import { supabase } from '../../supabaseClient';
 function Newtab() {
+  
+  const [snippets,setSnippets] = useState()
+
+  useEffect(()=> {
+    getSnippets()
+  },[])
+
+  const getSnippets = async() => {
+    try {
+      let { data, error } = await supabase
+      .from('snippets')
+      .select('*')
+      setSnippets(data)
+      console.log('data',data)
+    } catch(err){
+      console.log(err)
+    }
+  }
+
   return (
-    <AppShell
-      padding="md"
-      navbar={<Navbar width={{ base: 300 }} height={500} p="xs">{/* Navbar content */}</Navbar>}
-      header={<Header height={60} p="xs">{/* Header content */}</Header>}
-      styles={(theme) => ({
-        main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-      })}
-    >
-      {/* Your application here */}
-    </AppShell>
+   <>
+   <div style={{margin:"40px"}}>
+     {/* {JSON.stringify(snippets,null,2)} */}
+   <SimpleGrid cols={5} >
+     {snippets && snippets.map((snippet =>   <Card key={snippet.id} snippet={snippet} />))}
+    </SimpleGrid>
+   </div>
+
+   </>
   );
 }
 
