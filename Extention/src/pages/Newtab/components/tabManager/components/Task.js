@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { Draggable } from 'react-beautiful-dnd';
 function Task({ task, index }) {
   return (
@@ -10,12 +10,17 @@ function Task({ task, index }) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           p={2}
-          m={1}
-          bgColor={'white'}
-          ring={'1px'}
+          m={2}
+          rounded={'md'}
+          bgColor={'gray.50'}
+          cursor={'pointer'}
+          ring={'0.5px'}
+          transition={'all'}
+          transitionDuration={'0.2s'}
           ringColor={snapshot.isDragging ? 'blue.400' : 'gray.400'}
+          //   _hover={{ ring: '3px' }}
         >
-          Task: {task.content}
+          <Text fontSize={'lg'}>{task.content}</Text>
         </Box>
       )}
     </Draggable>

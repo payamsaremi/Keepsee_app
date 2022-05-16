@@ -2,12 +2,12 @@ import { Box, Button, Image, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import initialData from './initial-data';
 import Column from './components/Column';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 function TabManager() {
   const [data, setData] = useState(initialData);
 
   const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
+    const { destination, source, draggableId, type } = result;
 
     if (!destination) {
       return;
@@ -18,6 +18,19 @@ function TabManager() {
     ) {
       return;
     }
+    if (type === 'column') {
+      const newColumnOrder = Array.from(data.columnOrder);
+      newColumnOrder.splice(source.index, 1);
+      newColumnOrder.splice(destination.index, 0, draggableId);
+
+      const newState = {
+        ...data,
+        columnOrder: newColumnOrder,
+      };
+      setData(newState);
+      return;
+    }
+
     const start = data.columns[source.droppableId];
     const finish = data.columns[destination.droppableId];
 
@@ -70,13 +83,35 @@ function TabManager() {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Box display={'flex'}>
-          {data.columnOrder.map((columnId) => {
-            const column = data.columns[columnId];
-            const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-            return <Column key={column.id} column={column} tasks={tasks} />;
-          })}
-        </Box>
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {(provided) => (
+            <Box
+              display={'flex'}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {data.columnOrder.map((columnId, index) => {
+                const column = data.columns[columnId];
+                const tasks = column.taskIds.map(
+                  (taskId) => data.tasks[taskId]
+                );
+                return (
+                  <Column
+                    key={column.id}
+                    column={column}
+                    tasks={tasks}
+                    index={index}
+                  />
+                );
+              })}
+              {provided.placeholder}
+            </Box>
+          )}
+        </Droppable>
       </DragDropContext>
     </>
   );

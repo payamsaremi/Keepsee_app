@@ -4,7 +4,7 @@ import GroupCard from './components/GroupCard';
 
 import { supabase } from '../../supabaseClient';
 
-import { Box } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SimpleGrid, IconButton, GridItem, Grid } from '@chakra-ui/react';
 
@@ -64,7 +64,7 @@ function Newtab() {
         bg={'gray.100'}
         h={'100vh'}
         flexDir={'column'}
-        overflow={'hidden'}
+        // overflow={'hidden'}
       >
         <Box
           display={'flex'}
@@ -97,12 +97,14 @@ function Newtab() {
               ))}
           </Box>
         </Box>
-        <Grid templateColumns="repeat(4, 1fr)">
-          <GridItem colSpan={1}>
-            <TabManager />
-          </GridItem>
 
-          {/* <GridItem colStart={2} colEnd={5}>
+        <Center>
+          <Grid templateColumns="repeat(4, 1fr)">
+            <GridItem colSpan={1}>
+              <TabManager />
+            </GridItem>
+
+            {/* <GridItem colStart={2} colEnd={5}>
             <Box>
               <SimpleGrid columns={[1, null, 3]}>
                 {snippets &&
@@ -112,7 +114,8 @@ function Newtab() {
               </SimpleGrid>
             </Box>
           </GridItem> */}
-        </Grid>
+          </Grid>
+        </Center>
       </Box>
     </ChakraProvider>
   );
