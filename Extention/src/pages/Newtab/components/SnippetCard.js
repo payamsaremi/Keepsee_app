@@ -1,42 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import {
-  Card,
-  Image,
-  Text,
-  Badge,
-  Button,
-  Group,
-  useMantineTheme,
-} from '@mantine/core';
-
+import { Box, Text, Tag, useWhyDidYouUpdate } from '@chakra-ui/react';
+import { LayersIntersect } from 'tabler-icons-react';
+import DetailModal from './editor/DetailModal';
 function SnippetCard({ snippet }) {
-  function truncateString(str, num) {
-    if (str.length <= num) {
-      return str;
-    }
-    return str.slice(0, num) + '...';
-  }
+  const [opened, setOpened] = useState(false);
   return (
     <>
-      <div>
-        <Card
-          shadow="sm"
-          p="xl"
-          component="a"
-          radius={'lg'}
-          href={snippet.pageUrl}
-          target="_blank"
-        >
-          <Card.Section>
-            {/* <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt rem perspiciatis, quibusdam libero earum facilis a laborum autem corrupti sapiente! In similique facere officia laudantium sunt vitae aspernatur, provident necessitatibus.</Text> */}
-          </Card.Section>
-          <Text weight={500} size="lg">
-            {snippet.title}
+      <DetailModal data={snippet} opened={opened} setOpened={setOpened} />
+      <Box
+        display={'flex'}
+        flexDir={'column'}
+        justifyContent={'space-between'}
+        rounded={'2xl'}
+        cursor={'pointer'}
+        h={'250px'}
+        p={'6'}
+        m={'3'}
+        color={'black'}
+        bg={'gray.50'}
+        onClick={() => {
+          setOpened(true);
+        }}
+      >
+        <Box>
+          <Text fontWeight={'normal'} fontSize={'xl'} noOfLines={5}>
+            {snippet.content}
           </Text>
-          <Text size="sm">{truncateString(snippet.content, 200)}</Text>
-        </Card>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 }
