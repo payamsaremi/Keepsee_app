@@ -28,15 +28,16 @@ function openModal(data) {
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.message === 'tabsList') {
-    chrome.tabs.query(
-      {
-        active: false,
-        currentWindow: false,
-      },
-      function (tabs) {
-        processMessage(req).then(sendResponse(tabs));
-      }
-    );
+    chrome.windows.getAll({ populate: true }, (windows) => {
+      const tabs = [];
+      windows.forEach((window) => {
+        window.tabs.forEach((tab) => {
+          tabs.push(tab);
+        });
+      });
+      console.log(tabs);
+      processMessage(req).then(sendResponse(tabs));
+    });
     return true; // keep the messaging channel open for sendResponse
   }
 });
@@ -44,3 +45,38 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
 async function processMessage(req) {
   console.log('Processing message', req);
 }
+
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+  if (req.message === 'openTab') {
+    chrome.tabs.create(
+      {
+        url: req.url,
+      },
+      (t) => {
+        console.log(t);
+      }
+    );
+    return true;
+  }
+});
+
+//? Toggle Workspace (Open tabs, Close Tabs within a column or group)
+chrome.runtime.onMessage.addListener((req) => {
+  if (req.message === 'openWorkspace') {
+    console.log(req.tabs);
+    req.tabs.forEach((tab) => {
+      console.log(tab.url);
+      chrome.tabs.create({ url: tab.url });
+    });
+    return true;
+  }
+});
+chrome.runtime.onMessage.addListener((req) => {
+  if (req.message === 'closeWorkspace') {
+    req.tabIds.forEach((id) => {
+      chrome.tabs.remove(id);
+      console.log(id);
+    });
+    return true;
+  }
+});

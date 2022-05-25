@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { Box, Text, Tag, useWhyDidYouUpdate } from '@chakra-ui/react';
-import { LayersIntersect } from 'tabler-icons-react';
-import DetailModal from './editor/DetailModal';
+import { Box, Text } from '@chakra-ui/react';
+import DetailModal from '../editor/DetailModal';
 function SnippetCard({ snippet }) {
   const [opened, setOpened] = useState(false);
   return (

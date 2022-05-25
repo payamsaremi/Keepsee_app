@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import SnippetCard from './components/SnippetCard';
-import GroupCard from './components/GroupCard';
-
 import { supabase } from '../../supabaseClient';
-
 import { Box, Center } from '@chakra-ui/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { SimpleGrid, IconButton, GridItem, Grid } from '@chakra-ui/react';
-
+import { GridItem, Grid } from '@chakra-ui/react';
+import TabManager from './components/tabManager';
+import { BiTask, BiHighlight, BiNetworkChart, BiWindows } from 'react-icons/bi';
+import Navbar from './components/navbar';
+import SnippetManager from './components/snippetManager';
 import EditablePage from './components/editor/editablePage';
 import Editor from './components/editor/Editor';
 import Dashboard from './components/dashboard/dashboard';
-import TabManager from './components/tabManager';
-import { BiTask, BiHighlight, BiNetworkChart, BiNote } from 'react-icons/bi';
+
 function Newtab() {
   const [snippets, setSnippets] = useState();
-
   useEffect(() => {
     getSnippets();
   }, []);
@@ -24,98 +21,80 @@ function Newtab() {
     try {
       let { data, error } = await supabase.from('snippets').select('*');
       setSnippets(data);
-      console.log('data', data);
     } catch (err) {
       console.log(err);
     }
   };
 
+  const [activeButton, setActiveButton] = useState(null);
+  const toggleMenu = (item) => {
+    setActiveButton(item.name);
+  };
   const navItems = [
+    {
+      name: 'Tabs',
+      icon: <BiWindows size={25} />,
+      link: '/dashboard/events',
+    },
     {
       name: 'Nuggets',
       icon: <BiHighlight size={25} />,
-      link: '/dashboard/events',
-      isActive: true,
-    },
-    {
-      name: 'Notes',
-      icon: <BiNote size={25} />,
       link: '/dashboard/audience',
-      isActive: false,
     },
     {
-      name: 'Settings',
+      name: 'Todos',
       icon: <BiTask size={25} />,
       link: '/dashboard//settings',
-      isActive: false,
     },
     {
-      name: 'Tasks',
+      name: 'Mind',
       icon: <BiNetworkChart size={25} />,
       link: '/dashboard/insights',
-      isActive: false,
     },
   ];
+
+  const [mouseMove, setMouseMove] = useState(false);
+  const getMouseMovment = () => {
+    setMouseMove(true);
+    let timeout;
+    (() => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setMouseMove(false);
+      }, 20000);
+    })();
+  };
 
   return (
     <ChakraProvider>
       <Box
         display={'flex'}
-        bg={'gray.100'}
-        h={'100vh'}
         flexDir={'column'}
-        // overflow={'hidden'}
+        bg={'gray.200'}
+        h={'100vh'}
+        overflow={'hidden'}
+        bgGradient="linear(to-r, green.50, blue.100, pink.50)"
       >
-        <Box
-          display={'flex'}
-          w={'100vw'}
-          h={'60px'}
-          justifyContent={'center'}
-          alignItems={'center'}
-        >
-          <Box
-            display={'flex'}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-            rounded={'full'}
-            mt={'5'}
-            mb={'5'}
-          >
-            {navItems &&
-              navItems.map((items) => (
-                <IconButton
-                  key={items.name}
-                  m={'1'}
-                  colorScheme={'gray'}
-                  aria-label="Call Segun"
-                  variant={'link'}
-                  size="md"
-                  icon={items.icon}
-                  isActive={items.isActive}
-                  isRound
-                />
-              ))}
-          </Box>
+        <Box>
+          <Navbar
+            navItems={navItems}
+            activeButton={activeButton}
+            toggleMenu={toggleMenu}
+          />
+
+          <Center>
+            <Grid>
+              <GridItem colSpan={1}>
+                <Box>
+                  <TabManager />
+                </Box>
+              </GridItem>
+              <GridItem colStart={2} colEnd={5}>
+                {/* <SnippetManager snippets={snippets} /> */}
+              </GridItem>
+            </Grid>
+          </Center>
         </Box>
-
-        <Center>
-          <Grid templateColumns="repeat(4, 1fr)">
-            <GridItem colSpan={1}>
-              <TabManager />
-            </GridItem>
-
-            {/* <GridItem colStart={2} colEnd={5}>
-            <Box>
-              <SimpleGrid columns={[1, null, 3]}>
-                {snippets &&
-                  snippets.map((snippet) => (
-                    <SnippetCard key={snippet.id} snippet={snippet} />
-                  ))}
-              </SimpleGrid>
-            </Box>
-          </GridItem> */}
-          </Grid>
-        </Center>
       </Box>
     </ChakraProvider>
   );

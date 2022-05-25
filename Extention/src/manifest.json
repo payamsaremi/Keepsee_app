@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Chrome React",
-  "description": "A chrome extension",
+  "name": "Keepsee",
+  "description": "KeepSee --- Your knowledge space",
   "options_page": "options.html",
   "background": { "service_worker": "background.bundle.js" },
   "action": {
