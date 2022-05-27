@@ -11,8 +11,22 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react';
 import { cuteScrollbar } from '../../../../../../utils/cuteScrollbar';
-import { BiExpand, BiDotsVerticalRounded } from 'react-icons/bi';
+import {
+  BiExpand,
+  BiDotsVerticalRounded,
+  BiDotsHorizontalRounded,
+} from 'react-icons/bi';
 import { MdDragIndicator } from 'react-icons/md';
 // import ActionMenu from '../components/ActionMenu'
 function Column({ column, tasks, index, removeColumn }) {
@@ -32,6 +46,7 @@ function Column({ column, tasks, index, removeColumn }) {
       tabs.push(tab);
       tabIds.push(tab.id);
     });
+    console.log('tabsUrls', tabsUrls);
     let openTab = chrome.runtime.sendMessage({
       message: 'openWorkspace',
       tabIds: tabIds,
@@ -42,7 +57,7 @@ function Column({ column, tasks, index, removeColumn }) {
       console.log(res);
     });
   };
-  //TODO: Make it so that user can create new columns easily with editable title or color and add tabs into the columns.
+  //TODO: User want to be able to assign a name for the newly created column
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided) => (
@@ -65,9 +80,10 @@ function Column({ column, tasks, index, removeColumn }) {
             display={'flex'}
             flexDir={'row'}
             alignItems={'center'}
+            // h={'100%'}
             justifyContent={'space-between'}
-            m={2}
-            mb={5}
+            // m={2}
+            // mb={5}
           >
             <Box
               display={'flex'}
@@ -80,8 +96,8 @@ function Column({ column, tasks, index, removeColumn }) {
                 rounded={'xl'}
                 px={'3'}
                 py={'1'}
-                minH={'40px'}
-                minW={'100px'}
+                minH={'20px'}
+                minW={'200px'}
                 display={'flex'}
                 flexDir={'row'}
                 alignItems={'center'}
@@ -125,14 +141,28 @@ function Column({ column, tasks, index, removeColumn }) {
               <Box justifyContent={'end'}>
                 {column.id === mouseOver ? (
                   <>
-                    <IconButton
-                      onClick={() => openWorkspace(column)}
-                      color={'gray.600'}
-                      size={'sm'}
-                      colorScheme={'gray'}
-                      icon={<BiExpand size={'18px'} />}
-                      rounded={'full'}
-                    />
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        colorScheme={'gray'}
+                        color={'gray.600'}
+                        size={'sm'}
+                        icon={<BiDotsHorizontalRounded size={'22px'} />}
+                        rounded={'full'}
+                      ></MenuButton>
+                      <MenuList>
+                        <MenuItem
+                          onClick={() => openWorkspace(column)}
+                          icon={<BiExpand size="18" />}
+                          minH="28px"
+                          my={'0'}
+                        >
+                          <Text fontSize={'md'} textColor={'gray.600'}>
+                            Open Space
+                          </Text>
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
                   </>
                 ) : (
                   <></>

@@ -224,35 +224,44 @@ function TabManager() {
     <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
         {(provided, snapshot) => (
-          <Box
-            display={'flex'}
-            sx={cuteScrollbar}
-            maxW={'100vw'}
-            maxH={'100vh'}
-            overflow={'auto'}
-            px={'5'}
-            {...provided.droppableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
-          >
-            {data.columnOrder.map((columnId, index) => {
-              const column = data.columns[columnId];
-              const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-              return (
-                <Column
-                  key={column.id}
-                  column={column}
-                  tasks={tasks}
-                  index={index}
-                  removeColumn={removeColumn}
-                />
-              );
-            })}
-            {provided.placeholder}
-            <ScaleFade initialScale={0.9} in={showCatcher}>
-              {showCatcher ? <DropCatcher /> : <Box w={'md'} p={4} m={2}></Box>}
-            </ScaleFade>
-          </Box>
+          <>
+            <Box
+              display={'flex'}
+              flexDir={'row'}
+              sx={cuteScrollbar}
+              maxW={'100vw'}
+              maxH={'100vh'}
+              overflow={'auto'}
+              px={'5'}
+              {...provided.droppableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+            >
+              {data.columnOrder.map((columnId, index) => {
+                const column = data.columns[columnId];
+                const tasks = column.taskIds.map(
+                  (taskId) => data.tasks[taskId]
+                );
+                return (
+                  <Column
+                    key={column.id}
+                    column={column}
+                    tasks={tasks}
+                    index={index}
+                    removeColumn={removeColumn}
+                  />
+                );
+              })}
+              {provided.placeholder}
+              <ScaleFade initialScale={0.9} in={showCatcher}>
+                {showCatcher ? (
+                  <DropCatcher />
+                ) : (
+                  <Box w={'md'} p={4} m={2}></Box>
+                )}
+              </ScaleFade>
+            </Box>
+          </>
         )}
       </Droppable>
     </DragDropContext>
