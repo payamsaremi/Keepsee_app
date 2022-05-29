@@ -20,8 +20,8 @@ function Column() {
             rounded={'lg'}
             transition={'all'}
             transitionDuration={'0.5s'}
-            w={'md'}
-            h={snapshot.isDraggingOver ? '3xl' : '200px'}
+            w={'sm'}
+            h={snapshot.isDraggingOver ? '2xl' : '200px'}
             bgColor={snapshot.isDraggingOver ? 'white' : 'gray.100'}
             bgGradient="linear(to-r, gray.100, gray.200, gray.100)"
             boxShadow="inner"

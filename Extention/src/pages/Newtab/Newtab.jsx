@@ -53,47 +53,34 @@ function Newtab() {
     },
   ];
 
-  const [mouseMove, setMouseMove] = useState(false);
-  const getMouseMovment = () => {
-    setMouseMove(true);
-    let timeout;
-    (() => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        setMouseMove(false);
-      }, 20000);
-    })();
-  };
-
   return (
     <ChakraProvider>
       <Box
         display={'flex'}
-        flexDir={'column'}
-        bg={'gray.200'}
+        flexDir={'row'}
         h={'100vh'}
+        w={'100vw'}
         overflow={'hidden'}
+        bg={'gray.100'}
+        justifyContent={'space-between'}
         bgGradient="linear(to-r, green.50, blue.100, pink.50)"
       >
-        <Box>
+        <Box
+          px={'3'}
+          // bg={'gray.100'}
+          roundedRight={'lg'}
+          display={'flex'}
+          alignItems={'center'}
+          justifyContent={'center'}
+        >
           <Navbar
             navItems={navItems}
             activeButton={activeButton}
             toggleMenu={toggleMenu}
           />
-
-          <Center>
-            <Grid>
-              <GridItem colSpan={1}>
-                <Box>
-                  <TabManager />
-                </Box>
-              </GridItem>
-              <GridItem colStart={2} colEnd={5}>
-                {/* <SnippetManager snippets={snippets} /> */}
-              </GridItem>
-            </Grid>
-          </Center>
+        </Box>
+        <Box>
+          <TabManager />
         </Box>
       </Box>
     </ChakraProvider>
@@ -101,3 +88,16 @@ function Newtab() {
 }
 
 export default Newtab;
+
+// <Box>
+// <Grid>
+//   <GridItem colSpan={1}>
+//     <Box>
+//       <TabManager />
+//     </Box>
+//   </GridItem>
+//   <GridItem colStart={2} colEnd={5}>
+//     {/* <SnippetManager snippets={snippets} /> */}
+//   </GridItem>
+// </Grid>
+// </Box>

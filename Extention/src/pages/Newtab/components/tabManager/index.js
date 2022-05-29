@@ -225,14 +225,17 @@ function TabManager() {
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
         {(provided, snapshot) => (
           <>
+            <Box minW={'100vw'}></Box>
+
             <Box
               display={'flex'}
               flexDir={'row'}
               sx={cuteScrollbar}
               maxW={'100vw'}
               maxH={'100vh'}
+              h={'100vh'}
+              alignItems={'center'}
               overflow={'auto'}
-              px={'5'}
               {...provided.droppableProps}
               {...provided.dragHandleProps}
               ref={provided.innerRef}
@@ -249,6 +252,8 @@ function TabManager() {
                     tasks={tasks}
                     index={index}
                     removeColumn={removeColumn}
+                    setState={setState}
+                    data={data}
                   />
                 );
               })}

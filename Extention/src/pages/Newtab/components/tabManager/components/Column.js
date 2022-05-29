@@ -1,41 +1,23 @@
 import React, { useState } from 'react';
 import Task from './Task';
-import {
-  Box,
-  ScaleFade,
-  IconButton,
-  Text,
-  Editable,
-  EditablePreview,
-  EditableInput,
-  Button,
-} from '@chakra-ui/react';
+import { Box, Button, IconButton, Fade } from '@chakra-ui/react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-} from '@chakra-ui/react';
+
 import { cuteScrollbar } from '../../../../../../utils/cuteScrollbar';
-import {
-  BiExpand,
-  BiDotsVerticalRounded,
-  BiDotsHorizontalRounded,
-} from 'react-icons/bi';
-import { MdDragIndicator } from 'react-icons/md';
+import ColumnSettingsMenu from './ColumnSettingsMenu';
+import ColumnHeader from './ColumnHeader';
+import { BiAdjust, BiCog } from 'react-icons/bi';
 // import ActionMenu from '../components/ActionMenu'
-function Column({ column, tasks, index, removeColumn }) {
+function Column({ column, setState, data, tasks, index, removeColumn }) {
   const bgColor = column.color ? `${column.color}.300` : 'white';
+
+  const [showSettings, setShowSettings] = useState(false);
 
   const [mouseOver, setMouseOver] = useState();
   const mouseOverColumn = (column) => {
     setMouseOver(column.id);
   };
+  const [collapseColumn, setCollapseColumn] = useState(false);
 
   const openWorkspace = (urls) => {
     const tabsUrls = [];
@@ -59,163 +41,114 @@ function Column({ column, tasks, index, removeColumn }) {
   };
   //TODO: User want to be able to assign a name for the newly created column
   return (
-    <Draggable draggableId={column.id} index={index}>
-      {(provided) => (
-        <Box
-          onMouseEnter={() => mouseOverColumn(column)}
-          onMouseLeave={() => mouseOverColumn({})}
-          //   opacity={mouseOver ? '' : '0.5'}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          p={4}
-          m={2}
-          rounded={'xl'}
-          ring={'2px'}
-          ringColor={bgColor}
-          bgColor={'white'}
-          shadow={'sm'}
-        >
+    <Box>
+      <Draggable draggableId={column.id} index={index}>
+        {(provided) => (
           <Box
-            display={'flex'}
-            flexDir={'row'}
-            alignItems={'center'}
-            // h={'100%'}
-            justifyContent={'space-between'}
-            // m={2}
-            // mb={5}
+            onMouseEnter={() => mouseOverColumn(column)}
+            onMouseLeave={() => mouseOverColumn({})}
+            {...provided.draggableProps}
+            ref={provided.innerRef}
           >
-            <Box
-              display={'flex'}
-              flexDir={'row'}
-              alignItems={'center'}
-              justifyContent={'start'}
-            >
-              <Box
-                bgColor={'gray.400'}
-                rounded={'xl'}
-                px={'3'}
-                py={'1'}
-                minH={'20px'}
-                minW={'200px'}
-                display={'flex'}
-                flexDir={'row'}
-                alignItems={'center'}
-                justifyContent={'center'}
-              >
-                <Editable defaultValue={column.title}>
-                  <EditablePreview
-                    textColor={'white'}
-                    fontWeight={'bold'}
-                    fontSize={'lg'}
-                    textAlign={'center'}
-                  />
-                  <EditableInput />
-                </Editable>
-              </Box>
-
-              {tasks && tasks.length > 0 && (
-                <Box
-                  bgColor={'gray.100'}
-                  display={'flex'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  rounded={'full'}
-                  cursor={'default'}
-                  mx={2}
-                  p={'4'}
-                  w={'5'}
-                  h={'5'}
-                >
-                  <Text
-                    fontSize={'sm'}
-                    textColor={'gray.600'}
-                    fontWeight={'semibold'}
-                  >
-                    {tasks && tasks.length}
-                  </Text>
-                </Box>
-              )}
+            <Box {...provided.dragHandleProps}>
+              <ColumnHeader
+                column={column}
+                tasks={tasks}
+                mouseOver={mouseOver}
+                setCollapseColumn={() => setCollapseColumn(!collapseColumn)}
+              />
             </Box>
-            <ScaleFade initialScale={0.2} in={column.id === mouseOver}>
-              <Box justifyContent={'end'}>
-                {column.id === mouseOver ? (
-                  <>
-                    <Menu>
-                      <MenuButton
-                        as={IconButton}
-                        colorScheme={'gray'}
-                        color={'gray.600'}
-                        size={'sm'}
-                        icon={<BiDotsHorizontalRounded size={'22px'} />}
-                        rounded={'full'}
-                      ></MenuButton>
-                      <MenuList>
-                        <MenuItem
-                          onClick={() => openWorkspace(column)}
-                          icon={<BiExpand size="18" />}
-                          minH="28px"
-                          my={'0'}
-                        >
-                          <Text fontSize={'md'} textColor={'gray.600'}>
-                            Open Space
-                          </Text>
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </Box>
-            </ScaleFade>
-          </Box>
-          <Droppable droppableId={column.id} type={'tasks'}>
-            {(provided, snapshot) => (
-              <Box
-                display={'flex'}
-                flexDir={'column'}
-                h={'2xl'}
-                minH={'sm'}
-                w={'md'}
-                rounded={'md'}
-                transition={'all'}
-                transitionDuration={'0.3s'}
-                bgColor={snapshot.isDraggingOver ? 'gray.200' : 'white'}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                <Box overflow={'auto'} h={'100%'}>
-                  <Box>
-                    {tasks.map((task, index) => {
-                      return <Task key={task.id} task={task} index={index} />;
-                    })}
-
-                    {provided.placeholder}
-                  </Box>
+            <Box
+              display={collapseColumn ? 'none' : 'flex'}
+              w={'sm'}
+              p={1}
+              m={2}
+              rounded={'lg'}
+              ring={'2px'}
+              ringColor={bgColor}
+              bgColor={'white'}
+              shadow={'sm'}
+            >
+              <Droppable droppableId={column.id} type={'tasks'}>
+                {(provided, snapshot) => (
                   <Box
                     display={'flex'}
-                    alignItems={'end'}
-                    justifyContent={'center'}
-                    my={'5'}
+                    flexDir={'column'}
+                    h={'2xl'}
+                    minH={'sm'}
+                    w={'md'}
+                    rounded={'md'}
+                    transition={'all'}
+                    transitionDuration={'0.3s'}
+                    bgColor={
+                      snapshot.isDraggingOver ? `${column.color}.50` : 'inherit'
+                    }
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
                   >
-                    {tasks.length === 0 && column.id !== 'column-1' && (
-                      <Button
-                        onClick={() => removeColumn(column.id)}
-                        minW={'sm'}
-                        variant={'solid'}
+                    <Box overflow={'auto'} sx={cuteScrollbar} h={'100%'}>
+                      <Box>
+                        {tasks.map((task, index) => {
+                          return (
+                            <Task key={task.id} task={task} index={index} />
+                          );
+                        })}
+
+                        {provided.placeholder}
+                      </Box>
+                      <Box
+                        display={'flex'}
+                        alignItems={'end'}
+                        justifyContent={'center'}
+                        my={'5'}
                       >
-                        Delete Column
-                      </Button>
-                    )}
+                        {tasks.length === 0 && column.id !== 'column-1' && (
+                          <Button
+                            onClick={() => removeColumn(column.id)}
+                            minW={'sm'}
+                            variant={'solid'}
+                          >
+                            Delete Column
+                          </Button>
+                        )}
+                      </Box>
+                    </Box>
+
+                    <ColumnSettingsMenu
+                      showSettings={showSettings}
+                      setShowSettings={setShowSettings}
+                      column={column}
+                      setState={setState}
+                      data={data}
+                    />
+
+                    <Box
+                      display={'flex'}
+                      maxH={'45px'}
+                      justifyContent={'end'}
+                      alignItems={'end'}
+                    >
+                      {mouseOver && (
+                        <Box>
+                          <IconButton
+                            onClick={() => setShowSettings(!showSettings)}
+                            _focus={{ boxShadow: 'none' }}
+                            color={'gray.400'}
+                            rounded={'lg'}
+                            variant={'ghost'}
+                            icon={<BiCog size={25} />}
+                          />
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
-                </Box>
-              </Box>
-            )}
-          </Droppable>
-        </Box>
-      )}
-    </Draggable>
+                )}
+              </Droppable>
+            </Box>
+          </Box>
+        )}
+      </Draggable>
+    </Box>
   );
 }
 
