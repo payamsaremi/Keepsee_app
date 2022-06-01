@@ -1,31 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  ScaleFade,
-  IconButton,
-  Text,
-  Editable,
-  EditablePreview,
-  EditableInput,
-  Button,
-} from '@chakra-ui/react';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-} from '@chakra-ui/react';
-import {
-  BiExpand,
-  BiDotsVerticalRounded,
-  BiDotsHorizontalRounded,
-  BiPlus,
-} from 'react-icons/bi';
-import { MdDragIndicator } from 'react-icons/md';
+import { Box, ScaleFade, IconButton, Text } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
+import { BiExpand, BiPlus } from 'react-icons/bi';
 const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
   const [color, setColor] = useState(column.color ? column.color : 'cyan');
   useEffect(() => {
@@ -43,7 +19,6 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
         rounded={'lg'}
         w={'sm'}
         minW={'sm'}
-        // h={'100%'}
         justifyContent={'space-between'}
         m={2}
         px={2}
@@ -56,8 +31,6 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
               justifyContent={'center'}
               alignItems={'center'}
               rounded={'lg'}
-              //   cursor={'default'}
-              //   mx={2}
               p={'4'}
               w={'5'}
               h={'5'}

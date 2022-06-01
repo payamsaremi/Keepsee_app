@@ -1,103 +1,156 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
-import { Box, Center } from '@chakra-ui/react';
+import { Box, Button, IconButton, Text } from '@chakra-ui/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { GridItem, Grid } from '@chakra-ui/react';
 import TabManager from './components/tabManager';
-import { BiTask, BiHighlight, BiNetworkChart, BiWindows } from 'react-icons/bi';
+import {
+  BiTask,
+  BiNetworkChart,
+  BiWindows,
+  BiNote,
+  BiChevronRightSquare,
+  BiChevronLeftSquare,
+} from 'react-icons/bi';
 import Navbar from './components/navbar';
 import SnippetManager from './components/snippetManager';
-import EditablePage from './components/editor/editablePage';
-import Editor from './components/editor/Editor';
-import Dashboard from './components/dashboard/dashboard';
-
+import useQueryFromSupabase from './hooks/useQueryFromSupabase';
+import useCreateUser from './hooks/useCreateUser';
+import Sidebar from './components/sidebar';
+import { Routes, Route } from 'react-router-dom';
+import useSetState from './hooks/useSetState';
+import SpaceDetail from './components/tabManager/components/SpaceDetail';
+import { DragDropContext } from 'react-beautiful-dnd';
+import Spaces from './components/spaces';
+import useDragDrop from './hooks/useDragDrop';
 function Newtab() {
-  const [snippets, setSnippets] = useState();
-  useEffect(() => {
-    getSnippets();
-  }, []);
-
-  const getSnippets = async () => {
-    try {
-      let { data, error } = await supabase.from('snippets').select('*');
-      setSnippets(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const [activeButton, setActiveButton] = useState(null);
-  const toggleMenu = (item) => {
-    setActiveButton(item.name);
-  };
   const navItems = [
     {
-      name: 'Tabs',
+      name: 'Spaces',
       icon: <BiWindows size={25} />,
-      link: '/dashboard/events',
-    },
-    {
-      name: 'Nuggets',
-      icon: <BiHighlight size={25} />,
-      link: '/dashboard/audience',
-    },
-    {
-      name: 'Todos',
-      icon: <BiTask size={25} />,
-      link: '/dashboard//settings',
+      link: '/spaces',
     },
     {
       name: 'Mind',
       icon: <BiNetworkChart size={25} />,
-      link: '/dashboard/insights',
+      link: '/Mind',
     },
   ];
 
+  const [activeButton, setActiveButton] = useState(null);
+  const toggleMenu = (item) => {
+    setActiveButton(item.link);
+  };
+  //Query data using custom hook
+  const snippets = useQueryFromSupabase('snippets', '*');
+
+  const { data, setState } = useSetState();
+  const [toggleSideMenu, setToggleSideMenu] = useState(false);
+  const { onDragEnd, onBeforeCapture, showCatcher } = useDragDrop(
+    data,
+    setState
+  );
+
   return (
     <ChakraProvider>
-      <Box
-        display={'flex'}
-        flexDir={'row'}
-        h={'100vh'}
-        w={'100vw'}
-        overflow={'hidden'}
-        bg={'gray.100'}
-        justifyContent={'space-between'}
-        bgGradient="linear(to-r, green.50, blue.100, pink.50)"
-      >
+      <DragDropContext onDragEnd={onDragEnd} onBeforeCapture={onBeforeCapture}>
         <Box
-          px={'3'}
-          // bg={'gray.100'}
-          roundedRight={'lg'}
           display={'flex'}
-          alignItems={'center'}
+          flexDir={'row'}
           justifyContent={'center'}
+          alignItems={'center'}
+          boxShadow={'inner'}
+          bg={'gray.100'}
+          // bgGradient="linear(to-r, green.50, blue.100, pink.50)"
+          bgGradient="linear(to-r, blue.50, orange.100, cyan.50)"
         >
-          <Navbar
-            navItems={navItems}
-            activeButton={activeButton}
-            toggleMenu={toggleMenu}
+          <Sidebar
+            toggleSideMenu={toggleSideMenu}
+            setToggleSideMenu={setToggleSideMenu}
+            data={data}
           />
+
+          <Box
+            display={'flex'}
+            flexDir={'column'}
+            h={'100vh'}
+            w={'100vw'}
+            overflow={'hidden'}
+          >
+            <Box
+              display={'flex'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              my={'3'}
+              mx={'4'}
+            >
+              <Box>
+                <IconButton
+                  bgColor={'white'}
+                  color={'gray.800'}
+                  _focus={{ boxShadow: 'none' }}
+                  rounded={'xl'}
+                  icon={
+                    toggleSideMenu ? (
+                      <BiChevronLeftSquare size={25} />
+                    ) : (
+                      <BiChevronRightSquare size={25} />
+                    )
+                  }
+                  onClick={() => setToggleSideMenu(!toggleSideMenu)}
+                />
+              </Box>
+              <Box>
+                <Navbar
+                  navItems={navItems}
+                  activeButton={activeButton}
+                  toggleMenu={toggleMenu}
+                />
+              </Box>
+              <Box>
+                <Button
+                  rounded={'2xl'}
+                  variant={'ghost'}
+                  colorScheme={'orange'}
+                >
+                  Log In
+                </Button>
+              </Box>
+            </Box>
+            <Box mx={'2'}>
+              <Routes>
+                <Route
+                  path="/spaceDetail"
+                  element={<SpaceDetail data={data} setState={setState} />}
+                />
+                <Route
+                  path="/tabManager"
+                  element={
+                    <TabManager
+                      showCatcher={showCatcher}
+                      data={data}
+                      setState={setState}
+                    />
+                  }
+                />
+                <Route
+                  path="snippets"
+                  element={<SnippetManager snippets={snippets.data} />}
+                />
+                <Route
+                  path="spaces"
+                  element={<Spaces data={data} setState={setState} />}
+                />
+              </Routes>
+            </Box>
+          </Box>
         </Box>
-        <Box>
-          <TabManager />
-        </Box>
-      </Box>
+      </DragDropContext>
     </ChakraProvider>
   );
 }
 
 export default Newtab;
 
-// <Box>
-// <Grid>
-//   <GridItem colSpan={1}>
-//     <Box>
-//       <TabManager />
-//     </Box>
-//   </GridItem>
-//   <GridItem colStart={2} colEnd={5}>
-//     {/* <SnippetManager snippets={snippets} /> */}
-//   </GridItem>
-// </Grid>
-// </Box>
+//? We can get a back up lets say every 15 times the user loads the app or use the app??
+
+//TODO: make it so the Catcher apears beside the Column-1 Space not at the end

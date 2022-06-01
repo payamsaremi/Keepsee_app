@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconButton, Box, Image } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 function Navbar({ navItems, activeButton, toggleMenu }) {
+  const [currentpath, setCurrentPath] = useState('');
+  let location = useLocation();
+  useEffect(() => {
+    console.log(location.pathname);
+    setCurrentPath(location.pathname);
+  }, [location]);
   return (
     <>
       {' '}
@@ -13,23 +21,24 @@ function Navbar({ navItems, activeButton, toggleMenu }) {
         >
           <Box>
             {navItems &&
-              navItems.map((items) => (
-                <IconButton
-                  _focus={{ boxShadow: 'none' }}
-                  onClick={() => toggleMenu(items)}
-                  key={items.name}
-                  m={'1'}
-                  p={'2'}
-                  colorScheme={'gray'}
-                  bgColor={activeButton === items.name ? 'white' : ''}
-                  aria-label="Call Segun"
-                  variant={'link'}
-                  size="md"
-                  icon={items.icon}
-                  isActive={activeButton === items.name}
-                  rounded={'xl'}
-                  shadow={activeButton === items.name ? 'sm' : ''}
-                />
+              navItems.map((item) => (
+                <Link key={item.name} to={item.link}>
+                  <IconButton
+                    _focus={{ boxShadow: 'none' }}
+                    onClick={() => toggleMenu(item)}
+                    m={'1'}
+                    p={'2'}
+                    colorScheme={'gray'}
+                    bgColor={currentpath === item.link ? 'white' : ''}
+                    aria-label="Call Segun"
+                    variant={'link'}
+                    size="md"
+                    icon={item.icon}
+                    isActive={currentpath === item.link}
+                    rounded={'xl'}
+                    shadow={currentpath === item.link ? 'sm' : ''}
+                  />
+                </Link>
               ))}
           </Box>
         </Box>

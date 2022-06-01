@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { Droppable } from 'react-beautiful-dnd';
 function Column() {
-  //TODO: Make it so that user can create new columns easily with editable title or color and add tabs into the columns.
   return (
     <Box
       display={'flex'}

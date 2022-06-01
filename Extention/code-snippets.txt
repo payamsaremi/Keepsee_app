@@ -1,0 +1,31 @@
+  // const createUserMutation = useCreateUser({
+  //   email: 'papapaapappa@gmail.com',
+  //   password: 'lakalkalksjlsjdljd',
+  // });
+  // if (createUserMutation.isSuccess) {
+  //   console.log('sucessss');
+  // }
+
+
+  // const backupData = useQueryFromSupabase('stateDataBackup', '*');
+  // const mydata = backupData.data.find((el) => el.id === 2);
+  // //TODO:here we should find the user and only retrieve the user's data from the DB
+  // if (mydata) {
+  //   console.log('mydata.data', mydata.data);
+  // }
+
+  // const backedupData = useBackupData(data);
+  // console.log('backedupData', backedupData);
+
+  // <Box>
+// <Grid>
+//   <GridItem colSpan={1}>
+//     <Box>
+//       <TabManager />
+//     </Box>
+//   </GridItem>
+//   <GridItem colStart={2} colEnd={5}>
+//     {/* <SnippetManager snippets={snippets.data} /> */}
+//   </GridItem>
+// </Grid>
+// </Box>

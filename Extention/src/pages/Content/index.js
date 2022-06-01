@@ -38,6 +38,7 @@ function MainApp() {
     }
   }, []);
   const [metadata, setMetadata] = useState(null);
+
   return (
     <React.StrictMode>
       <Content metadata={metadata} />
@@ -46,6 +47,7 @@ function MainApp() {
 }
 const body = document.querySelector('body');
 const app = document.createElement('div');
+
 app.id = 'content-container';
 if (body) {
   body.prepend(app);

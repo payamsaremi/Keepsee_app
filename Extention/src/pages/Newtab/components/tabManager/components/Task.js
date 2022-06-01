@@ -44,7 +44,7 @@ function Task({ task, index }) {
                 boxSize="30px"
                 objectFit="cover"
               />
-              <Text fontSize={'lg'}>{task.title}</Text>
+              <Text fontSize={'md'}>{task.title}</Text>
             </Box>
           </Box>
         </>

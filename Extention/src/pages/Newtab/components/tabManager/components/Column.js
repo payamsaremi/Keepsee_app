@@ -75,8 +75,8 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                     display={'flex'}
                     flexDir={'column'}
                     h={'2xl'}
-                    minH={'sm'}
-                    w={'md'}
+                    minH={'lg'}
+                    w={'sm'}
                     rounded={'md'}
                     transition={'all'}
                     transitionDuration={'0.3s'}
