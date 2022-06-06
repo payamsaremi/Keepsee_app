@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Text } from '@chakra-ui/react';
-import ColumnInDetail from './ColumnInDetail';
-import useSetState from '../../../hooks/useSetState';
-import SnippetManager from '../../snippetManager';
-import useQueryFromSupabase from '../../../hooks/useQueryFromSupabase';
+import ColumnInDetail from '../tabManager/components/ColumnInDetail';
+import useSetState from '../../hooks/useSetState';
+import SnippetManager from '../snippetManager';
+import useQueryFromSupabase from '../../hooks/useQueryFromSupabase';
+import { useLocation } from 'react-router-dom';
 function SpaceDetail({ data, setState }) {
-  // const { data, setState } = useSetState();
-  const column = data.columns['column-6'];
+  const location = useLocation();
+  const { columnId } = location.state;
+  console.log(columnId);
+  const column = data.columns[columnId];
   console.log(column);
   const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
   const snippets = useQueryFromSupabase('snippets', '*');
   return (
     <>
-      <Box display={'flex'} bg={'white'} rounded={'xl'}>
+      <Box display={'flex'} rounded={'xl'}>
         <Box>
           <ColumnInDetail
             key={column.id}
@@ -23,14 +26,10 @@ function SpaceDetail({ data, setState }) {
           />
         </Box>
         <Divider orientation="vertical" />
-        <Box>
-          <Box m={3}>
-            <Text fontSize={'2xl'} fontWeight={'semibold'} color={'gray.600'}>
-              AI Research
-            </Text>
-          </Box>
+        {/* <Box w={'100vw'}></Box> */}
+        {/* <Box>
           <SnippetManager snippets={snippets.data} />
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

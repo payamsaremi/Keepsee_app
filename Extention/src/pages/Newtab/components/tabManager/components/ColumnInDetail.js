@@ -7,6 +7,7 @@ import { cuteScrollbar } from '../../../../../../utils/cuteScrollbar';
 import ColumnSettingsMenu from './ColumnSettingsMenu';
 import ColumnHeader from './ColumnHeader';
 import { BiAdjust, BiCog } from 'react-icons/bi';
+
 // import ActionMenu from '../components/ActionMenu'
 function ColumnInDetail({
   column,
@@ -51,11 +52,11 @@ function ColumnInDetail({
     <Box>
       <Box
         display={collapseColumn ? 'none' : 'flex'}
-        w={'sm'}
+        w={'xs'}
         p={1}
-        m={2}
-        rounded={'lg'}
-        bgColor={'white'}
+        // m={2}
+        rounded={'2xl'}
+        // bgColor={'white'}
         // shadow={'sm'}
       >
         <Droppable droppableId={column.id} type={'tasks'}>
@@ -92,7 +93,6 @@ function ColumnInDetail({
                   {tasks.length === 0 && column.id !== 'column-1' && (
                     <Button
                       onClick={() => removeColumn(column.id)}
-                      minW={'sm'}
                       variant={'solid'}
                     >
                       Delete Column

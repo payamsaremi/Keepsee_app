@@ -24,7 +24,12 @@ function SpaceCard({ columnId, data }) {
         cursor={'pointer'}
         ringColor={`${column.color}.500`}
       >
-        <Box display={'flex'} flexDir={'row'}>
+        <Box
+          display={'flex'}
+          flexDir={'row'}
+          opacity={'0.5'}
+          _hover={{ opacity: 1 }}
+        >
           <SimpleGrid columns={[2, null, 10]} spacing="10px">
             {column.taskIds.map((tabId) => (
               <Box key={tabId}>
@@ -48,7 +53,7 @@ function SpaceCard({ columnId, data }) {
           alignItems={'center'}
           justifyContent={'space-between'}
         >
-          <Link to={'/spaceDetail'}>
+          <Link to={'/spaceDetail'} state={{ columnId: columnId }}>
             <Box>
               <Text
                 fontWeight={'bold'}

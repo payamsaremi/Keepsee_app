@@ -14,12 +14,14 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
         bgColor={`${color}.100`}
         display={'flex'}
         flexDir={'row'}
-        minH={'20px'}
+        minH={'10px'}
         alignItems={'center'}
-        rounded={'lg'}
-        w={'sm'}
-        minW={'sm'}
+        rounded={'xl'}
+        w={'xs'}
+        minW={'xs'}
         justifyContent={'space-between'}
+        border={'1px'}
+        borderColor={`${color}.200`}
         m={2}
         px={2}
       >
@@ -37,7 +39,7 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
             >
               <Text
                 fontSize={'sm'}
-                textColor={`${color}.600`}
+                textColor={`${color}.500`}
                 fontWeight={'semibold'}
               >
                 {tasks && tasks.length}

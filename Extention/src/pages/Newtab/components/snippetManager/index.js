@@ -10,8 +10,8 @@ function SnippetManager({ snippets }) {
         alignItems={'center'}
       >
         {/* <Box></Box> */}
-        <Box maxH={'100vh'} overflow={'auto'}>
-          <SimpleGrid columns={[1, null, 4]}>
+        <Box maxH={'91vh'} overflow={'auto'}>
+          <SimpleGrid columns={[1, null, 3]}>
             {snippets &&
               snippets.map((snippet, index) => (
                 <SnippetCard key={snippet.id} snippet={snippet} />

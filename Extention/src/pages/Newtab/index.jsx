@@ -6,7 +6,7 @@ import './index.css';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router';
-
+import { AuthProvider } from './hooks/Auth';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -28,11 +28,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 render(
   <QueryClientProvider client={queryClient}>
-    <MemoryRouter initialEntries={['/spaces']}>
-      <Newtab />
+    <MemoryRouter initialEntries={['/tabManager']}>
+      <AuthProvider>
+        <Newtab />
+      </AuthProvider>
     </MemoryRouter>
   </QueryClientProvider>,
-
   window.document.querySelector('#app-container')
 );
 

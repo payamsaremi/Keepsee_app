@@ -43,7 +43,7 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
   return (
     <Box>
       <Draggable draggableId={column.id} index={index}>
-        {(provided) => (
+        {(provided, snapshot) => (
           <Box
             onMouseEnter={() => mouseOverColumn(column)}
             onMouseLeave={() => mouseOverColumn({})}
@@ -58,26 +58,25 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                 setCollapseColumn={() => setCollapseColumn(!collapseColumn)}
               />
             </Box>
+
             <Box
               display={collapseColumn ? 'none' : 'flex'}
-              w={'sm'}
+              w={'xs'}
               p={1}
               m={2}
-              rounded={'lg'}
-              ring={'2px'}
+              rounded={'2xl'}
               ringColor={bgColor}
               bgColor={'white'}
-              shadow={'sm'}
+              opacity={snapshot.isDragging ? `0.7` : `1`}
             >
               <Droppable droppableId={column.id} type={'tasks'}>
                 {(provided, snapshot) => (
                   <Box
                     display={'flex'}
                     flexDir={'column'}
-                    h={'2xl'}
-                    minH={'lg'}
+                    // minH={'sm'}
                     w={'sm'}
-                    rounded={'md'}
+                    rounded={'2xl'}
                     transition={'all'}
                     transitionDuration={'0.3s'}
                     bgColor={
@@ -93,7 +92,6 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                             <Task key={task.id} task={task} index={index} />
                           );
                         })}
-
                         {provided.placeholder}
                       </Box>
                       <Box
@@ -105,7 +103,6 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                         {tasks.length === 0 && column.id !== 'column-1' && (
                           <Button
                             onClick={() => removeColumn(column.id)}
-                            minW={'sm'}
                             variant={'solid'}
                           >
                             Delete Column
@@ -124,7 +121,7 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
 
                     <Box
                       display={'flex'}
-                      maxH={'45px'}
+                      h={'45px'}
                       justifyContent={'end'}
                       alignItems={'end'}
                     >

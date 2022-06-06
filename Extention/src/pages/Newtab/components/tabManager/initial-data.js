@@ -1,6 +1,6 @@
 const initialData = {
   tasks: {
-    'task-1': { id: 'task-1', title: 'take shit out of here' },
+    'task-1': { id: 'task-1', title: 'Study' },
     'task-2': { id: 'task-2', title: 'Go for a run' },
   },
   columns: {
@@ -8,7 +8,7 @@ const initialData = {
       id: 'column-1',
       title: 'Unmanaged Tabs',
       color: 'green',
-      taskIds: ['task-1', 'task-2'],
+      taskIds: [],
     },
   },
   //Facilitate reorderinhg od the columns

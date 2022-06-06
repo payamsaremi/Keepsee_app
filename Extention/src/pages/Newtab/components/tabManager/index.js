@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import Column from './components/Column';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { cuteScrollbar } from '../../../../../utils/cuteScrollbar';
+
 import DropCatcher from './components/DropCatcher';
 import useSetState from '../../hooks/useSetState';
 function TabManager({ showCatcher, data, setState }) {
@@ -24,6 +24,7 @@ function TabManager({ showCatcher, data, setState }) {
     };
     setState(state);
   };
+
   return (
     <Droppable droppableId="all-columns" direction="horizontal" type="column">
       {(provided, snapshot) => (
@@ -31,14 +32,12 @@ function TabManager({ showCatcher, data, setState }) {
           <Box minW={'100vw'}></Box>
 
           <Box
+            px={'8'}
             display={'flex'}
             flexDir={'row'}
-            sx={cuteScrollbar}
             maxW={'100vw'}
-            // alignItems={'center'}
+            maxH={'100vh'}
             justifyContent={'start'}
-            overflow={'auto'}
-            // mt={'4'}
             {...provided.droppableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -70,3 +69,6 @@ function TabManager({ showCatcher, data, setState }) {
 }
 
 export default TabManager;
+
+//TODO: On each render check if the Date is same Return then if it is Bigger than previus value Make a back Up.
+//TODO: For example today is 2 jun if I reload and its 3 jun I should make a backup.

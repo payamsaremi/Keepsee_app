@@ -2,6 +2,7 @@ import React from 'react';
 import SpaceCard from './SpaceCard';
 import { Box, IconButton, SimpleGrid, Text } from '@chakra-ui/react';
 import { BiPlus } from 'react-icons/bi';
+
 function Spaces({ data, setState }) {
   return (
     <Box display={'flex'} flexDir={'column'} justifyContent={'center'}>

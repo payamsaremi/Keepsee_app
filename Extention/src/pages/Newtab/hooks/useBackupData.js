@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../supabaseClient';
+import { useAuth } from '../hooks/Auth';
+import useSetState from './useSetState';
+function useBackupData(user, data) {
+  // const { data } = useSetState();
 
-//TODO: To make a backup everyday with date and time and store it in database for each user.
-
-export default function useBackupData(data) {
-  const [backedupData, setBackedupData] = useState();
-  useEffect(() => {
-    //Todo:make a backup on firstUsage after 24 hours
-    makeDataBackup();
-  }, []);
-
-  const makeDataBackup = async () => {
-    //get the latest data and send it to Database
-    try {
-      const { data: stateDataBackup, error } = await supabase
-        .from('stateDataBackup')
-        .insert({ data: data });
-      setBackedupData(stateDataBackup);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  return backedupData;
+  if (user) {
+    return () => {
+      const backedUpData = makeDataBackup(data, user);
+      console.log('did a backup.', backedUpData);
+    };
+  }
+  return () => console.log('no user');
 }
+
+export default useBackupData;
+
+const makeDataBackup = async (data, user) => {
+  const { data: userDataBackup, error } = await supabase
+    .from('userDataBackup')
+    .insert({ data: data, user: user.id });
+  if (error) {
+    console.log(error);
+  }
+  return userDataBackup;
+};

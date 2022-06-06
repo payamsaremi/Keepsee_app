@@ -3,10 +3,10 @@ export const cuteScrollbar = {
     width: '8px',
     height: '10px',
     borderRadius: '10px',
-    backgroundColor: `rgba(0, 0, 0, 0.05)`,
+    backgroundColor: `rgba(0, 0, 0, 0.02)`,
     cursor: `all-scroll`,
   },
   '&::-webkit-scrollbar-thumb': {
-    backgroundColor: `rgba(0, 0, 0, 0.05)`,
+    backgroundColor: `rgba(0, 0, 0, 0.09)`,
   },
 };

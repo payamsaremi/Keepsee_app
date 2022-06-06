@@ -19,12 +19,14 @@ function Task({ task, index }) {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             p={2}
-            m={2}
-            rounded={'md'}
+            m={1}
+            rounded={'xl'}
             bgColor={'gray.50'}
+            color={'gray.500'}
             cursor={'pointer'}
-            ring={'0.5px'}
-            ringColor={snapshot.isDragging ? 'blue.400' : 'gray.400'}
+            border="1px"
+            borderColor="gray.200"
+            borderStyle={snapshot.isDragging ? 'dashed' : 'hidden'}
             onClick={() => {
               openTab(task);
             }}

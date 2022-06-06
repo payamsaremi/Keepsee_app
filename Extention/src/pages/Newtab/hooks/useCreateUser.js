@@ -1,7 +1,10 @@
 import { supabase } from '../../../supabaseClient';
-import { useMutation, useQueryClient } from 'react-query';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 
 const createUser = async (user) => {
+  console.log(user);
+  //first check if the user already exist
   const { data: userWithEmail } = await supabase
     .from('users')
     .select('*')
@@ -21,26 +24,21 @@ const createUser = async (user) => {
     throw signUpError;
   }
 
+  if (userData) {
+    //Create a userProfile when an auth user is created.
+    const { data: userProfile, error: insertError } = await supabase
+      .from('users')
+      .insert([
+        {
+          email: userData.email,
+          id: userData.id,
+        },
+      ]);
+  }
+
   return userData;
 };
-export default function useCreateUser(user) {
-  return useMutation(() => createUser(user), {
-    onSuccess: async (data) => {
-      console.log(data);
-      const { data: insertData, error: insertError } = await supabase
-        .from('users')
-        .insert([
-          {
-            email: user.email,
-            id: data.id,
-          },
-        ]);
 
-      if (insertError) {
-        throw insertError;
-      }
-
-      return insertData;
-    },
-  });
+export default function useCreateUser() {
+  return (data) => createUser(data);
 }

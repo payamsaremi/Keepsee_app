@@ -10,11 +10,11 @@ function SnippetCard({ snippet }) {
         display={'flex'}
         flexDir={'column'}
         justifyContent={'space-between'}
-        rounded={'2xl'}
+        rounded={'xl'}
         cursor={'pointer'}
         h={'250px'}
         p={'6'}
-        m={'3'}
+        m={'2'}
         color={'black'}
         bg={'gray.50'}
         onClick={() => {
@@ -22,7 +22,7 @@ function SnippetCard({ snippet }) {
         }}
       >
         <Box>
-          <Text fontWeight={'normal'} fontSize={'xl'} noOfLines={5}>
+          <Text fontWeight={'normal'} fontSize={'lg'} noOfLines={5}>
             {snippet.content}
           </Text>
         </Box>

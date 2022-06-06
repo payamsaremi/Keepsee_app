@@ -12,8 +12,12 @@ export default function useSetState() {
 
   const managedTabs = JSON.parse(window.localStorage.getItem('managedTabs'));
   const setState = (state) => {
-    window.localStorage.setItem('state', JSON.stringify(state));
-    setData(state);
+    const initialState = initialData;
+    window.localStorage.setItem(
+      'state',
+      JSON.stringify(state ? state : initialState)
+    );
+    setData(state ? state : initialState);
     const managedTabs = [];
     data.columnOrder.forEach((el) => {
       if (el !== 'column-1') {
@@ -49,7 +53,7 @@ export default function useSetState() {
     };
 
     setState(state);
-    console.log(state);
+
     return;
   };
 
@@ -65,10 +69,9 @@ export default function useSetState() {
               if (!managed) unmanagedTabs.push(item);
             });
             setAllTabs(unmanagedTabs);
-            console.log('unmanagedTabs', unmanagedTabs);
           } else {
             setAllTabs(res);
-            console.log('all tabs loaded');
+            // console.log('all tabs loaded');
           }
         }
       });
