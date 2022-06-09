@@ -46,7 +46,9 @@ function Task({ task, index }) {
                 boxSize="30px"
                 objectFit="cover"
               />
-              <Text fontSize={'md'}>{task.title}</Text>
+              <Text fontSize={'md'} overflowWrap={'anywhere'}>
+                {task.title}
+              </Text>
             </Box>
           </Box>
         </>

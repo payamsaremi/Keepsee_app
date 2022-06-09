@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../supabaseClient';
-import { useAuth } from '../hooks/Auth';
-import useSetState from './useSetState';
 function useBackupData(user, data) {
   // const { data } = useSetState();
 

@@ -12,7 +12,7 @@ export default function SignOut({ setToggleSideMenu, data, setState }) {
 
   const signUserOutWithBackup = () => {
     console.log('signing off');
-    getBackup();
+    // getBackup();
     signOut();
     window.localStorage.clear();
     setState(); //just set to initial state

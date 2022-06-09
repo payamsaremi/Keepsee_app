@@ -6,7 +6,8 @@ function Column() {
     <Box
       display={'flex'}
       justifyContent={'center'}
-      alignItems={'center'}
+      alignItems={'start'}
+      mt={'14'}
       h={'100%'}
     >
       <Droppable droppableId={'catcher'} type={'tasks'}>
@@ -16,13 +17,13 @@ function Column() {
             m={2}
             display={'flex'}
             flexDir={'column'}
-            rounded={'lg'}
+            rounded={'2xl'}
             transition={'all'}
             transitionDuration={'0.5s'}
-            w={'sm'}
+            w={'xs'}
             h={snapshot.isDraggingOver ? '2xl' : '200px'}
             bgColor={snapshot.isDraggingOver ? 'white' : 'gray.100'}
-            bgGradient="linear(to-r, gray.100, gray.200, gray.100)"
+            bgGradient="linear(to-r, gray.50, white, gray.50)"
             boxShadow="inner"
             ring={snapshot.isDraggingOver ? '4px' : '0'}
             ringColor={'white'}

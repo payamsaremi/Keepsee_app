@@ -1,6 +1,15 @@
 console.log('This is the background page.');
 console.log('Put the background scripts here.');
 
+// Onboarding Page
+chrome.runtime.onInstalled.addListener((reason) => {
+  if (reason.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    chrome.tabs.create({
+      url: 'Onboarding.html',
+    });
+  }
+});
+
 /*global chrome*/
 contextMenuItem = {
   id: 'openModal',

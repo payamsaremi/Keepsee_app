@@ -1,14 +1,10 @@
 import { Box, ScaleFade, Fade } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-
 import Column from './components/Column';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-
+import { Droppable } from 'react-beautiful-dnd';
 import DropCatcher from './components/DropCatcher';
-import useSetState from '../../hooks/useSetState';
+import { cuteScrollbar } from '../../../../../utils/cuteScrollbar';
 function TabManager({ showCatcher, data, setState }) {
-  // const { setState } = useSetState();
-
   const removeColumn = (id) => {
     const newColumnOrder = Array.from(data.columnOrder);
     const columnIndex = newColumnOrder.indexOf(id);
@@ -28,15 +24,18 @@ function TabManager({ showCatcher, data, setState }) {
   return (
     <Droppable droppableId="all-columns" direction="horizontal" type="column">
       {(provided, snapshot) => (
-        <>
+        <Box>
           <Box minW={'100vw'}></Box>
 
           <Box
             px={'8'}
             display={'flex'}
             flexDir={'row'}
-            maxW={'100vw'}
-            maxH={'100vh'}
+            overflow={'auto'}
+            h={'100vh'}
+            w={'100vw'}
+            pt={'16'}
+            sx={cuteScrollbar}
             justifyContent={'start'}
             {...provided.droppableProps}
             {...provided.dragHandleProps}
@@ -45,6 +44,7 @@ function TabManager({ showCatcher, data, setState }) {
             {data.columnOrder.map((columnId, index) => {
               const column = data.columns[columnId];
               const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
+
               return (
                 <Column
                   key={column.id}
@@ -57,12 +57,13 @@ function TabManager({ showCatcher, data, setState }) {
                 />
               );
             })}
+
             {provided.placeholder}
             <ScaleFade initialScale={0.9} in={showCatcher}>
               {showCatcher ? <DropCatcher /> : <Box w={'md'} p={4} m={2}></Box>}
             </ScaleFade>
           </Box>
-        </>
+        </Box>
       )}
     </Droppable>
   );

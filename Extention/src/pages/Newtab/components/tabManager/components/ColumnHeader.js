@@ -6,7 +6,6 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
   const [color, setColor] = useState(column.color ? column.color : 'cyan');
   useEffect(() => {
     setColor(column.color ? column.color : 'cyan');
-    console.log(column.color);
   }, [column.color]);
   return (
     <>
@@ -26,7 +25,7 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
         px={2}
       >
         <Box>
-          {tasks && tasks.length > 0 && (
+          {tasks && (
             <Box
               bgColor={`${color}.100`}
               display={'flex'}
@@ -54,12 +53,12 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
           justifyContent={'start'}
         >
           <Box
-            px={'3'}
-            py={'1'}
             display={'flex'}
             flexDir={'row'}
             alignItems={'center'}
             justifyContent={'center'}
+            px={'3'}
+            py={'1'}
             onClick={setCollapseColumn}
             minW={'150px'}
           >

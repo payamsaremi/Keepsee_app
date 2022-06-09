@@ -9,15 +9,15 @@ import {
   Slide,
 } from '@chakra-ui/react';
 import SignOut from '../auth/SignOut';
-import { BiPlus } from 'react-icons/bi';
+
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/Auth';
 import SignIn from '../auth/SignIn';
 import BottonMenu from './BottonMenu';
 import TopMenu from './TopMenu';
+import SpacesSelector from './SpacesSelector';
 const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
   const { user, profile } = useAuth();
-  const [toggleSpaces, setToggleSpaces] = useState(false);
 
   return (
     <>
@@ -25,7 +25,7 @@ const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
         bgColor={'white'}
         rounded={'xl'}
         h={'99vh'}
-        w={'500px'}
+        minW={'sm'}
         transition={'all'}
         transitionDuration={'1.5s'}
         display={toggleSideMenu ? 'block' : 'none'}
@@ -105,83 +105,11 @@ const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
             justifyContent={'space-between'}
             h={'83vh'}
           >
-            <Box>
-              <Box
-                p={'5'}
-                display={'flex'}
-                flexDir={'row'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                onClick={() => setToggleSpaces(!toggleSpaces)}
-                cursor={'pointer'}
-              >
-                <Text
-                  px={'2'}
-                  rounded={'md'}
-                  textColor={'gray.400'}
-                  fontSize={'lg'}
-                >
-                  Spaces
-                </Text>
-                <IconButton size={'xs'} icon={<BiPlus size={20} />} />
-              </Box>
-              <Box display={toggleSpaces ? 'block' : 'none'}>
-                <Box px={'5'} display={'flex'} flexDir={'column'}>
-                  {/* {data.columnOrder.map((column_key) => {
-                    if (column_key === 'column-1') {
-                      return;
-                    }
-                    return (
-                      <Box
-                        key={column_key}
-                        display={'flex'}
-                        alignItems={'center'}
-                        cursor={'pointer'}
-                        _hover={{ bg: `${data.columns[column_key].color}.50` }}
-                        p={'2'}
-                        rounded={'lg'}
-                      >
-                        <Box
-                          p={'1'}
-                          bgColor={`${data.columns[column_key].color}.200`}
-                          rounded={'full'}
-                          maxW={1}
-                          maxH={1}
-                          mr={'2'}
-                        ></Box>
-                        <Text fontSize={'md'} textColor={'gray.700'}>
-                          {data.columns[column_key].title}
-                        </Text>
-                      </Box>
-                    );
-                  })} */}
-                  <Box
-                    display={'flex'}
-                    alignItems={'center'}
-                    cursor={'pointer'}
-                    _hover={{ bg: `${'blue'}.50` }}
-                    p={'2'}
-                    rounded={'lg'}
-                  >
-                    <Box
-                      p={'1'}
-                      bgColor={`${'blue'}.200`}
-                      rounded={'full'}
-                      maxW={1}
-                      maxH={1}
-                      mr={'2'}
-                    ></Box>
-                    <Text
-                      fontSize={'md'}
-                      fontWeight={'semibold'}
-                      textColor={'gray.700'}
-                    >
-                      {'My tabs'}
-                    </Text>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
+            <SpacesSelector
+              setState={setState}
+              data={data}
+              setToggleSideMenu={setToggleSideMenu}
+            />
             {/* botton Menu */}
             <Box>
               <Divider />

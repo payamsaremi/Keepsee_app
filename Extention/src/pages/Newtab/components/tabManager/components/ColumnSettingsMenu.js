@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Input } from '@chakra-ui/react';
-import { FormControl, FormLabel } from '@chakra-ui/react';
+import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import BasicModal from '../../modal/BasicModal';
 function ColumnSettingsMenu({
   showSettings,

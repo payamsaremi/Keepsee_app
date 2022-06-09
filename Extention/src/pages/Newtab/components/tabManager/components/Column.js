@@ -62,6 +62,7 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
             <Box
               display={collapseColumn ? 'none' : 'flex'}
               w={'xs'}
+              maxW={'xs'}
               p={1}
               m={2}
               rounded={'2xl'}
@@ -75,7 +76,8 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                     display={'flex'}
                     flexDir={'column'}
                     // minH={'sm'}
-                    w={'sm'}
+                    w={'xs'}
+                    maxW={'xs'}
                     rounded={'2xl'}
                     transition={'all'}
                     transitionDuration={'0.3s'}
@@ -85,7 +87,7 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                   >
-                    <Box overflow={'auto'} sx={cuteScrollbar} h={'100%'}>
+                    <Box sx={cuteScrollbar} h={'100%'}>
                       <Box>
                         {tasks.map((task, index) => {
                           return (

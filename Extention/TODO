@@ -1,12 +1,18 @@
 Needs to be implemented
 
-3. Implement Social AUth into the become member button and login
-4. when the user clicks on plus Button on My Tabs category, she should be able to create a column and column must apear at first after column-1
-5. make selecting colors for columns easier.
-6. make it possible to create notes inside each column... can work as note, todo, image, task or anything.
-7. When user clicks on Become a Member button, she should see the pricing and benefits then she can choose the premium paid version.
-8. make a it possile to upload profile pictures
+<!-- 3. when the user clicks on plus Button on My Tabs category, she should be able to create a column and column must apear at first after column-1 -->
+
+1. Make it possible to close tabs from insdie UnManaged Tabs column //
+1. make selecting colors for columns easier.
+1. Implement Social AUth into the become member button and login
+
+1. make it possible to create notes inside each column... can work as note, todo, image, task or anything.
+1. When user clicks on Become a Member button, she should see the pricing and benefits then she can choose the premium paid version.
+1. make a it possile to upload profile pictures
 
 Not sure about these implementation.
 
 9. backup & remove localStorage when user logsout.
+
+keep your community one tab away.
+keep your knowledge one tab away.

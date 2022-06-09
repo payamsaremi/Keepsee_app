@@ -7,6 +7,7 @@ import './index.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router';
 import { AuthProvider } from './hooks/Auth';
+import { ChakraProvider } from '@chakra-ui/react';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -30,7 +31,9 @@ render(
   <QueryClientProvider client={queryClient}>
     <MemoryRouter initialEntries={['/tabManager']}>
       <AuthProvider>
-        <Newtab />
+        <ChakraProvider>
+          <Newtab />
+        </ChakraProvider>
       </AuthProvider>
     </MemoryRouter>
   </QueryClientProvider>,

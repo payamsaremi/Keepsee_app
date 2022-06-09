@@ -45,6 +45,7 @@ var options = {
     contentScript: path.join(__dirname, 'src', 'pages', 'Content', 'index.js'),
     devtools: path.join(__dirname, 'src', 'pages', 'Devtools', 'index.js'),
     panel: path.join(__dirname, 'src', 'pages', 'Panel', 'index.jsx'),
+    onboarding: path.join(__dirname, 'src', 'pages', 'Onboarding', 'index.jsx'),
   },
   chromeExtensionBoilerplate: {
     notHotReload: ['background', 'contentScript', 'devtools'],
@@ -193,6 +194,18 @@ var options = {
       chunks: ['panel'],
       cache: false,
     }),
+    new HtmlWebpackPlugin({
+      template: path.join(
+        __dirname,
+        'src',
+        'pages',
+        'Onboarding',
+        'index.html'
+      ),
+      filename: 'onboarding.html',
+      chunks: ['onboarding'],
+      cache: false,
+    }),
   ],
   infrastructureLogging: {
     level: 'info',
@@ -211,6 +224,5 @@ if (env.NODE_ENV === 'development') {
     ],
   };
 }
-
 
 module.exports = options;
