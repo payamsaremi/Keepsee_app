@@ -12,7 +12,6 @@ function TabManager({ showCatcher, data, setState }) {
     //removing from columns object
     const newColumns = { ...data.columns };
     delete newColumns[id];
-
     const state = {
       ...data,
       columns: newColumns,
@@ -44,7 +43,7 @@ function TabManager({ showCatcher, data, setState }) {
             {data.columnOrder.map((columnId, index) => {
               const column = data.columns[columnId];
               const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-
+              if (column.id === 'column-1' && tasks.length === 0) return;
               return (
                 <Column
                   key={column.id}

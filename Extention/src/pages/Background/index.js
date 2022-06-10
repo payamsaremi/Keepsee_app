@@ -17,23 +17,23 @@ contextMenuItem = {
   contexts: ['all'],
 };
 
-chrome.contextMenus.create(contextMenuItem);
-chrome.contextMenus.onClicked.addListener((clickData) => {
-  if (clickData.menuItemId === 'openModal' && clickData.selectionText) {
-    openModal(clickData);
-  }
-});
+// chrome.contextMenus.create(contextMenuItem);
+// chrome.contextMenus.onClicked.addListener((clickData) => {
+//   if (clickData.menuItemId === 'openModal' && clickData.selectionText) {
+//     openModal(clickData);
+//   }
+// });
 
-function openModal(data) {
-  console.log('modal is open');
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, { data: data }, function (response) {
-      if (response) {
-        console.log(response);
-      }
-    });
-  });
-}
+// function openModal(data) {
+//   console.log('modal is open');
+//   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+//     chrome.tabs.sendMessage(tabs[0].id, { data: data }, function (response) {
+//       if (response) {
+//         console.log(response);
+//       }
+//     });
+//   });
+// }
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.message === 'tabsList') {
@@ -88,4 +88,17 @@ chrome.runtime.onMessage.addListener((req) => {
     });
     return true;
   }
+});
+
+//Remove a tab from Chrome Tabs
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+  console.log(req);
+  if (req.message === 'removeTab') {
+    console.log('passed the if statement', req.tabId);
+    chrome.tabs.remove(Number(req.tabId));
+  }
+  sendResponse({
+    message: `Tab with id:${tabId} was removed from current open tabs`,
+  });
+  return true;
 });

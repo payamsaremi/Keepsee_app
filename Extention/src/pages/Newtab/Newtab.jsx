@@ -82,7 +82,7 @@ function Newtab() {
         overflow={'hidden'}
         // bgGradient="linear(to-r, green.50, blue.100, cyan.50)"
         // bgGradient="linear(to-r, orange.50, orange.100, orange.50)"
-        // bgGradient="linear(to-r, gray.800, gray.900, gray.800)"
+        // bgGradient="linear(to-r, green.100, cyan.200, green.100)"
       >
         <Sidebar
           toggleSideMenu={toggleSideMenu}

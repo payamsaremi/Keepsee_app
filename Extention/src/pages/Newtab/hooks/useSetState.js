@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
 import initialData from '../components/tabManager/initial-data';
-
+import useManagedTabs from './useManagedTabs';
 //TODO: Please clean this code up.
 
 export default function useSetState() {
+  const [managedTabs, setManagedTabs] = useState([]);
+  const [unManagedTabs, setUnManagedTabs] = useState([]);
   const localStorageState = JSON.parse(window.localStorage.getItem('state'));
   const [data, setData] = useState(
     localStorageState ? localStorageState : initialData
   );
-  const [allTabs, setAllTabs] = useState([]);
 
-  const managedTabs = JSON.parse(window.localStorage.getItem('managedTabs'));
+  // Filter and check if an OpenTab is a managedTab or not
+  const filterUnManagedTabs = unManagedTabs.filter((item) => {
+    if (item.url === 'chrome://newtab/') return;
+    const managed = managedTabs.some(
+      (el) => data.tasks[el].url === '' + item.url
+    );
+    if (!managed) return item;
+  });
+
   const setState = (state) => {
     const initialState = initialData;
     window.localStorage.setItem(
@@ -18,24 +27,16 @@ export default function useSetState() {
       JSON.stringify(state ? state : initialState)
     );
     setData(state ? state : initialState);
-    const managedTabs = [];
-    data.columnOrder.forEach((el) => {
-      if (el !== 'column-1') {
-        managedTabs.push(...data.columns[el].taskIds);
-      }
-    });
-    window.localStorage.setItem('managedTabs', JSON.stringify(managedTabs));
   };
 
   const initialise = () => {
-    if (allTabs.includes(data.columns.ids)) console.log('data', data);
+    if (filterUnManagedTabs.includes(data.columns.ids));
     const tabIds = Array();
-    const newData = allTabs.reduce((a, x) => {
+    const newData = filterUnManagedTabs?.reduce((a, x) => {
       a[x.id] = x;
       tabIds.push(x.id);
       return a;
     }, {});
-
     const state = {
       ...data,
       tasks: {
@@ -49,39 +50,49 @@ export default function useSetState() {
           taskIds: [...tabIds],
         },
       },
+      managedTabs,
       // columnOrder: [...data.columnOrder, 'column-1'],
     };
-
     setState(state);
-
     return;
   };
 
-  useEffect(() => {
-    const fetchTabs = () => {
-      let data = chrome.runtime.sendMessage({ message: 'tabsList' });
-      data.then((res) => {
-        if (res) {
-          if (managedTabs) {
-            const unmanagedTabs = [];
-            res.forEach((item) => {
-              const managed = managedTabs.some((el) => el === '' + item.id);
-              if (!managed) unmanagedTabs.push(item);
-            });
-            setAllTabs(unmanagedTabs);
-          } else {
-            setAllTabs(res);
-            // console.log('all tabs loaded');
-          }
+  const fetchTabs = () => {
+    let tabsList = chrome.runtime.sendMessage({ message: 'tabsList' });
+    tabsList.then((res) => {
+      if (res) {
+        if (managedTabs) {
+          const unmanagedTabs = [];
+          res.forEach((item) => {
+            const managed = managedTabs.some((el) => el === '' + item.id);
+            if (!managed) unmanagedTabs.push(item);
+          });
+          setUnManagedTabs(unmanagedTabs);
+        } else {
+          setUnManagedTabs(res);
+          //TODO:make a is loading here
         }
-      });
-    };
+      }
+    });
+  };
+
+  useEffect(() => {
     fetchTabs();
   }, []);
 
   useEffect(() => {
+    const tabs = [];
+    data.columnOrder.forEach((el) => {
+      if (el !== 'column-1') {
+        tabs.push(...data.columns[el].taskIds);
+      }
+    });
+    setManagedTabs([...managedTabs, ...tabs]);
+  }, []);
+
+  useEffect(() => {
     initialise();
-  }, [allTabs]);
+  }, [unManagedTabs]);
 
   return { setState, setData, data };
 }

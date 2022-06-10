@@ -4,6 +4,16 @@ import useSetState from './useSetState';
 export default function useDraDrop(data, setState) {
   const [showCatcher, setShowCatcher] = useState(false);
 
+  const removeTabFromChrome = (tabId) => {
+    console.log(`Remove ${tabId} from chrome tabs`);
+    chrome.runtime.sendMessage(
+      { tabId: tabId, message: 'removeTab' },
+      function (res) {
+        console.log(res.message);
+      }
+    );
+  };
+
   const createNewColumn = () => {
     const id = 'column-' + Math.floor(Math.random() * 10000); //TODO:make  this better
     const newColumn = {
@@ -64,6 +74,11 @@ export default function useDraDrop(data, setState) {
       };
       setState(state);
       return;
+    }
+
+    //Remove the tab from chrome tabs
+    if (source.droppableId === 'column-1') {
+      removeTabFromChrome(draggableId);
     }
 
     //Creating a new column with task drop and adding that task to the column
