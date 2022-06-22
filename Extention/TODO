@@ -1,18 +1,28 @@
 Needs to be implemented
 
-<!-- 3. when the user clicks on plus Button on My Tabs category, she should be able to create a column and column must apear at first after column-1 -->
+KIP V0.1
 
-1. Make it possible to close tabs from insdie UnManaged Tabs column //
-1. make selecting colors for columns easier.
-1. Implement Social AUth into the become member button and login
 
+????moved the useState custom hook from newTab to auth, so basicly auth has become
+the app's context ,,,, it might need a rename as it does not just providr auth , it also provides state and setState
+
+
+3. Add emoji for columns header.
+19. Implement a workspace switcher for the sidebar, apps or importtant tasks to lists.
+1. make unmanaged tabs column stay to the right without moving .
 1. make it possible to create notes inside each column... can work as note, todo, image, task or anything.
-1. When user clicks on Become a Member button, she should see the pricing and benefits then she can choose the premium paid version.
 1. make a it possile to upload profile pictures
+1. when user changes column color but he doesn't click "save" the color doesnt get saved
+3. Make it show loading before getting all data (columns).
+
 
 Not sure about these implementation.
 
-9. backup & remove localStorage when user logsout.
+Can you make it so, when user clicks on add new column, the new column get created but get attached to the users's mouse so she can drop it where ever she wants????????
+<!-- 2. implement darkmode -->
+<!-- 9. backup & remove localStorage when user logsout. -->
 
-keep your community one tab away.
-keep your knowledge one tab away.
+
+
+your knowledge just a tab away.
+Your knowledge just a key away.

@@ -68,8 +68,8 @@ function ColumnInDetail({
               minH={'lg'}
               w={'sm'}
               rounded={'md'}
-              transition={'all'}
-              transitionDuration={'0.3s'}
+              // transition={'all'}
+              // transitionDuration={'0.3s'}
               bgColor={
                 snapshot.isDraggingOver ? `${column.color}.50` : 'inherit'
               }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Text } from '@chakra-ui/react';
+import { Box, IconButton, Text, useColorModeValue } from '@chakra-ui/react';
 
 import AddToSpaceModal from './AddToSpaceModal';
 function SpacesSelector({ setState, data, setToggleSideMenu }) {
@@ -16,7 +16,12 @@ function SpacesSelector({ setState, data, setToggleSideMenu }) {
           cursor={'pointer'}
           // onClick={() => setToggleSpaces(!toggleSpaces)}
         >
-          <Text px={'2'} rounded={'md'} textColor={'gray.400'} fontSize={'lg'}>
+          <Text
+            px={'2'}
+            rounded={'md'}
+            textColor={useColorModeValue('gray.400', 'gray.300')}
+            fontSize={'lg'}
+          >
             Spaces
           </Text>
           {/* <IconButton
@@ -36,8 +41,11 @@ function SpacesSelector({ setState, data, setToggleSideMenu }) {
             alignItems={'center'}
             cursor={'pointer'}
             justifyContent={'space-between'}
-            _hover={{ bg: `${'blue'}.50` }}
-            bgColor={'gray.50'}
+            _hover={useColorModeValue(
+              { bg: `${'gray'}.50` },
+              { bg: `${'gray'}.900` }
+            )}
+            // bgColor={useColorModeValue('gray.50', 'gray.800')}
             w={'full'}
             rounded={'lg'}
             mx={'3'}
@@ -56,7 +64,7 @@ function SpacesSelector({ setState, data, setToggleSideMenu }) {
               <Text
                 fontSize={'md'}
                 fontWeight={'normal'}
-                textColor={'gray.700'}
+                textColor={useColorModeValue('gray.700', 'gray.100')}
               >
                 My tabs
               </Text>

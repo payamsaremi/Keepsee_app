@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../supabaseClient';
 function useBackupData(user, data) {
-  // const { data } = useSetState();
-
   if (user) {
     return () => {
       const backedUpData = makeDataBackup(data, user);
       console.log('did a backup.', backedUpData);
     };
   }
-  return () => console.log('no user');
+  return () => console.log('no user', user);
 }
 
 export default useBackupData;

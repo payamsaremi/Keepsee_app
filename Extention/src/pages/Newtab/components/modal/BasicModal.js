@@ -7,9 +7,9 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
   Box,
   Spinner,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Button, Text } from '@chakra-ui/react';
 function BasicModal({
@@ -22,11 +22,9 @@ function BasicModal({
   isSaving,
   dataUnready,
 }) {
-  const [color, setColor] = useState('cyan');
+  // const [color, setColor] = useState('cyan');
   return (
     <>
-      {/* <Button onClick={onOpen}>Open Modal</Button> */}
-
       <Modal
         isCentered
         blockScrollOnMount={false}
@@ -63,9 +61,14 @@ function BasicModal({
           </>
         ) : (
           <>
-            <ModalOverlay />
-            <ModalContent rounded={'2xl'}>
-              <ModalHeader color={`gray.600`}>{title}</ModalHeader>
+            <ModalOverlay bg="blackAlpha.700" />
+            <ModalContent
+              rounded={'2xl'}
+              bgColor={useColorModeValue(`gray.50`, `gray.800`)}
+            >
+              <ModalHeader color={useColorModeValue(`gray.600`, `gray.300`)}>
+                {title}
+              </ModalHeader>
               <ModalCloseButton _focus={{ boxShadow: 'none' }} />
               <ModalBody>{children}</ModalBody>
 
@@ -83,8 +86,8 @@ function BasicModal({
                 <Button
                   variant={'ghost'}
                   rounded={'2xl'}
-                  bg={`${color}.50`}
-                  colorScheme={color}
+                  bg={useColorModeValue(`${'gray'}.100`, `gray.600`)}
+                  colorScheme={'gray'}
                   onClick={onSave}
                   isLoading={isSaving}
                 >

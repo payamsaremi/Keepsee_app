@@ -18,7 +18,7 @@ export default function useDraDrop(data, setState) {
     const id = 'column-' + Math.floor(Math.random() * 10000); //TODO:make  this better
     const newColumn = {
       id: id,
-      title: 'untitled',
+      title: '',
       color: 'cyan',
       taskIds: Array(),
     };
@@ -107,6 +107,7 @@ export default function useDraDrop(data, setState) {
         },
         columnOrder: [...data.columnOrder, newFinish.id],
       };
+
       setState(state);
       return;
     }

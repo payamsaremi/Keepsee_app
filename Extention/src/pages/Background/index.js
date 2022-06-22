@@ -11,11 +11,11 @@ chrome.runtime.onInstalled.addListener((reason) => {
 });
 
 /*global chrome*/
-contextMenuItem = {
-  id: 'openModal',
-  title: 'Open modal',
-  contexts: ['all'],
-};
+// contextMenuItem = {
+//   id: 'openModal',
+//   title: 'Open modal',
+//   contexts: ['all'],
+// };
 
 // chrome.contextMenus.create(contextMenuItem);
 // chrome.contextMenus.onClicked.addListener((clickData) => {
@@ -44,7 +44,6 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
           tabs.push(tab);
         });
       });
-      console.log(tabs);
       processMessage(req).then(sendResponse(tabs));
     });
     return true; // keep the messaging channel open for sendResponse
@@ -65,6 +64,15 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
         console.log(t);
       }
     );
+    return true;
+  }
+});
+
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+  if (req.message === 'removeTab') {
+    chrome.tabs.remove(req.tabId, (tab) => {
+      console.log('removed tab ===>', tab);
+    });
     return true;
   }
 });

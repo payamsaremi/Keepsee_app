@@ -1,4 +1,4 @@
-import { Box, ScaleFade, Fade } from '@chakra-ui/react';
+import { Box, ScaleFade, Fade, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Column from './components/Column';
 import { Droppable } from 'react-beautiful-dnd';
@@ -43,9 +43,10 @@ function TabManager({ showCatcher, data, setState }) {
             {data.columnOrder.map((columnId, index) => {
               const column = data.columns[columnId];
               const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-              if (column.id === 'column-1' && tasks.length === 0) return;
+
               return (
                 <Column
+                  isHidden={column.id === 'column-1' && tasks.length === 0}
                   key={column.id}
                   column={column}
                   tasks={tasks}
@@ -69,6 +70,3 @@ function TabManager({ showCatcher, data, setState }) {
 }
 
 export default TabManager;
-
-//TODO: On each render check if the Date is same Return then if it is Bigger than previus value Make a back Up.
-//TODO: For example today is 2 jun if I reload and its 3 jun I should make a backup.

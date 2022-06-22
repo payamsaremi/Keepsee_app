@@ -48,7 +48,7 @@ const Content = ({ metadata }) => {
 
   return (
     <>
-      <ContentModal
+      {/* <ContentModal
         saveData={() => saveData()}
         metadata={metadata}
         loading={loading}
@@ -60,7 +60,7 @@ const Content = ({ metadata }) => {
         setPageUrl={setPageUrl}
         Tags={Tags}
         setTags={setTags}
-      />
+      /> */}
     </>
   );
 };

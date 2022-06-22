@@ -1,129 +1,62 @@
 import {
   Button,
   Text,
+  Box,
   FormControl,
+  useColorModeValue,
   FormLabel,
   Input,
   VStack,
+  Divider,
 } from '@chakra-ui/react';
+import Google from '../../../../compponents/icons/Google';
 import React, { useState } from 'react';
-import { useToast } from '@chakra-ui/react';
-import { useAuth } from '../../hooks/Auth';
-import { supabase } from '../../../../supabaseClient';
-import useBackupData from '../../hooks/useBackupData';
-import BasicModal from '../modal/BasicModal';
-function SignUp({ data, setState }) {
+
+function SignUp({
+  data,
+  setState,
+  signUpUser,
+  email,
+  password,
+  setEmail,
+  setPassword,
+  isLoading,
+  handleOAuthSignIn,
+}) {
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
-  const { signUp } = useAuth();
-
-  const toast = useToast();
-  const toaster = (title, description, status) => {
-    toast({
-      title: title,
-      description: description,
-      status: status,
-      duration: 5000,
-      isClosable: true,
-      variant: 'solid',
-      position: 'top',
-    });
-  };
-
-  // make a backup of current state of localStorage send to DB
-  const getBackup = useBackupData();
-
-  const makeBackUpCurrentState = (user) => {
-    console.log('Making an image of current state of localStorage');
-    getBackup(user, data);
-  };
-
-  const signUpUser = async () => {
-    setIsLoading(true);
-    const { user: newUser, error } = await signUp({
-      email: email,
-      password: password,
-    });
-    //check if user alredy exist
-    const { data: userWithEmail } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .single();
-
-    if (userWithEmail) {
-      setIsLoading(false);
-      setError({ message: 'User with this email exists' });
-      toaster('User with this email exists', '', 'error');
-      throw new Error('User with this email exists');
-    }
-    if (error) {
-      setIsLoading(false);
-      setError(error);
-      toaster(error.message, '', 'error');
-      throw new Error(error.message);
-    }
-    if (newUser) {
-      //make a backup of current localState
-      makeBackUpCurrentState(newUser);
-      //Create a userProfile when an auth user is created.
-      const { data: userProfile, error: insertError } = await supabase
-        .from('users')
-        .insert([
-          {
-            email: newUser.email,
-            id: newUser.id,
-          },
-        ]);
-      if (insertError) {
-        setError(insertError.message);
-        console.log(insertError.message);
-        throw new Error(insertError);
-      }
-      console.log('userProfile', userProfile);
-    }
-    console.log('user is in', newUser);
-    toaster(
-      'Success! Activation link has been sent to your email',
-      `Please check your inbox ${newUser.email}`,
-      'success'
-    );
-    setError('');
-    setIsLoading(false);
-    setIsOpen(false);
-    setEmail('');
-    setPassword('');
-  };
 
   return (
     <>
-      <Button
-        _focus={{ boxShadow: 'none' }}
-        colorScheme={'orange'}
-        bgColor={'orange.500'}
-        color={'orange.50'}
-        variant={'solid'}
-        size={'sm'}
-        onClick={() => setIsOpen(true)}
+      <Box
+        display={'flex'}
+        justifyContent={'start'}
+        alignItems={'center'}
+        mb={'8'}
       >
-        <Text fontWeight={'bold'}>Become a member</Text>
-      </Button>
-      <BasicModal
-        title={'Sign up'}
-        buttonTitle={'Confirm'}
-        isOpen={isOpen}
-        onOpen={() => setIsOpen(true)}
-        onClose={() => setIsOpen(false)}
-        onSave={() => signUpUser()}
-        isSaving={isLoading}
-      >
+        <Button
+          rounded={'2xl'}
+          // colorScheme={useColorModeValue('cyan', 'gray')}
+          variant={useColorModeValue('solid', 'solid')}
+          border={'1px'}
+          size={'lg'}
+          w={'full'}
+          type="submit"
+          leftIcon={<Google size={'22px'} />}
+          isLoading={isLoading}
+          disabled={isLoading}
+          onClick={() => handleOAuthSignIn('google')}
+        >
+          Continue with Google
+        </Button>
+      </Box>
+      <Divider mb={'5'} />
+      <Box>
         <VStack spacing={'2'}>
           <FormControl>
-            <FormLabel color={'gray.600'}>Email</FormLabel>
+            <FormLabel color={useColorModeValue(`gray.600`, `gray.300`)}>
+              Email
+            </FormLabel>
             <Input
               variant="filled"
               placeholder={'name@example.com'}
@@ -140,7 +73,9 @@ function SignUp({ data, setState }) {
             />
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.600'}>Password</FormLabel>
+            <FormLabel color={useColorModeValue(`gray.600`, `gray.300`)}>
+              Password
+            </FormLabel>
             <Input
               variant="filled"
               placeholder={'password'}
@@ -157,7 +92,7 @@ function SignUp({ data, setState }) {
             />
           </FormControl>
         </VStack>
-      </BasicModal>
+      </Box>
     </>
   );
 }

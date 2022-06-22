@@ -14,8 +14,8 @@ function ActionMenu() {
         ring={'1'}
         ringColor={'gray.300'}
         cursor={'pointer'}
-        transition={'all'}
-        transitionDuration={'0.2s'}
+        // transition={'all'}
+        // transitionDuration={'0.2s'}
         display={'flex'}
         justifyContent={'center'}
         alignItems={'center'}

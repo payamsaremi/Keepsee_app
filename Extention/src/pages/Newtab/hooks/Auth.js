@@ -1,23 +1,32 @@
 import React, { useContext, createContext, useState, useEffect } from 'react';
 
 import { supabase } from '../../../supabaseClient';
-
+import useSetState from './useSetState';
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState();
   const [profile, setProfile] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
+
+  const { data, setState } = useSetState();
   const session = supabase.auth.session();
+
+  useEffect(() => {
+    setUserBackupData(user);
+  }, [session?.user.id]);
+
   useEffect(() => {
     setUser(session?.user ?? null);
+    getUserProfile(session?.user ?? null);
     setLoading(false);
-
+    console.log('session', session);
     //listen to changes for auth
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setUser(session?.user ?? null);
+        getUserProfile(session?.user ?? null);
+
         setLoading(false);
       }
     );
@@ -27,6 +36,27 @@ export const AuthProvider = ({ children }) => {
       listener?.unsubscribe();
     };
   }, []);
+
+  //Restore userDataBackup from DB if any
+  const setUserBackupData = async (newUser) => {
+    if (newUser) {
+      let { data: userDataBackup, error } = await supabase
+        .from('userDataBackup')
+        .select('*')
+        .eq('user', newUser?.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      if (userDataBackup) {
+        const state = userDataBackup.data;
+        console.log('state', state);
+        setState(state);
+      }
+      if (error) {
+        console.log(error);
+      }
+    }
+  };
 
   //get User's Profile
   const getUserProfile = async (user) => {
@@ -40,18 +70,17 @@ export const AuthProvider = ({ children }) => {
         setProfile(userProfile);
       }
       if (error) {
-        setError(error);
+        console.log(error);
       }
     }
   };
-  useEffect(() => {
-    getUserProfile(user);
-  }, [session]);
 
   //Create signUp,signIn, signOut functions
   const value = {
-    signUp: (data) => supabase.auth.signUp(data),
-    signIn: (data) => supabase.auth.signIn(data),
+    setState,
+    data,
+    signUp: async (data) => supabase.auth.signUp(data),
+    signIn: async (data) => supabase.auth.signIn(data),
     signOut: () => supabase.auth.signOut(),
     user,
     loading,
@@ -65,7 +94,7 @@ export const AuthProvider = ({ children }) => {
       {!loading && children}
     </AuthContext.Provider>
   );
-};
+}
 
 export const useAuth = () => {
   return useContext(AuthContext);

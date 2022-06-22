@@ -5,40 +5,22 @@ import {
   FormLabel,
   Input,
   VStack,
+  Box,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { supabase } from '../../../../supabaseClient';
 import { useAuth } from '../../hooks/Auth';
 import BasicModal from '../modal/BasicModal';
+import Google from '../../../../compponents/icons/Google';
 function SignIn({ setToggleSideMenu, data, setState }) {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState('');
-  const { user, signUp, signIn, loading } = useAuth();
+  const { user, signIn, loading } = useAuth();
   const toast = useToast();
-
-  //Restore userDataBackup from DB if any
-  const setUserBackupData = async (newUser) => {
-    console.log('set userBackupData', newUser);
-
-    let { data: userDataBackup, error } = await supabase
-      .from('userDataBackup')
-      .select('*')
-
-      .eq('user', newUser?.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    if (userDataBackup) {
-      const state = userDataBackup.data;
-      setState(state);
-    }
-    if (error) {
-      console.log(error);
-    }
-  };
 
   const toaster = (title, description, status) => {
     toast({
@@ -59,18 +41,35 @@ function SignIn({ setToggleSideMenu, data, setState }) {
       password: password,
     });
     if (newUser) {
+      // setUserBackupData(newUser);
       toaster('You have logged in successfully.', '', 'success');
       setEmail('');
       setPassword('');
       setToggleSideMenu(false);
       setIsOpen(false);
-      setUserBackupData(newUser);
       setIsLoading(false);
     }
     if (error) {
       toaster(error.message, '', 'error');
       setIsLoading(false);
     }
+  };
+
+  const handleOAuthSignIn = async (provider) => {
+    setIsLoading(true);
+    const { data: newUser, session, error } = await signIn({ provider });
+    if (newUser) {
+      console.log('newUser', newUser);
+      console.log('session', session);
+
+      toaster('You have logged in successfully.', '', 'success');
+      setEmail('');
+      setIsLoading(false);
+    }
+    if (error) {
+      toaster('Error', error.message, 'error');
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -95,6 +94,21 @@ function SignIn({ setToggleSideMenu, data, setState }) {
         onSave={() => signInUser()}
         isSaving={isLoading}
       >
+        <Box>
+          <Button
+            rounded={'2xl'}
+            colorScheme={useColorModeValue('cyan', 'gray')}
+            variant={useColorModeValue('outline', 'solid')}
+            size={'lg'}
+            type="submit"
+            leftIcon={<Google />}
+            // isLoading={isLoading}
+            disabled={isLoading}
+            onClick={() => handleOAuthSignIn('google')}
+          >
+            Continue with Google
+          </Button>
+        </Box>
         <VStack spacing={'2'}>
           <FormControl>
             <FormLabel color={'gray.600'}>Email</FormLabel>

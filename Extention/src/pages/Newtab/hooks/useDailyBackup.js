@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useBackupData from './useBackupData';
 
-//TODO: Please make this functions cleaner nicer better
 const prepairForBackUp = (data, setState, user, getBackup) => {
   const now = new Date();
   const date = now.getDate();

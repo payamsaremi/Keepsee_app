@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Box, Image } from '@chakra-ui/react';
+import { IconButton, Box, useColorModeValue } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 function TopMenu({ navItems, activeButton, toggleMenu }) {
@@ -26,13 +26,17 @@ function TopMenu({ navItems, activeButton, toggleMenu }) {
                   <IconButton
                     _focus={{ boxShadow: 'none' }}
                     onClick={() => toggleMenu(item)}
+                    size={'sm'}
                     m={'1'}
                     p={'2'}
-                    colorScheme={'gray'}
-                    bgColor={currentpath === item.link ? 'white' : ''}
+                    // colorScheme={'gray'}
+                    color={useColorModeValue('gray.300', 'gray.700')}
+                    bgColor={useColorModeValue(
+                      currentpath === item.link ? 'white' : '',
+                      currentpath === item.link ? 'gray.800' : ''
+                    )}
                     aria-label="Call Segun"
                     variant={'link'}
-                    size="md"
                     icon={item.icon}
                     isActive={currentpath === item.link}
                     rounded={'xl'}

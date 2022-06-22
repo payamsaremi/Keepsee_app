@@ -3,33 +3,26 @@ import {
   Box,
   Tooltip,
   Divider,
-  Fade,
-  IconButton,
   Text,
-  Slide,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import SignOut from '../auth/SignOut';
 
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/Auth';
-import SignIn from '../auth/SignIn';
 import BottonMenu from './BottonMenu';
 import TopMenu from './TopMenu';
 import SpacesSelector from './SpacesSelector';
 const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
-  const { user, profile } = useAuth();
-
+  const currentTabsToManage = data.columns['column-1'].taskIds.length;
   return (
     <>
       <Box
-        bgColor={'white'}
+        bgColor={useColorModeValue('white', 'gray.800')}
         rounded={'xl'}
         h={'99vh'}
         minW={'sm'}
-        transition={'all'}
-        transitionDuration={'1.5s'}
         display={toggleSideMenu ? 'block' : 'none'}
-        // display={'block'}
       >
         <TopMenu
           setToggleSideMenu={setToggleSideMenu}
@@ -41,7 +34,7 @@ const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
         <Box>
           <Box
             onClick={() => setToggleSideMenu(false)}
-            p={'5'}
+            p={'2'}
             display={'flex'}
             flexDir={'column'}
           >
@@ -50,7 +43,7 @@ const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
               p={'4'}
               hasArrow
               arrowSize={15}
-              label={`You have ${data.columns['column-1'].taskIds.length} open tabs, You can manage them from here.`}
+              label={`You have ${currentTabsToManage} open tabs, You can manage them from here.`}
               placement="top"
             >
               <Link to={'/tabManager'}>
@@ -58,7 +51,7 @@ const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
                   display={'flex'}
                   flexDir={'row'}
                   cursor={'pointer'}
-                  _hover={{ bg: 'gray.50' }}
+                  _hover={{ bg: 'gray.900' }}
                   alignItems={'center'}
                   rounded={'lg'}
                   justifyContent={'space-between'}
@@ -75,21 +68,22 @@ const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
                     </Text>
                   </Box>
                   <Box
-                    bg={'orange.400'}
-                    rounded={'full'}
+                    bg={currentTabsToManage > 0 ? 'orange.400' : 'gray.900'}
+                    rounded={'lg'}
                     w={'2'}
                     h={'2'}
                     p={'3'}
+                    mx={'5'}
                     display={'flex'}
                     justifyContent={'center'}
                     alignItems={'center'}
                   >
                     <Text
-                      textColor={'white'}
                       fontWeight={'bold'}
                       fontSize={'xs'}
+                      textColor={'gray.50'}
                     >
-                      {data.columns['column-1'].taskIds.length}
+                      {currentTabsToManage}
                     </Text>
                   </Box>
                 </Box>

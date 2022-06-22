@@ -1,47 +1,32 @@
 import React, { useState } from 'react';
 import Task from './Task';
-import { Box, Button, IconButton, Fade } from '@chakra-ui/react';
+import { Box, Button, IconButton, useColorModeValue } from '@chakra-ui/react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { cuteScrollbar } from '../../../../../../utils/cuteScrollbar';
-import ColumnSettingsMenu from './ColumnSettingsMenu';
 import ColumnHeader from './ColumnHeader';
-import { BiAdjust, BiCog } from 'react-icons/bi';
-// import ActionMenu from '../components/ActionMenu'
-function Column({ column, setState, data, tasks, index, removeColumn }) {
+
+function Column({
+  column,
+  setState,
+  data,
+  tasks,
+  index,
+  removeColumn,
+  isHidden,
+}) {
+  const [showSettings, setShowSettings] = useState(false);
+  const [mouseOver, setMouseOver] = useState('');
+  const [collapseColumn, setCollapseColumn] = useState(false);
   const bgColor = column.color ? `${column.color}.300` : 'white';
 
-  const [showSettings, setShowSettings] = useState(false);
-
-  const [mouseOver, setMouseOver] = useState();
   const mouseOverColumn = (column) => {
     setMouseOver(column.id);
   };
-  const [collapseColumn, setCollapseColumn] = useState(false);
 
-  const openWorkspace = (urls) => {
-    const tabsUrls = [];
-    const tabs = [];
-    const tabIds = [];
-    tasks.forEach((tab) => {
-      tabsUrls.push(tab.url);
-      tabs.push(tab);
-      tabIds.push(tab.id);
-    });
-    console.log('tabsUrls', tabsUrls);
-    let openTab = chrome.runtime.sendMessage({
-      message: 'openWorkspace',
-      tabIds: tabIds,
-      tab: tabsUrls,
-      tabs: tabs,
-    });
-    openTab.then((res) => {
-      console.log(res);
-    });
-  };
   //TODO: User want to be able to assign a name for the newly created column
   return (
-    <Box>
+    <Box display={isHidden && 'none'}>
       <Draggable draggableId={column.id} index={index}>
         {(provided, snapshot) => (
           <Box
@@ -54,7 +39,11 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
               <ColumnHeader
                 column={column}
                 tasks={tasks}
+                setState={setState}
+                data={data}
                 mouseOver={mouseOver}
+                showSettings={showSettings}
+                setShowSettings={setShowSettings}
                 setCollapseColumn={() => setCollapseColumn(!collapseColumn)}
               />
             </Box>
@@ -67,23 +56,40 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
               m={2}
               rounded={'2xl'}
               ringColor={bgColor}
-              bgColor={'white'}
-              opacity={snapshot.isDragging ? `0.7` : `1`}
+              ring={useColorModeValue(
+                column.id === 'column-1' ? '5px' : 'none',
+                column.id === 'column-1' ? '1px' : '1px'
+              )}
+              bgColor={useColorModeValue(
+                column.id === 'column-1' ? 'gray.800' : 'gray.100',
+                column.id === 'column-1' ? 'gray.400' : 'gray.800'
+              )}
+              opacity={snapshot.isDragging ? `0.5` : `1`}
             >
               <Droppable droppableId={column.id} type={'tasks'}>
                 {(provided, snapshot) => (
                   <Box
                     display={'flex'}
                     flexDir={'column'}
-                    // minH={'sm'}
                     w={'xs'}
                     maxW={'xs'}
-                    rounded={'2xl'}
-                    transition={'all'}
-                    transitionDuration={'0.3s'}
-                    bgColor={
-                      snapshot.isDraggingOver ? `${column.color}.50` : 'inherit'
-                    }
+                    rounded={'xl'}
+                    bgColor={useColorModeValue(
+                      snapshot.isDraggingOver
+                        ? `${column.color}.50`
+                        : 'inherit',
+                      snapshot.isDraggingOver
+                        ? `${column.color}.500`
+                        : 'inherit'
+                    )}
+                    bgGradient={useColorModeValue(
+                      snapshot.isDraggingOver
+                        ? `radial(${column.color}.50, ${column.color}.50, ${column.color}.50)`
+                        : 'inherit',
+                      snapshot.isDraggingOver
+                        ? `radial(${column.color}.400, ${column.color}.500, ${column.color}.400)`
+                        : 'inherit'
+                    )}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                   >
@@ -91,10 +97,20 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                       <Box>
                         {tasks.map((task, index) => {
                           return (
-                            <Task key={task.id} task={task} index={index} />
+                            <Task
+                              key={task.id}
+                              task={task}
+                              index={index}
+                              setState={setState}
+                              data={data}
+                              column={column}
+                            />
                           );
                         })}
                         {provided.placeholder}
+                      </Box>
+                      <Box>
+                        <Box w={'full'} p={'1'}></Box>
                       </Box>
                       <Box
                         display={'flex'}
@@ -113,14 +129,6 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                       </Box>
                     </Box>
 
-                    <ColumnSettingsMenu
-                      showSettings={showSettings}
-                      setShowSettings={setShowSettings}
-                      column={column}
-                      setState={setState}
-                      data={data}
-                    />
-
                     <Box
                       display={'flex'}
                       h={'45px'}
@@ -129,14 +137,14 @@ function Column({ column, setState, data, tasks, index, removeColumn }) {
                     >
                       {mouseOver && (
                         <Box>
-                          <IconButton
+                          {/* <IconButton
                             onClick={() => setShowSettings(!showSettings)}
                             _focus={{ boxShadow: 'none' }}
                             color={'gray.400'}
                             rounded={'lg'}
                             variant={'ghost'}
                             icon={<BiCog size={25} />}
-                          />
+                          /> */}
                         </Box>
                       )}
                     </Box>

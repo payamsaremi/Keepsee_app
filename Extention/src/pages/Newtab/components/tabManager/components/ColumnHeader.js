@@ -1,16 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { Box, ScaleFade, IconButton, Text } from '@chakra-ui/react';
-import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
-import { BiExpand, BiPlus } from 'react-icons/bi';
-const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
-  const [color, setColor] = useState(column.color ? column.color : 'cyan');
+import { Box, ScaleFade, Text, useColorModeValue } from '@chakra-ui/react';
+import ColumnSettingsMenu from './ColumnSettingsMenu';
+import MenuPopOver from './MenuPopOver';
+const ColumnHeader = ({
+  column,
+  tasks,
+  mouseOver,
+  setState,
+  data,
+  showSettings,
+  setShowSettings,
+}) => {
+  const [color, setColor] = useState(column.color ? column.color : 'gray');
+  const [title, setTitle] = useState(column.title);
+  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
-    setColor(column.color ? column.color : 'cyan');
+    setColor(column.color ? column.color : '');
   }, [column.color]);
+
+  useEffect(() => {
+    setTitle(column.title ? column.title : '');
+  }, [column.title]);
+
+  //if its a newly created column set the menu open so user can change title and personalise
+  useEffect(() => {
+    if (column.title === '') {
+      setIsOpen(true);
+    }
+  }, []);
   return (
     <>
       <Box
-        bgColor={`${color}.100`}
+        bgColor={useColorModeValue(`${color}.100`, `${color}.900`)}
         display={'flex'}
         flexDir={'row'}
         minH={'10px'}
@@ -20,19 +41,20 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
         minW={'xs'}
         justifyContent={'space-between'}
         border={'1px'}
-        borderColor={`${color}.200`}
+        borderColor={`${color}.300`}
         m={2}
         px={2}
+        mb={'3'}
       >
         <Box>
           {tasks && (
             <Box
-              bgColor={`${color}.100`}
+              bgColor={useColorModeValue(`${color}.100`, `${color}.800`)}
               display={'flex'}
               justifyContent={'center'}
               alignItems={'center'}
               rounded={'lg'}
-              p={'4'}
+              p={'3'}
               w={'5'}
               h={'5'}
             >
@@ -59,46 +81,68 @@ const ColumnHeader = ({ column, tasks, mouseOver, setCollapseColumn }) => {
             justifyContent={'center'}
             px={'3'}
             py={'1'}
-            onClick={setCollapseColumn}
+            cursor={'pointer'}
             minW={'150px'}
           >
-            <Text
-              textColor={`${color}.500`}
-              fontWeight={'bold'}
-              fontSize={'lg'}
-              textAlign={'center'}
-              p={1}
+            {isOpen}
+            <MenuPopOver
+              setIsOpen={setIsOpen}
+              isOpen={isOpen}
+              color={color}
+              title={column.title}
             >
-              {column.title}
-            </Text>
+              {/* Change title toggle */}
+              <ColumnSettingsMenu
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                showSettings={showSettings}
+                setShowSettings={setShowSettings}
+                column={column}
+                setState={setState}
+                data={data}
+                setColor={setColor}
+                color={color}
+                setTitle={setTitle}
+                title={title}
+              />
+            </MenuPopOver>
           </Box>
         </Box>
         <ScaleFade initialScale={0.2} in={column.id === mouseOver}>
           <Box justifyContent={'end'}>
             {column.id === mouseOver ? (
               <>
-                <Menu>
-                  <MenuButton
-                    as={IconButton}
-                    color={`${color}.500`}
-                    size={'sm'}
-                    icon={<BiPlus size={'22px'} />}
-                    rounded={'lg'}
-                    variant={'ghost'}
-                  ></MenuButton>
-                  <MenuList>
-                    <MenuItem
-                      onClick={() => openWorkspace(column)}
-                      icon={<BiExpand size="18" />}
-                      minH="28px"
-                      my={'0'}
+                {/* <BasicPopOver Icon={<BiPlus size={'20'} />} color={color}>
+                  <Box
+                    display={'flex'}
+                    flexDir={'column'}
+                    justifyContent={'start'}
+                  >
+                    <Button
+                      _focus={{ boxShadow: 'none' }}
+                      size={'sm'}
+                      leftIcon={<BiNote size={'22'} />}
+                      variant="ghost"
+                      color={'gray.600'}
+                      rounded={'xl'}
+                      onClick={() => console.log('create new note')}
                     >
-                      <Text fontSize={'md'} textColor={'gray.600'}>
-                        Open Space
-                      </Text>
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
+                      Add note
+                    </Button>
+                    <Button
+                      _focus={{ boxShadow: 'none' }}
+                      size={'sm'}
+                      leftIcon={<BiTask size={'22'} />}
+                      variant="ghost"
+                      color={'gray.600'}
+                      rounded={'xl'}
+                      onClick={() => console.log('create new note')}
+                    >
+                      Add a new Task
+                    </Button>
+                  </Box>
+                </BasicPopOver> */}
+                <Box px={'4'}></Box>
               </>
             ) : (
               <Box px={'4'}></Box>

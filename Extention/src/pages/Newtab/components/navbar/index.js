@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { IconButton, Box, Image } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Box } from '@chakra-ui/react';
 import UserProfileMenu from '../auth/UserProfileMenu';
 import TopMenu from './TopMenu';
 import {
-  BiChevronRightSquare,
-  BiChevronLeftSquare,
+  BiNetworkChart,
   BiCarousel,
+  BiWindow,
+  BiChevronLeft,
+  BiChevronRight,
 } from 'react-icons/bi';
-function NavBar({
-  toggleSideMenu,
-  setToggleSideMenu,
-  user,
-  SignUp,
-  data,
-  setState,
-}) {
+import Auth from '../auth';
+import DarkModeToggle from '../utils/DarkModeToggle';
+import BasicIconButton from '../utils/BasicIconButton';
+function NavBar({ toggleSideMenu, setToggleSideMenu, user, data, setState }) {
   const navItems = [
     // {
     //   name: 'Spaces',
@@ -25,12 +21,12 @@ function NavBar({
     // },
     {
       name: 'tabManager',
-      icon: <BiCarousel size={25} />,
+      icon: <BiCarousel size={'20'} />,
       link: '/tabManager',
     },
     // {
     //   name: 'Mind',
-    //   icon: <BiNetworkChart size={25} />,
+    //   icon: <BiNetworkChart size={'20'} />,
     //   link: '/Mind',
     // },
   ];
@@ -50,16 +46,12 @@ function NavBar({
         px={'4'}
       >
         <Box w={'330px'}>
-          <IconButton
-            bgColor={'white'}
-            color={'gray.800'}
-            _focus={{ boxShadow: 'none' }}
-            rounded={'xl'}
+          <BasicIconButton
             icon={
               toggleSideMenu ? (
-                <BiChevronLeftSquare size={25} />
+                <BiChevronLeft size={'20'} />
               ) : (
-                <BiChevronRightSquare size={25} />
+                <BiChevronRight size={'20'} />
               )
             }
             onClick={() => setToggleSideMenu(!toggleSideMenu)}
@@ -73,11 +65,21 @@ function NavBar({
           />
         </Box>
 
-        <Box w={'330px'} display={'flex'} justifyContent={'end'}>
+        <Box
+          w={'330px'}
+          display={'flex'}
+          justifyContent={'end'}
+          alignItems={'center'}
+        >
+          <Box mr={'1'}>
+            {' '}
+            <DarkModeToggle />
+          </Box>
           {user ? (
             <UserProfileMenu />
           ) : (
-            <SignUp data={data} setState={setState} />
+            // <SignUp data={data} setState={setState} />
+            <Auth data={data} setState={setState} type={'signUp'} />
           )}
         </Box>
       </Box>

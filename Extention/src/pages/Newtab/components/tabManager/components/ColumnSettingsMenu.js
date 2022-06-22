@@ -1,51 +1,59 @@
-import React, { useState } from 'react';
-import { FormControl, FormLabel, Input } from '@chakra-ui/react';
-import BasicModal from '../../modal/BasicModal';
+import React, { useEffect, useState } from 'react';
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Box,
+  Button,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import ColorPicker from '../../utils/ColorPicker';
 function ColumnSettingsMenu({
-  showSettings,
-  setShowSettings,
   column,
   setState,
   data,
+  setIsOpen,
+  isOpen,
+  setColor,
+  color,
+  title,
+  setTitle,
 }) {
-  const [Newtitle, setNewTitle] = useState(column.title);
-  const [NewColor, setNewColor] = useState(
-    column.color ? column.color : 'cyan'
-  );
-  const saveColumnSettings = (column) => {
+  const dataSetter = (column) => {
     const state = {
       ...data,
       columns: {
         ...data.columns,
         [column.id]: {
           ...data.columns[column.id],
-          title: Newtitle,
-          color: NewColor,
+          title: title,
+          color: color,
         },
       },
     };
     setState(state);
-    setShowSettings(false);
+    return state;
+  };
+  const saveColumnSettings = (column) => {
+    dataSetter(column);
+    setIsOpen(!isOpen);
   };
   return (
     <>
-      <BasicModal
-        title={Newtitle}
-        buttonTitle={'Save'}
-        isOpen={showSettings}
-        onOpen={() => setIsOpen(true)}
-        onClose={() => setShowSettings(false)}
-        onSave={() => saveColumnSettings(column)}
-        // dataUnready={profile ? false : true}
-        // isSaving={isSaving}
-      >
+      <Box display={'flex'} flexDir={'column'} p={2}>
         <FormControl>
-          <FormLabel>Name</FormLabel>
+          {/* <FormLabel>Name</FormLabel> */}
           <Input
             variant="filled"
-            placeholder={'give it a name'}
-            value={Newtitle}
-            onChange={(e) => setNewTitle(e.target.value)}
+            _placeholder={useColorModeValue(
+              { color: 'gray.500' },
+              { color: 'gray.300' }
+            )}
+            placeholder={'Give it a name'}
+            value={title}
+            onChange={(e) => {
+              setTitle(e.currentTarget.value);
+            }}
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
                 saveColumnSettings(column);
@@ -55,20 +63,25 @@ function ColumnSettingsMenu({
         </FormControl>
 
         <FormControl>
-          <FormLabel>Color</FormLabel>
-          <Input
-            variant="filled"
-            placeholder={'Set a color'}
-            value={NewColor}
-            onChange={(e) => setNewColor(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                saveColumnSettings(column);
-              }
-            }}
+          <ColorPicker
+            color={color}
+            setColor={setColor}
+            saveColumnSettings={() => saveColumnSettings(column)}
           />
         </FormControl>
-      </BasicModal>
+        <Button
+          mt={'2'}
+          bgColor={useColorModeValue(`${color}.400`, `${color}.700`)}
+          color={`${color}.50`}
+          _hover={{ bgColor: `${color}.500` }}
+          rounded={'xl'}
+          onClick={() => {
+            saveColumnSettings(column);
+          }}
+        >
+          Save
+        </Button>
+      </Box>
     </>
   );
 }

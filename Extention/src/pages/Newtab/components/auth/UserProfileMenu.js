@@ -6,24 +6,24 @@ import {
   Input,
   FormLabel,
   VStack,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useAuth } from '../../hooks/Auth';
 import BasicModal from '../modal/BasicModal';
 import { supabase } from '../../../../supabaseClient';
 function UserProfileMenu() {
+  const { profile, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
-  const { profile } = useAuth();
-
   useEffect(() => {
     setName(profile?.full_name);
     setEmail(profile?.email);
     setUsername(profile?.username);
-  }, [profile]);
+  }, [profile, loading]);
 
   const saveSettings = async () => {
     try {
@@ -44,28 +44,34 @@ function UserProfileMenu() {
     }
   };
 
+  const labelColor = useColorModeValue('gray.500', 'gray.400');
+
   return (
     <>
       <Box
         rounded={'xl'}
-        h={'10'}
-        w={'10'}
+        h={'8'}
+        w={'8'}
         p={'4'}
-        bgColor={'white'}
+        bgColor={useColorModeValue('white', 'gray.800')}
         shadow={'sm'}
         display={'flex'}
         justifyContent={'center'}
         alignItems={'center'}
         cursor={'pointer'}
-        color={'gray.600'}
+        color={useColorModeValue('gray.600', 'gray.100')}
         onClick={() => setIsOpen(!isOpen)}
-        _hover={{ color: 'gray.700' }}
+        _hover={useColorModeValue(
+          { bgColor: 'gray.50' },
+          { bgColor: 'gray.700' }
+        )}
       >
         <Text
-          fontSize={'lg'}
+          fontSize={'sm'}
           fontWeight={'medium'}
           textAlign={'center'}
           textTransform={'capitalize'}
+          textColor={useColorModeValue('gray.700', 'gray.300')}
         >
           {profile?.email.slice(0, 2)}
         </Text>
@@ -101,7 +107,7 @@ function UserProfileMenu() {
               <Box>
                 <Text
                   fontSize={'xl'}
-                  color={'gray.600'}
+                  color={labelColor}
                   fontWeight={'medium'}
                   textTransform={'capitalize'}
                 >
@@ -114,7 +120,7 @@ function UserProfileMenu() {
               <Box>
                 <Text
                   fontSize={'medium'}
-                  color={'gray.600'}
+                  color={labelColor}
                   fontWeight={'semibold'}
                 >
                   @{username}
@@ -123,7 +129,7 @@ function UserProfileMenu() {
             )}
             {email && (
               <Box>
-                <Text fontSize={'sm'} color={'gray.500'} fontWeight={'light'}>
+                <Text fontSize={'sm'} color={labelColor} fontWeight={'light'}>
                   {email}
                 </Text>
               </Box>
@@ -132,7 +138,7 @@ function UserProfileMenu() {
         </Box>
         <VStack spacing={'2'}>
           <FormControl>
-            <FormLabel color={'gray.500'}>Email</FormLabel>
+            <FormLabel color={labelColor}>Email</FormLabel>
             <Input
               variant="filled"
               placeholder={'email'}
@@ -142,7 +148,7 @@ function UserProfileMenu() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.500'}>Name</FormLabel>
+            <FormLabel color={labelColor}>Name</FormLabel>
             <Input
               variant="filled"
               placeholder={"What's your name?"}
@@ -159,7 +165,7 @@ function UserProfileMenu() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.500'}>Username</FormLabel>
+            <FormLabel color={labelColor}>Username</FormLabel>
             <Input
               variant="filled"
               placeholder={'Choose a username.'}

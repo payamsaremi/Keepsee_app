@@ -1,7 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 import { useAuth } from '../../hooks/Auth';
-import useSetState from '../../hooks/useSetState';
 import useBackupData from '../../hooks/useBackupData';
 import { useNavigate } from 'react-router-dom';
 export default function SignOut({ setToggleSideMenu, data, setState }) {
@@ -12,9 +11,9 @@ export default function SignOut({ setToggleSideMenu, data, setState }) {
 
   const signUserOutWithBackup = () => {
     console.log('signing off');
-    // getBackup();
+    getBackup();
     signOut();
-    window.localStorage.clear();
+    // window.localStorage.clear(); //TODO: What to do with this?
     setState(); //just set to initial state
     setToggleSideMenu(false);
     navigate('/tabManager', { replace: true });

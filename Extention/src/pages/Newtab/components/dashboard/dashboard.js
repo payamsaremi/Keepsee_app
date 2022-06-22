@@ -88,7 +88,7 @@ export default function SidebarWithHeader({ children }) {
 const SidebarContent = ({ onClose, setComponent, ...rest }) => {
   return (
     <Flex
-      transition="0.5s ease"
+      // transition="0.5s ease"
       bg={useColorModeValue('white', 'gray.800')}
       w={{ base: 'full', md: 'lg' }}
       pos="sticky"
@@ -146,7 +146,7 @@ const SidebarContent = ({ onClose, setComponent, ...rest }) => {
         <Menu>
           <MenuButton
             py={2}
-            transition="all 0.5s"
+            // transition="all 0.5s"
             _focus={{ boxShadow: 'none' }}
           ></MenuButton>
           <MenuList
@@ -180,9 +180,9 @@ const NavItem = ({ icon, children, ...rest }) => {
       borderRadius="2xl"
       role="group"
       color={useColorModeValue('blue.800', 'blue.100')}
-      transition="background"
-      transitionDuration="100ms"
-      transitionTimingFunction={'ease-in'}
+      // transition="background"
+      // transitionDuration="100ms"
+      // transitionTimingFunction={'ease-in'}
       cursor="pointer"
       _hover={{
         color: 'blue.500',

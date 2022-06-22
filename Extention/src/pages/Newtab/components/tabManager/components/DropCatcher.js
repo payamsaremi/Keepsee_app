@@ -18,8 +18,8 @@ function Column() {
             display={'flex'}
             flexDir={'column'}
             rounded={'2xl'}
-            transition={'all'}
-            transitionDuration={'0.5s'}
+            // transition={'all'}
+            // transitionDuration={'0.5s'}
             w={'xs'}
             h={snapshot.isDraggingOver ? '2xl' : '200px'}
             bgColor={snapshot.isDraggingOver ? 'white' : 'gray.100'}
