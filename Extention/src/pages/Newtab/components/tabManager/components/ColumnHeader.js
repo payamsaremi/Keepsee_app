@@ -46,28 +46,6 @@ const ColumnHeader = ({
         px={2}
         mb={'3'}
       >
-        <Box>
-          {tasks && (
-            <Box
-              bgColor={useColorModeValue(`${color}.100`, `${color}.800`)}
-              display={'flex'}
-              justifyContent={'center'}
-              alignItems={'center'}
-              rounded={'lg'}
-              p={'3'}
-              w={'5'}
-              h={'5'}
-            >
-              <Text
-                fontSize={'sm'}
-                textColor={`${color}.500`}
-                fontWeight={'semibold'}
-              >
-                {tasks && tasks.length}
-              </Text>
-            </Box>
-          )}
-        </Box>
         <Box
           display={'flex'}
           flexDir={'row'}
@@ -79,12 +57,14 @@ const ColumnHeader = ({
             flexDir={'row'}
             alignItems={'center'}
             justifyContent={'center'}
-            px={'3'}
             py={'1'}
             cursor={'pointer'}
-            minW={'150px'}
+            // minW={'150px'}
           >
-            {isOpen}
+            <Box mx={'1'} onClick={() => setIsOpen(!isOpen)}>
+              <Text fontSize={'2xl'}>{column?.emoji?.native}</Text>
+            </Box>
+            {/* {isOpen} */}
             <MenuPopOver
               setIsOpen={setIsOpen}
               isOpen={isOpen}
@@ -108,47 +88,34 @@ const ColumnHeader = ({
             </MenuPopOver>
           </Box>
         </Box>
-        <ScaleFade initialScale={0.2} in={column.id === mouseOver}>
-          <Box justifyContent={'end'}>
-            {column.id === mouseOver ? (
-              <>
-                {/* <BasicPopOver Icon={<BiPlus size={'20'} />} color={color}>
-                  <Box
-                    display={'flex'}
-                    flexDir={'column'}
-                    justifyContent={'start'}
-                  >
-                    <Button
-                      _focus={{ boxShadow: 'none' }}
-                      size={'sm'}
-                      leftIcon={<BiNote size={'22'} />}
-                      variant="ghost"
-                      color={'gray.600'}
-                      rounded={'xl'}
-                      onClick={() => console.log('create new note')}
-                    >
-                      Add note
-                    </Button>
-                    <Button
-                      _focus={{ boxShadow: 'none' }}
-                      size={'sm'}
-                      leftIcon={<BiTask size={'22'} />}
-                      variant="ghost"
-                      color={'gray.600'}
-                      rounded={'xl'}
-                      onClick={() => console.log('create new note')}
-                    >
-                      Add a new Task
-                    </Button>
-                  </Box>
-                </BasicPopOver> */}
-                <Box px={'4'}></Box>
-              </>
-            ) : (
-              <Box px={'4'}></Box>
-            )}
-          </Box>
-        </ScaleFade>
+
+        <Box>
+          {tasks && (
+            <Box
+              bgColor={useColorModeValue(`${color}.100`, `${color}.800`)}
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              rounded={'lg'}
+              cursor={'pointer'}
+              transition={'all'}
+              transitionDuration={'0.1s'}
+              _hover={{
+                transform: 'scale(1.2)',
+                bgColor: useColorModeValue(`${color}.300`, `${color}.600`),
+                color: useColorModeValue(`${color}.50`, `${color}.200`),
+              }}
+              color={`${color}.500`}
+              p={'3'}
+              w={'5'}
+              h={'5'}
+            >
+              <Text fontSize={'sm'} fontWeight={'semibold'}>
+                {tasks && tasks.length}
+              </Text>
+            </Box>
+          )}
+        </Box>
       </Box>
     </>
   );

@@ -4,6 +4,7 @@ import Column from './components/Column';
 import { Droppable } from 'react-beautiful-dnd';
 import DropCatcher from './components/DropCatcher';
 import { cuteScrollbar } from '../../../../../utils/cuteScrollbar';
+import UnmanagedTabsColumn from './components/UnmanagedTabsColumn';
 function TabManager({ showCatcher, data, setState }) {
   const removeColumn = (id) => {
     const newColumnOrder = Array.from(data.columnOrder);
@@ -40,13 +41,15 @@ function TabManager({ showCatcher, data, setState }) {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
+            <UnmanagedTabsColumn />
             {data.columnOrder.map((columnId, index) => {
               const column = data.columns[columnId];
               const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-
+              if (column.id === 'column-1') {
+                return;
+              }
               return (
                 <Column
-                  isHidden={column.id === 'column-1' && tasks.length === 0}
                   key={column.id}
                   column={column}
                   tasks={tasks}

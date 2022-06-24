@@ -24,6 +24,9 @@ export function AuthProvider({ children }) {
     //listen to changes for auth
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        if (event == 'SIGNED_OUT') console.log('SIGNED_OUT :((((((((', session);
+        if (event == 'TOKEN_REFRESHED') console.log('TOKEN_REFRESHED', session);
+        if (event == 'SIGNED_IN') console.log('SIGNED_IN', session);
         setUser(session?.user ?? null);
         getUserProfile(session?.user ?? null);
 

@@ -7,6 +7,8 @@ KIP V0.1
 the app's context ,,,, it might need a rename as it does not just providr auth , it also provides state and setState
 
 
+Try to set the Signout Backup algorithm function from signOut.js to auth.js where you can use supabase onauthchanges to see if user was signed out and then get a backUp there.
+
 3. Add emoji for columns header.
 19. Implement a workspace switcher for the sidebar, apps or importtant tasks to lists.
 1. make unmanaged tabs column stay to the right without moving .

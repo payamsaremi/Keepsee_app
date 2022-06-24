@@ -11,14 +11,14 @@ function ColorPicker({ color, setColor }) {
     { name: 'purple', color: 'purple' },
     { name: 'pink', color: 'pink' },
     { name: 'yellow', color: 'yellow' },
-    // { name: 'red', color: 'red' },
+    { name: 'red', color: 'red' },
     { name: 'teal', color: 'teal' },
   ];
 
   return (
     <>
       <Box marginTop={4}>
-        <SimpleGrid columns={8}>
+        <SimpleGrid columns={9}>
           {colors.map((c) => (
             <Box key={c.color}>
               <Button

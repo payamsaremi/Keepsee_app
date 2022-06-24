@@ -56,14 +56,8 @@ function Column({
               m={2}
               rounded={'2xl'}
               ringColor={bgColor}
-              ring={useColorModeValue(
-                column.id === 'column-1' ? '5px' : 'none',
-                column.id === 'column-1' ? '1px' : '1px'
-              )}
-              bgColor={useColorModeValue(
-                column.id === 'column-1' ? 'gray.800' : 'gray.100',
-                column.id === 'column-1' ? 'gray.400' : 'gray.800'
-              )}
+              ring={useColorModeValue('none', '1px')}
+              bgColor={useColorModeValue('gray.100', 'gray.800')}
               opacity={snapshot.isDragging ? `0.5` : `1`}
             >
               <Droppable droppableId={column.id} type={'tasks'}>
@@ -118,7 +112,7 @@ function Column({
                         justifyContent={'center'}
                         my={'5'}
                       >
-                        {tasks.length === 0 && column.id !== 'column-1' && (
+                        {tasks.length === 0 && (
                           <Button
                             onClick={() => removeColumn(column.id)}
                             variant={'solid'}

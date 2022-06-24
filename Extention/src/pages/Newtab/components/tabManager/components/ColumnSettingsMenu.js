@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
   FormControl,
-  FormLabel,
+  Text,
   Input,
   Box,
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
 import ColorPicker from '../../utils/ColorPicker';
+import EmojiPopOver from '../../utils/EmojiPopOver';
+
 function ColumnSettingsMenu({
   column,
   setState,
@@ -19,6 +21,12 @@ function ColumnSettingsMenu({
   title,
   setTitle,
 }) {
+  const [emoji, setEmoji] = useState(column?.emoji ? column.emoji : '');
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false);
+  const emojiSetter = (value) => {
+    setEmoji(value);
+    setIsEmojiOpen(false);
+  };
   const dataSetter = (column) => {
     const state = {
       ...data,
@@ -28,6 +36,7 @@ function ColumnSettingsMenu({
           ...data.columns[column.id],
           title: title,
           color: color,
+          emoji: emoji,
         },
       },
     };
@@ -40,27 +49,42 @@ function ColumnSettingsMenu({
   };
   return (
     <>
-      <Box display={'flex'} flexDir={'column'} p={2}>
-        <FormControl>
-          {/* <FormLabel>Name</FormLabel> */}
-          <Input
-            variant="filled"
-            _placeholder={useColorModeValue(
-              { color: 'gray.500' },
-              { color: 'gray.300' }
-            )}
-            placeholder={'Give it a name'}
-            value={title}
-            onChange={(e) => {
-              setTitle(e.currentTarget.value);
-            }}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                saveColumnSettings(column);
-              }
-            }}
-          />
-        </FormControl>
+      <Box display={'flex'} flexDir={'column'}>
+        <Box
+          display={'flex'}
+          flexDir={'row'}
+          justifyContent={'space-between'}
+          alignItems={'center'}
+        >
+          <Box>
+            <EmojiPopOver
+              setEmoji={emojiSetter}
+              emoji={emoji}
+              isEmojiOpen={isEmojiOpen}
+              setIsEmojiOpen={setIsEmojiOpen}
+            />
+          </Box>
+          <FormControl>
+            {/* <FormLabel>Name</FormLabel> */}
+            <Input
+              variant="filled"
+              placeholder={'Give it a name'}
+              value={title}
+              _placeholder={useColorModeValue(
+                { color: 'gray.500' },
+                { color: 'gray.300' }
+              )}
+              onChange={(e) => {
+                setTitle(e.currentTarget.value);
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  saveColumnSettings(column);
+                }
+              }}
+            />
+          </FormControl>
+        </Box>
 
         <FormControl>
           <ColorPicker

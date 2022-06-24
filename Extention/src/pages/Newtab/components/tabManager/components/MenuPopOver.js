@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { Box, IconButton, Text, useColorModeValue } from '@chakra-ui/react';
 import {
@@ -21,6 +21,7 @@ function MenuPopOver({
       <Popover
         isOpen={isOpen}
         placement={placement}
+        closeOnBlur={false}
         onClose={() => setIsOpen(false)}
       >
         <PopoverTrigger>
