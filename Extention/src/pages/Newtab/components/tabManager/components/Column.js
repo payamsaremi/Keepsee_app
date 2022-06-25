@@ -56,7 +56,7 @@ function Column({
               m={2}
               rounded={'2xl'}
               ringColor={bgColor}
-              ring={useColorModeValue('none', '1px')}
+              ring={useColorModeValue('none', 'none')}
               bgColor={useColorModeValue('gray.100', 'gray.800')}
               opacity={snapshot.isDragging ? `0.5` : `1`}
             >

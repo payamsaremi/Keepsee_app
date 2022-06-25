@@ -27,7 +27,7 @@ function MenuPopOver({
         <PopoverTrigger>
           <Text
             textColor={useColorModeValue(`${color}.500`, `${color}.300`)}
-            fontWeight={'bold'}
+            fontWeight={'semibold'}
             fontSize={'lg'}
             textAlign={'center'}
             p={1}
