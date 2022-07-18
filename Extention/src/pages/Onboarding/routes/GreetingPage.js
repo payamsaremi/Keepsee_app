@@ -4,6 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Text, Link } from '@chakra-ui/react';
 function GreetingPage() {
   const navigate = useNavigate();
+
+  const launchApp = async () => {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    let [currentTab] = await chrome.tabs.query(queryOptions);
+
+    chrome.tabs.create({ url: 'chrome://newtab' }); //create new tab
+    chrome.tabs.remove(currentTab.id); // remove the onBoarding tab
+  };
   return (
     <Box
       display={'flex'}
@@ -43,7 +51,7 @@ function GreetingPage() {
             bgColor={'cyan.200'}
             rounded={'2xl'}
             w={'180px'}
-            onClick={() => navigate('/authenticate')}
+            onClick={() => launchApp()}
           >
             <Text
               fontSize={'xl'}

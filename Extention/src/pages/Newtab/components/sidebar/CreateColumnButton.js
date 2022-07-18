@@ -3,7 +3,7 @@ import { IconButton, useColorModeValue } from '@chakra-ui/react';
 import { BiPlus } from 'react-icons/bi';
 import BasicModal from '../modal/BasicModal';
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
-function AddToSpaceModal({ setState, data }) {
+function CreateColumnButton({ setState, data }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -16,7 +16,7 @@ function AddToSpaceModal({ setState, data }) {
       id: id,
       title: title ? title : '',
       color: Color,
-      taskIds: Array(),
+      taskIds: Array()
     };
     return newColumn;
   };
@@ -25,16 +25,16 @@ function AddToSpaceModal({ setState, data }) {
     const newColumn = createNewColumn();
 
     const col = {
-      ...newColumn,
+      ...newColumn
     };
 
     const state = {
       ...data,
       columns: {
         ...data.columns,
-        [newColumn.id]: col,
+        [newColumn.id]: col
       },
-      columnOrder: [newColumn.id, ...data.columnOrder],
+      columnOrder: [newColumn.id, ...data.columnOrder]
     };
 
     setState(state);
@@ -58,4 +58,4 @@ function AddToSpaceModal({ setState, data }) {
     </>
   );
 }
-export default AddToSpaceModal;
+export default CreateColumnButton;

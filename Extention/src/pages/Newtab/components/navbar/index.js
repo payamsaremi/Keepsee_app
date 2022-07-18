@@ -7,7 +7,7 @@ import {
   BiCarousel,
   BiWindow,
   BiChevronLeft,
-  BiChevronRight,
+  BiChevronRight
 } from 'react-icons/bi';
 import Auth from '../auth';
 import DarkModeToggle from '../utils/DarkModeToggle';
@@ -22,8 +22,8 @@ function NavBar({ toggleSideMenu, setToggleSideMenu, user, data, setState }) {
     {
       name: 'tabManager',
       icon: <BiCarousel size={'20'} />,
-      link: '/tabManager',
-    },
+      link: '/tabManager'
+    }
     // {
     //   name: 'Mind',
     //   icon: <BiNetworkChart size={'20'} />,
@@ -46,16 +46,18 @@ function NavBar({ toggleSideMenu, setToggleSideMenu, user, data, setState }) {
         px={'4'}
       >
         <Box w={'330px'}>
-          <BasicIconButton
-            icon={
-              toggleSideMenu ? (
-                <BiChevronLeft size={'20'} />
-              ) : (
-                <BiChevronRight size={'20'} />
-              )
-            }
-            onClick={() => setToggleSideMenu(!toggleSideMenu)}
-          />
+          <Box>
+            <BasicIconButton
+              icon={
+                toggleSideMenu ? (
+                  <BiChevronLeft size={'20'} />
+                ) : (
+                  <BiChevronRight size={'20'} />
+                )
+              }
+              onClick={() => setToggleSideMenu(!toggleSideMenu)}
+            />
+          </Box>
         </Box>
         <Box w={'330px'} display={'flex'} justifyContent={'center'}>
           <TopMenu
@@ -78,7 +80,6 @@ function NavBar({ toggleSideMenu, setToggleSideMenu, user, data, setState }) {
           {user ? (
             <UserProfileMenu />
           ) : (
-            // <SignUp data={data} setState={setState} />
             <Auth data={data} setState={setState} type={'signUp'} />
           )}
         </Box>

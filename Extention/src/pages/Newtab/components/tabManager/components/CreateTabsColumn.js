@@ -15,7 +15,7 @@ function CreateTabsColumn({ setState, data }) {
       id: id,
       title: title ? title : '',
       color: Color,
-      taskIds: Array(),
+      taskIds: Array()
     };
     return newColumn;
   };
@@ -24,16 +24,19 @@ function CreateTabsColumn({ setState, data }) {
     const newColumn = createNewColumn();
 
     const col = {
-      ...newColumn,
+      ...newColumn
     };
+
+    const newColumnOrder = [...data.columnOrder];
+    newColumnOrder.unshift(newColumn.id);
 
     const state = {
       ...data,
       columns: {
         ...data.columns,
-        [newColumn.id]: col,
+        [newColumn.id]: col
       },
-      columnOrder: [newColumn.id, ...data.columnOrder],
+      columnOrder: newColumnOrder
     };
 
     setState(state);

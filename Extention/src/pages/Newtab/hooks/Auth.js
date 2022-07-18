@@ -8,9 +8,15 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState();
   const [profile, setProfile] = useState();
   const [loading, setLoading] = useState(true);
-
-  const { data, setState } = useSetState();
   const session = supabase.auth.session();
+  const {
+    data,
+    setState,
+    unManagedTabs,
+    managedTabs,
+    setManagedTabs,
+    setUnmanagedTabs
+  } = useSetState();
 
   useEffect(() => {
     setUserBackupData(user);
@@ -20,17 +26,25 @@ export function AuthProvider({ children }) {
     setUser(session?.user ?? null);
     getUserProfile(session?.user ?? null);
     setLoading(false);
-    console.log('session', session);
+
     //listen to changes for auth
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (event == 'SIGNED_OUT') console.log('SIGNED_OUT :((((((((', session);
+        if (event == 'SIGNED_OUT') {
+          setUser(null);
+          getUserProfile(null);
+          setLoading(false);
+          console.log('SIGNED_OUT :((((((((', session);
+        }
         if (event == 'TOKEN_REFRESHED') console.log('TOKEN_REFRESHED', session);
-        if (event == 'SIGNED_IN') console.log('SIGNED_IN', session);
-        setUser(session?.user ?? null);
-        getUserProfile(session?.user ?? null);
-
-        setLoading(false);
+        if (event == 'SIGNED_IN') {
+          // console.log('SIGNED_IN', session);
+          getOrCreateProfile(session.user);
+          setUser(session?.user ?? null);
+          getUserProfile(session?.user ?? null);
+          setLoading(false);
+          return;
+        }
       }
     );
 
@@ -38,7 +52,42 @@ export function AuthProvider({ children }) {
     return () => {
       listener?.unsubscribe();
     };
-  }, []);
+  }, [session?.user.id]);
+
+  //check if Loggedin user has userProfile or not if not, create profile
+  const getOrCreateProfile = async (newUser) => {
+    if (newUser) {
+      const { data: userProfile, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', newUser?.id)
+        .single();
+      if (!userProfile || error) {
+        //create userProfile
+        const { data: userProfile, error: insertError } = await supabase
+          .from('users')
+          .insert([
+            {
+              email: newUser.email,
+              id: newUser.id,
+              username: newUser.email.split('@', 1)[0]
+            }
+          ]);
+        if (userProfile) {
+          // console.log('userProfile', userProfile);
+          return;
+        }
+        if (insertError) {
+          throw new Error(insertError.message);
+        }
+      }
+      if (userProfile) {
+        // console.log('userProfile', userProfile);
+        return;
+      }
+    }
+    return;
+  };
 
   //Restore userDataBackup from DB if any
   const setUserBackupData = async (newUser) => {
@@ -51,14 +100,51 @@ export function AuthProvider({ children }) {
         .limit(1)
         .single();
       if (userDataBackup) {
-        const state = userDataBackup.data;
-        console.log('state', state);
+        console.log('userDataBackup', userDataBackup);
+
+        const backupData = userDataBackup.data;
+        modifyData(backupData);
+
+        // Delete the old column-1 from columnOrder Array
+        const newColumnOrder = backupData.columnOrder.filter(
+          (col) => col !== 'column-1'
+        );
+
+        const state = {
+          ...backupData,
+          columnOrder: newColumnOrder
+        };
         setState(state);
       }
       if (error) {
         console.log(error);
       }
     }
+  };
+
+  //! This function modifyData() must be removed when all datas are propery adjusted for all users.
+  const modifyData = (backupData) => {
+    //Turns columns.TaskIds Keys to Urls instead of their ids
+    const columnsClone = Object.assign({}, backupData.columns);
+    Object.values(columnsClone).map((tab) => {
+      const newTabIds = tab.taskIds.reduce((a, x) => {
+        a.push(backupData.tasks[x].url);
+        return a;
+      }, []);
+      tab.taskIds = newTabIds;
+    });
+
+    //Change the Key of all tasks to their urls for more uniqueness
+    const tasksClone = Object.assign({}, backupData.tasks);
+    console.log('tasksClone', tasksClone);
+    Object.keys(tasksClone).map((key) => {
+      if (key === undefined) return;
+      if (tasksClone[key].url === key) return;
+      tasksClone[tasksClone[key].url] = tasksClone[key];
+      delete tasksClone[key];
+    });
+    console.log('tasksClone', tasksClone);
+    backupData.tasks = tasksClone;
   };
 
   //get User's Profile
@@ -80,18 +166,21 @@ export function AuthProvider({ children }) {
 
   //Create signUp,signIn, signOut functions
   const value = {
-    setState,
-    data,
     signUp: async (data) => supabase.auth.signUp(data),
     signIn: async (data) => supabase.auth.signIn(data),
     signOut: () => supabase.auth.signOut(),
     user,
     loading,
     profile,
+    data,
+    setState,
+    unManagedTabs,
+    managedTabs,
+    setManagedTabs,
+    setUnmanagedTabs
   };
 
   //use aprovider to pass down value
-
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

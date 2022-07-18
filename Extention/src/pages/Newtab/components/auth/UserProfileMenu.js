@@ -152,7 +152,7 @@ function UserProfileMenu() {
             <Input
               variant="filled"
               placeholder={"What's your name?"}
-              value={name}
+              value={name ? name : ''}
               type={'text'}
               onChange={(e) => {
                 setName(e.target.value);

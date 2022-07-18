@@ -23,9 +23,6 @@ function SignUp({
   isLoading,
   handleOAuthSignIn,
 }) {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <>
       <Box

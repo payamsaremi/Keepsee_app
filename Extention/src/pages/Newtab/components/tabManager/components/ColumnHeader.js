@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, ScaleFade, Text, useColorModeValue } from '@chakra-ui/react';
 import ColumnSettingsMenu from './ColumnSettingsMenu';
 import MenuPopOver from './MenuPopOver';
@@ -9,25 +9,49 @@ const ColumnHeader = ({
   setState,
   data,
   showSettings,
-  setShowSettings,
+  setShowSettings
 }) => {
   const [color, setColor] = useState(column.color ? column.color : 'gray');
   const [title, setTitle] = useState(column.title);
   const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    setColor(column.color ? column.color : '');
-  }, [column.color]);
 
-  useEffect(() => {
-    setTitle(column.title ? column.title : '');
-  }, [column.title]);
-
+  const [SessionIsOpen, setSessionIsOpen] = useState(false);
   //if its a newly created column set the menu open so user can change title and personalise
   useEffect(() => {
     if (column.title === '') {
       setIsOpen(true);
     }
   }, []);
+
+  useEffect(() => {
+    setSessionIsOpen(JSON.parse(window.localStorage.getItem('SessionIsOpen')));
+  }, []);
+  useEffect(() => {
+    window.localStorage.setItem('SessionIsOpen', JSON.stringify(SessionIsOpen));
+  }, [SessionIsOpen]);
+
+  const launchSession = (tabs) => {
+    tabs.filter((tab) => {
+      const tabUrl = tab.url.split('#')[0]; //removes tags from the end of urls
+      chrome.tabs.query({ url: tabUrl }, (res) => {
+        chrome.tabs.remove(res[0].id); //find if the tabs in session is open close it
+      });
+      chrome.tabs.create({ url: tabUrl, active: false }, (newTabs) => {
+        //open all tabs requested from session(space)
+      });
+    });
+    setSessionIsOpen(true);
+  };
+  const closeSession = (tabs) => {
+    tabs.filter((tab) => {
+      const tabUrl = tab.url.split('#')[0]; //removes tags from the end of urls
+      chrome.tabs.query({ url: tabUrl }, (res) => {
+        chrome.tabs.remove(res[0].id); //find if the tabs in session is open close it
+      });
+    });
+    setSessionIsOpen(false);
+  };
+
   return (
     <>
       <Box
@@ -96,6 +120,11 @@ const ColumnHeader = ({
               display={'flex'}
               justifyContent={'center'}
               alignItems={'center'}
+              onClick={
+                SessionIsOpen
+                  ? () => closeSession(tasks)
+                  : () => launchSession(tasks)
+              }
               rounded={'lg'}
               cursor={'pointer'}
               transition={'all'}
@@ -103,7 +132,7 @@ const ColumnHeader = ({
               _hover={{
                 transform: 'scale(1.2)',
                 bgColor: useColorModeValue(`${color}.300`, `${color}.600`),
-                color: useColorModeValue(`${color}.50`, `${color}.200`),
+                color: useColorModeValue(`${color}.50`, `${color}.200`)
               }}
               color={`${color}.500`}
               p={'3'}

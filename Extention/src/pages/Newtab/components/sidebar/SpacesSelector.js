@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, IconButton, Text, useColorModeValue } from '@chakra-ui/react';
 
-import AddToSpaceModal from './AddToSpaceModal';
+import CreateColumnButton from './CreateColumnButton';
 function SpacesSelector({ setState, data, setToggleSideMenu }) {
   const [toggleSpaces, setToggleSpaces] = useState(true);
   return (
@@ -70,7 +70,7 @@ function SpacesSelector({ setState, data, setToggleSideMenu }) {
               </Text>
             </Box>
             <Box onClick={() => setToggleSideMenu(false)}>
-              <AddToSpaceModal setState={setState} data={data} />
+              <CreateColumnButton setState={setState} data={data} />
             </Box>
           </Box>
         </Box>

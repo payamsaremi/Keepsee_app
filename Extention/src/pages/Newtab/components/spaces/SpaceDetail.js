@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Text } from '@chakra-ui/react';
 import ColumnInDetail from '../tabManager/components/ColumnInDetail';
-import useSetState from '../../hooks/useSetState';
-import SnippetManager from '../snippetManager';
 import useQueryFromSupabase from '../../hooks/useQueryFromSupabase';
 import { useLocation } from 'react-router-dom';
 function SpaceDetail({ data, setState }) {

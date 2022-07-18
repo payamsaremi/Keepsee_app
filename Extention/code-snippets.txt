@@ -31,3 +31,73 @@
 // </Box>
       // const latestDate = Math.max(...userDataBackup.map((e) => e.id));
       // const latestBackup = userDataBackup.filter((e) => e.id === latestDate);
+
+
+
+
+
+   //Make the initial open tabs list
+        const currentOpenTabs = initialOpenTabs.reduce((o, x) => {
+          const isManagedTab = backupData.managedTabs.some((el) => el === x.id);
+          if (isManagedTab === false) {
+            //if it returned undefined then it doesnt exist so can be added to the list of tabs
+            o[x.id] = x;
+          }
+          return o;
+        }, {});
+        const currentTaskIds = initialOpenTabs.reduce((o, x) => {
+          const isManagedTab = backupData.managedTabs.some((el) => el === x.id);
+          if (isManagedTab === false) {
+            //if it returned undefined then it doesnt exist so can be added to the list of tabs
+            o.push(x.id);
+          }
+          return o;
+        }, []);
+
+        console.log('currentOpenTabs', currentOpenTabs);
+        console.log('currentTaskIds', currentTaskIds);
+        console.log('backupData.tasks', backupData.tasks);
+        const state = {
+          ...backupData,
+          columns: {
+            ...backupData.columns,
+            ['column-1']: {
+              ...data.columns['column-1'],
+              taskIds: currentTaskIds,
+            },
+          },
+          tasks: { ...currentOpenTabs, ...backupData.tasks },
+        };
+        setState(state);
+
+
+
+
+  // const getHistory = (tasks) => {
+  //   chrome.history.search(
+  //     { text: '', startTime: 0, maxResults: 0 },
+  //     (items) => {
+  //       const domainsArray = [];
+
+  //       const ItemsArray = items.sort((a, b) => a.visitCount - b.visitCount);
+  //       ItemsArray.forEach((item) => {
+  //         if (item.visitCount > 500) {
+  //           domainsArray.push(item.url.split('/')[2]);
+  //         }
+  //         if (item.url.split('/')[2] === 'docs.google.com') {
+  //           console.log(item.visitCount, item.url);
+  //         }
+  //       });
+  //       console.log(domainsArray);
+  //     }
+  //   );
+  //   // chrome.pageCapture.saveAsMHTML({ tabId: 2146 }, (ArrayBuffer) => {
+  //   //   const aBlob = new Blob([ArrayBuffer], { type: 'text/plain' });
+
+  //   //   const link = document.createElement('a');
+  //   //   link.href = window.URL.createObjectURL(aBlob);
+  //   //   link.download = 'aaa.mhtml';
+  //   //   link.click();
+  //   //   window.URL.revokeObjectURL(link.href);
+  //   // });
+  // };

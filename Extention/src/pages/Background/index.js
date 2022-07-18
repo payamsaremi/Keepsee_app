@@ -4,8 +4,13 @@ console.log('Put the background scripts here.');
 // Onboarding Page
 chrome.runtime.onInstalled.addListener((reason) => {
   if (reason.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    // chrome.windows.create({ url: 'Onboarding.html' }, (window) => {
+    //   console.log(window);
+    // });
     chrome.tabs.create({
       url: 'Onboarding.html',
+      // windowId: window.id,
+      // pinned: true,
     });
   }
 });
@@ -68,14 +73,14 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   }
 });
 
-chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-  if (req.message === 'removeTab') {
-    chrome.tabs.remove(req.tabId, (tab) => {
-      console.log('removed tab ===>', tab);
-    });
-    return true;
-  }
-});
+// chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+//   if (req.message === 'removeTab') {
+//     chrome.tabs.remove(req.tabId, (tab) => {
+//       console.log('removed tab ===>', tab);
+//     });
+//     return true;
+//   }
+// });
 
 //? Toggle Workspace (Open tabs, Close Tabs within a column or group)
 chrome.runtime.onMessage.addListener((req) => {

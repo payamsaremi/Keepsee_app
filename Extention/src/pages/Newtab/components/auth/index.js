@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Text,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-} from '@chakra-ui/react';
 import SignUp from './SignUp';
 import BasicModal from '../modal/BasicModal';
 import SignIn from './SignIn';
 import { useToast } from '@chakra-ui/react';
 import { useAuth } from '../../hooks/Auth';
 import { supabase } from '../../../../supabaseClient';
-
 function Auth({ data, setState }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +27,7 @@ function Auth({ data, setState }) {
       duration: 5000,
       isClosable: true,
       variant: 'solid',
-      position: 'top',
+      position: 'top'
     });
   };
 
@@ -44,8 +35,9 @@ function Auth({ data, setState }) {
     setIsLoading(true);
     const { user: newUser, error } = await signUp({
       email: email,
-      password: password,
+      password: password
     });
+
     //check if user alredy exist
     const { data: userWithEmail } = await supabase
       .from('users')
@@ -58,28 +50,29 @@ function Auth({ data, setState }) {
       signInUser();
       setIsLoading(false);
     }
-    if (error) {
-      if (userWithEmail) {
-        return;
-      }
-      toaster(error.message, '', 'error');
-      setIsLoading(false);
-      throw new Error(error.message);
-    }
     if (newUser) {
       //Create a userProfile when an auth user is created.
+
       const { data: userProfile, error: insertError } = await supabase
         .from('users')
         .insert([
           {
             email: newUser.email,
-            id: newUser.id,
-          },
+            id: newUser.id
+          }
         ]);
       if (insertError) {
         console.log(insertError.message);
-        throw new Error(insertError);
       }
+      if (error) {
+        if (userWithEmail) {
+          return;
+        }
+        toaster(error.message, '', 'error');
+        setIsLoading(false);
+        throw new Error(error.message);
+      }
+
       console.log('userProfile', userProfile);
       //make a backup of current localState
       console.log('Making an image of current state of localStorage');
@@ -95,30 +88,37 @@ function Auth({ data, setState }) {
         return userDataBackup;
       };
       makeDataBackup(data, newUser);
+
+      toaster('🎉 You have registered succesfully!', `${email}`, 'success');
+      setEmail('');
+      setPassword('');
+      setIsOpen(false);
     }
-
-    toaster('🎉 You have registered succesfully!', `${email}`, 'success');
-
+    if (error) {
+      toaster(error.message, `${email}`, 'error');
+      setIsLoading(false);
+    }
     setIsLoading(false);
-    setIsOpen(false);
-    setEmail('');
-    setPassword('');
   };
 
   const signInUser = async () => {
     setIsLoading(true);
-    const { user: newUser, error } = await signIn({
+    const {
+      user: newUser,
+      session,
+      error
+    } = await signIn({
       email: email,
-      password: password,
+      password: password
     });
     if (newUser) {
+      console.log('newUser', newUser);
+      console.log('session', session);
       toaster('You have logged in successfully.', '', 'success');
       setEmail('');
       setPassword('');
-      //   setToggleSideMenu(false);
       setIsOpen(false);
       setIsLoading(false);
-      return;
     }
     if (error) {
       toaster(error.message, '', 'error');
@@ -166,7 +166,6 @@ function Auth({ data, setState }) {
           password={password}
           handleOAuthSignIn={handleOAuthSignIn}
         />
-        {/* <SignIn data={data} setState={setState} /> */}
       </BasicModal>
     </>
   );

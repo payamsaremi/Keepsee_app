@@ -15,7 +15,7 @@ function ColumnInDetail({
   data,
   tasks,
   index,
-  removeColumn,
+  removeColumn
 }) {
   const bgColor = column.color ? `${column.color}.300` : 'white';
 
@@ -41,7 +41,7 @@ function ColumnInDetail({
       message: 'openWorkspace',
       tabIds: tabIds,
       tab: tabsUrls,
-      tabs: tabs,
+      tabs: tabs
     });
     openTab.then((res) => {
       console.log(res);
@@ -90,7 +90,7 @@ function ColumnInDetail({
                   justifyContent={'center'}
                   my={'5'}
                 >
-                  {tasks.length === 0 && column.id !== 'column-1' && (
+                  {tasks.length === 0 && (
                     <Button
                       onClick={() => removeColumn(column.id)}
                       variant={'solid'}

@@ -3,6 +3,8 @@ import { supabase } from '../../../supabaseClient';
 function useBackupData(user, data) {
   if (user) {
     return () => {
+      // delete data.columns['column-1'];
+
       const backedUpData = makeDataBackup(data, user);
       console.log('did a backup.', backedUpData);
     };

@@ -11,6 +11,7 @@ const config = {
 const customColors = {
   colors: {
     // gray: {
+    //   10: '#f8fafc',
     //   50: '#F2F2F2',
     //   100: '#DCDCDB',
     //   200: '#C5C5C3',
@@ -23,6 +24,8 @@ const customColors = {
     //   900: '#1A1A19',
     // },
     gray: {
+      10: '#f8fafc',
+      // 50: '#f8fafc',
       50: '#F2F2F3',
       100: '#D9DADD',
       200: '#C1C3C8',

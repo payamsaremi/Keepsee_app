@@ -1,56 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Text,
   Image,
   Fade,
   useColorModeValue,
-  IconButton,
+  IconButton
 } from '@chakra-ui/react';
 import { Draggable } from 'react-beautiful-dnd';
 import BasicPopOver from './BasicPopOver';
 import { BiTrash, BiDotsVerticalRounded, BiNote } from 'react-icons/bi';
 function Task({ task, index, setState, data, column }) {
   const [mouseOver, setMouseOver] = useState();
-  const taskStringId = '' + task.id;
   const IconColor = useColorModeValue('gray.500', 'gray.200');
 
-  // const newTasks = data.tasks;
-  // console.log(newTasks);
   const openTab = (task) => {
-    chrome.runtime.sendMessage({
-      message: 'openTab',
-      url: task.url,
+    chrome.tabs.create({ url: task.url, active: false }, (t) => {
+      console.log(t);
     });
     console.log('tab opener', task);
   };
   const removeTab = (task) => {
+    console.log('gonna remove this', task);
     chrome.runtime.sendMessage({
       message: 'removeTab',
       url: task.url,
-      tabId: task.id,
+      tabId: task.id
     });
     //Remove the task from its column taskIds
     const colIds = Array.from(data.columnOrder);
     const columns = data.columns;
-    console.log(columns);
     colIds.forEach((colId) => {
       const taskIds = columns[colId].taskIds;
       taskIds.forEach((taskId) => {
-        if (taskId == task.id) {
+        if (taskId === task.url) {
           const index = columns[colId].taskIds.indexOf(taskId);
           columns[colId].taskIds.splice(index, 1);
+          // also remove it from tasks
+          const tasks = data.tasks;
+          delete tasks[task.url];
+          //update the state
+          const state = {
+            ...data,
+            columns,
+            tasks: tasks
+          };
+          setState(state);
+          return;
         }
       });
     });
-    const state = {
-      ...data,
-      columns,
-    };
-    setState(state);
   };
   return (
-    <Draggable draggableId={taskStringId} index={index}>
+    <Draggable draggableId={task.url} index={index}>
       {(provided, snapshot) => (
         <>
           <Box
@@ -60,7 +62,7 @@ function Task({ task, index, setState, data, column }) {
             p={2}
             m={1}
             rounded={'xl'}
-            bgColor={useColorModeValue('white', 'gray.900')}
+            bgColor={useColorModeValue('gray.10', 'gray.900')}
             color={useColorModeValue('gray.500', 'gray.400')}
             cursor={'pointer'}
             border="1px"

@@ -39,11 +39,7 @@ function EmojiPopOver({ setEmoji, emoji, isEmojiOpen, setIsEmojiOpen }) {
           isOpen={isEmojiOpen}
           setIsOpen={setIsEmojiOpen}
         >
-          <EmojiPicker
-            size={'16'}
-            showPreview={false}
-            onEmojiSelect={setEmoji}
-          />
+          <EmojiPicker size={'16'} onEmojiSelect={setEmoji} />
         </MenuPopOver>
       </Box>
     </>

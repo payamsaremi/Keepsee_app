@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { Box, IconButton, Text, useColorModeValue } from '@chakra-ui/react';
+import FocusLock from 'react-focus-lock';
 import {
   Popover,
   PopoverTrigger,
@@ -37,23 +38,25 @@ function MenuPopOver({
           </Text>
         </PopoverTrigger>
         <PopoverContent
-          _focus={{ boxShadow: 'xl', outline: '0' }}
+          // _focus={{ boxShadow: 'xl', outline: '0' }}
           outline={'none'}
           boxShadow="xl"
           w={'full'}
           rounded={'2xl'}
           bg={useColorModeValue('white', `gray.700`)}
         >
-          <PopoverArrow bg={useColorModeValue('white', `gray.700`)} />
-          <PopoverBody>
-            <Box
-              display={'flex'}
-              justifyContent={'center'}
-              alignItems={'center'}
-            >
-              {children}
-            </Box>
-          </PopoverBody>
+          <FocusLock returnFocus persistentFocus={false}>
+            <PopoverArrow bg={useColorModeValue('white', `gray.700`)} />
+            <PopoverBody>
+              <Box
+                display={'flex'}
+                justifyContent={'center'}
+                alignItems={'center'}
+              >
+                {children}
+              </Box>
+            </PopoverBody>
+          </FocusLock>
         </PopoverContent>
       </Popover>
     </>

@@ -10,8 +10,8 @@ const prepairForBackUp = (data, setState, user, getBackup) => {
         ...data,
         backUpCount: {
           count: 0,
-          lastBackupOn: date,
-        },
+          lastBackupOn: date
+        }
       };
       setState(state);
     }
@@ -23,8 +23,8 @@ const prepairForBackUp = (data, setState, user, getBackup) => {
           ...data,
           backUpCount: {
             ...data.backUpCount,
-            lastBackupOn: 0,
-          },
+            lastBackupOn: 0
+          }
         };
         setState(state);
       }
@@ -37,15 +37,15 @@ const prepairForBackUp = (data, setState, user, getBackup) => {
           backUpCount: {
             ...data.backUpCount,
             lastBackupOn: date,
-            count: currentCount,
-          },
+            count: currentCount
+          }
         };
         console.log('Made a back up!', now);
         setState(state);
         getBackup();
         return state;
       } else {
-        console.log('today is still the same day', now);
+        // console.log('today is still the same day', now);
       }
     }
   }

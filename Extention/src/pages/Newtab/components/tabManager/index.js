@@ -6,7 +6,9 @@ import DropCatcher from './components/DropCatcher';
 import { cuteScrollbar } from '../../../../../utils/cuteScrollbar';
 import UnmanagedTabsColumn from './components/UnmanagedTabsColumn';
 import CreateTabsColumn from './components/CreateTabsColumn';
-function TabManager({ showCatcher, data, setState }) {
+import { useAuth } from '../../hooks/Auth';
+function TabManager({ showCatcher }) {
+  const { user, data, setState, unManagedTabs, managedTabs } = useAuth();
   const removeColumn = (id) => {
     const newColumnOrder = Array.from(data.columnOrder);
     const columnIndex = newColumnOrder.indexOf(id);
@@ -17,7 +19,7 @@ function TabManager({ showCatcher, data, setState }) {
     const state = {
       ...data,
       columns: newColumns,
-      columnOrder: newColumnOrder,
+      columnOrder: newColumnOrder
     };
     setState(state);
   };
@@ -42,21 +44,20 @@ function TabManager({ showCatcher, data, setState }) {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <UnmanagedTabsColumn />
+            <UnmanagedTabsColumn
+              data={data}
+              setState={setState}
+              unManagedTabs={unManagedTabs}
+            />
             <Box display={'flex'} justifyContent={'center'} my={'12'} ml={'5'}>
               <CreateTabsColumn setState={setState} data={data} />
             </Box>
             {data.columnOrder.map((columnId, index) => {
               const column = data.columns[columnId];
-              const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-              if (column.id === 'column-1') {
-                return;
-              }
               return (
                 <Column
                   key={column.id}
                   column={column}
-                  tasks={tasks}
                   index={index}
                   removeColumn={removeColumn}
                   setState={setState}

@@ -1,13 +1,21 @@
-import { useState } from 'react';
-import useSetState from './useSetState';
+import { useEffect, useState } from 'react';
+import { useAuth } from './Auth';
 
-export default function useDraDrop(data, setState) {
+export default function useDraDrop() {
+  const {
+    data,
+    setState,
+    unManagedTabs,
+    managedTabs,
+    setManagedTabs,
+    setUnmanagedTabs
+  } = useAuth();
   const [showCatcher, setShowCatcher] = useState(false);
 
-  const removeTabFromChrome = (tabId) => {
-    console.log(`Remove ${tabId} from chrome tabs`);
+  const removeTabFromChrome = (tab) => {
+    console.log(`Remove ${tab} from chrome tabs`);
     chrome.runtime.sendMessage(
-      { tabId: tabId, message: 'removeTab' },
+      { tabId: tab.id, message: 'removeTab' },
       function (res) {
         console.log(res.message);
       }
@@ -20,7 +28,7 @@ export default function useDraDrop(data, setState) {
       id: id,
       title: '',
       color: 'cyan',
-      taskIds: Array(),
+      taskIds: Array()
     };
     return newColumn;
   };
@@ -46,15 +54,130 @@ export default function useDraDrop(data, setState) {
 
       const state = {
         ...data,
-        columnOrder: newColumnOrder,
+        columnOrder: newColumnOrder
       };
       setState(state);
       return;
     }
 
-    const start = data.columns[source.droppableId];
-    const finish = data.columns[destination.droppableId];
+    let start = data.columns[source.droppableId];
+    let finish = data.columns[destination.droppableId];
 
+    if (
+      destination.droppableId === 'catcher' &&
+      source.droppableId === 'unManagedColumn'
+    ) {
+      const newColumn = createNewColumn();
+      finish = newColumn;
+      const unManagedtabsClone = Array.from(unManagedTabs);
+      const managedTabsClone = Array.from(managedTabs);
+
+      unManagedtabsClone.forEach((el, index) => {
+        const TabId = el.url;
+        if (TabId === draggableId) {
+          unManagedtabsClone.splice(index, 1); //remove from array
+          managedTabsClone.push(TabId); //add to array
+          setManagedTabs(managedTabsClone);
+          setUnmanagedTabs(unManagedtabsClone);
+          removeTabFromChrome(el);
+
+          const newFinish = {
+            ...finish,
+            taskIds: [TabId]
+          };
+
+          const state = {
+            ...data,
+            columnOrder: [...data.columnOrder, finish.id],
+            columns: {
+              ...data.columns,
+              [newFinish.id]: newFinish
+            },
+            tasks: {
+              ...data.tasks,
+              [TabId]: el
+            }
+          };
+          setState(state);
+        }
+      });
+      return;
+    }
+
+    if (destination.droppableId === 'catcher') {
+      const newColumn = createNewColumn();
+      finish = newColumn;
+
+      const startTaskIds = Array.from(start.taskIds);
+
+      startTaskIds.forEach((el, index) => {
+        const TabId = el;
+        if (TabId === draggableId) {
+          startTaskIds.splice(index, 1); //remove from array
+
+          const newStart = {
+            ...start,
+            taskIds: startTaskIds
+          };
+          const newFinish = {
+            ...finish,
+            taskIds: [TabId]
+          };
+          const state = {
+            ...data,
+            columnOrder: [...data.columnOrder, finish.id],
+            columns: {
+              ...data.columns,
+              [newStart.id]: newStart,
+              [newFinish.id]: newFinish
+            },
+            tasks: {
+              ...data.tasks,
+              [TabId]: data.tasks[el]
+            }
+          };
+          setState(state);
+        }
+      });
+      return;
+    }
+
+    if (source.droppableId === 'unManagedColumn') {
+      const unManagedtabsClone = Array.from(unManagedTabs);
+      const managedTabsClone = Array.from(managedTabs);
+
+      unManagedtabsClone.forEach((el, index) => {
+        const TabId = el.url;
+        if (TabId === draggableId) {
+          unManagedtabsClone.splice(index, 1); //remove from array
+          managedTabsClone.push(TabId); //add to array
+          setManagedTabs(managedTabsClone);
+          setUnmanagedTabs(unManagedtabsClone);
+          const finishTaskIds = Array.from(data.columns[finish.id].taskIds);
+
+          const newFinish = {
+            ...finish,
+            taskIds: [...finishTaskIds, TabId]
+          };
+          const state = {
+            ...data,
+            columns: {
+              ...data.columns,
+              [newFinish.id]: newFinish
+            },
+            tasks: {
+              ...data.tasks,
+              [TabId]: el
+            }
+          };
+          setState(state);
+          removeTabFromChrome(el);
+        }
+      });
+      return;
+    }
+
+    // If user is sorting the tasks inside same column
     if (start === finish) {
       const newTaskIds = Array.from(start.taskIds);
       newTaskIds.splice(source.index, 1);
@@ -62,52 +185,16 @@ export default function useDraDrop(data, setState) {
 
       const newColumn = {
         ...start,
-        taskIds: newTaskIds,
+        taskIds: newTaskIds
       };
 
       const state = {
         ...data,
         columns: {
           ...data.columns,
-          [newColumn.id]: newColumn,
-        },
+          [newColumn.id]: newColumn
+        }
       };
-      setState(state);
-      return;
-    }
-
-    //Remove the tab from chrome tabs
-    if (source.droppableId === 'column-1') {
-      removeTabFromChrome(draggableId);
-    }
-
-    //Creating a new column with task drop and adding that task to the column
-    if (type === 'tasks' && destination.droppableId === 'catcher') {
-      // destination.droppableId //catcher
-      const newColumn = createNewColumn();
-      const startTaskIds = Array.from(start.taskIds);
-      startTaskIds.splice(source.index, 1);
-      const newStart = {
-        ...start,
-        taskIds: startTaskIds,
-      };
-      const newColumnTaskIds = Array.from(newColumn.taskIds);
-      newColumnTaskIds.splice(destination.index, 0, draggableId);
-      const newFinish = {
-        ...newColumn,
-        taskIds: newColumnTaskIds,
-      };
-
-      const state = {
-        ...data,
-        columns: {
-          ...data.columns,
-          [newStart.id]: newStart,
-          [newFinish.id]: newFinish,
-        },
-        columnOrder: [...data.columnOrder, newFinish.id],
-      };
-
       setState(state);
       return;
     }
@@ -117,22 +204,22 @@ export default function useDraDrop(data, setState) {
     startTaskIds.splice(source.index, 1);
     const newStart = {
       ...start,
-      taskIds: startTaskIds,
+      taskIds: startTaskIds
     };
 
     const finishTaskIds = Array.from(finish.taskIds);
     finishTaskIds.splice(destination.index, 0, draggableId);
     const newFinish = {
       ...finish,
-      taskIds: finishTaskIds,
+      taskIds: finishTaskIds
     };
     const state = {
       ...data,
       columns: {
         ...data.columns,
         [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
-      },
+        [newFinish.id]: newFinish
+      }
     };
     setState(state);
     return;
