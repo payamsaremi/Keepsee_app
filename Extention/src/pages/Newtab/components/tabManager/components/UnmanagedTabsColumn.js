@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Task from './Task';
 import { Box, useColorModeValue, Text, Button } from '@chakra-ui/react';
 import { Droppable } from 'react-beautiful-dnd';
-import BasicIconButton from '../../utils/BasicIconButton';
 import { cuteScrollbar } from '../../../../../../utils/cuteScrollbar';
-
+import useColumn from '../../../hooks/useColumn';
+import formattedDate from '../../utils/getFormattedDate';
 function UnmanagedTabsColumn({ data, setState, unManagedTabs }) {
+  const { create } = useColumn(setState, data);
   const taskIds = Array();
   for (const item in unManagedTabs) {
     taskIds.push(item);
@@ -14,25 +15,20 @@ function UnmanagedTabsColumn({ data, setState, unManagedTabs }) {
     return unManagedTabs[taskId];
   });
 
-  const getAllTabs = () => {
-    console.log(unManagedTabs);
-  };
-
   const [isHidden, setIsHidden] = useState(true);
   useEffect(() => {
     setIsHidden(tasks.length === 0 ? true : false);
   }, [unManagedTabs]);
 
+  const createColumnByTabs = () => {
+    const title = formattedDate();
+    create(title, tasks);
+  };
   // const isHidden = false;
   const bgColor = 'white';
   const column = { id: 'unManagedColumn', title: 'Unmanaged tabs' };
   return (
     <Box display={'flex'} flexDir={'row'}>
-      {/* <BasicIconButton
-        onClick={() => setIsHidden(!isHidden)}
-        notification={tasks.length > 0 ? tasks.length : false}
-        icon={<BiTab size={'18'} />}
-      /> */}
       <Box display={isHidden ? 'none' : 'block'} left={'12'} top={'16'}>
         <Box
           display={'flex'}
@@ -70,6 +66,20 @@ function UnmanagedTabsColumn({ data, setState, unManagedTabs }) {
                     >
                       Unmanaged tabs
                     </Text>
+                  </Box>
+                  <Box
+                    px={'2'}
+                    py={'2'}
+                    display={'flex'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                  >
+                    <Button
+                      onClick={() => createColumnByTabs()}
+                      fontSize={'sm'}
+                    >
+                      Create new session from {tasks.length} open tabs
+                    </Button>
                   </Box>
                   <Box>
                     {/* {JSON.stringify(tasks)} */}

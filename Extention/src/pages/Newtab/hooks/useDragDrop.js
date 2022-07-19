@@ -64,8 +64,8 @@ export default function useDraDrop() {
     let finish = data.columns[destination.droppableId];
 
     if (
-      destination.droppableId === 'catcher' &&
-      source.droppableId === 'unManagedColumn'
+      source.droppableId === 'unManagedColumn' &&
+      destination.droppableId === 'catcher'
     ) {
       const newColumn = createNewColumn();
       finish = newColumn;

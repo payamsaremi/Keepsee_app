@@ -43,10 +43,6 @@ function Newtab() {
         boxShadow={'inner'}
         bg={useColorModeValue('gray.50', 'gray.900')}
         overflow={'hidden'}
-        // bgGradient={useColorModeValue(
-        //   'linear(to-r, green.50, blue.100, cyan.50)',
-        //   'linear(to-t, gray.800, gray.900, gray.800)'
-        // )}
       >
         <Box
           display={'flex'}
@@ -59,12 +55,11 @@ function Newtab() {
               toggleSideMenu={toggleSideMenu}
               setToggleSideMenu={setToggleSideMenu}
               user={user}
-              // SignUp={SignUp}
               data={data}
               setState={setState}
             />
           </Box>
-          {/* <Box
+          <Box
             h={'100%'}
             display={'flex'}
             flexDir={'column'}
@@ -99,8 +94,8 @@ function Newtab() {
                 </Box>
               </Box>
             </Box>
-          </Box> */}
-          {/* <Box
+          </Box>
+          <Box
             display={'flex'}
             justifyContent={'center'}
             alignItems={'center'}
@@ -110,7 +105,7 @@ function Newtab() {
               onClick={() => console.log('clicky')}
               icon={<BiCog size="18" />}
             />
-          </Box> */}
+          </Box>
         </Box>
         <Box>
           <Sidebar
