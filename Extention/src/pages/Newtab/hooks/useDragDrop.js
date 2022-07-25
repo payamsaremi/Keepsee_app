@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuth } from './Auth';
 
-export default function useDraDrop() {
+export default function useDragDrop(spaceId) {
+  const [showCatcher, setShowCatcher] = useState(false);
   const {
     data,
     setState,
@@ -10,7 +11,6 @@ export default function useDraDrop() {
     setManagedTabs,
     setUnmanagedTabs
   } = useAuth();
-  const [showCatcher, setShowCatcher] = useState(false);
 
   const removeTabFromChrome = (tab) => {
     console.log(`Remove ${tab} from chrome tabs`);
@@ -22,6 +22,7 @@ export default function useDraDrop() {
     );
   };
 
+  //TODO Use the useColumn hook instead to create this
   const createNewColumn = () => {
     const id = 'column-' + Math.floor(Math.random() * 10000); //TODO:make  this better
     const newColumn = {
@@ -32,6 +33,8 @@ export default function useDraDrop() {
     };
     return newColumn;
   };
+
+  const spaceData = data.spaces[spaceId];
 
   const onDragEnd = (result) => {
     setShowCatcher(false);
@@ -48,25 +51,33 @@ export default function useDraDrop() {
     }
 
     if (type === 'column') {
-      const newColumnOrder = Array.from(data.columnOrder);
+      const newColumnOrder = Array.from(spaceData.columnOrder);
       newColumnOrder.splice(source.index, 1);
       newColumnOrder.splice(destination.index, 0, draggableId);
 
       const state = {
         ...data,
-        columnOrder: newColumnOrder
+        spaces: {
+          ...data.spaces,
+          [spaceData.id]: {
+            ...spaceData,
+            columnOrder: newColumnOrder
+          }
+        }
       };
+      console.log(state);
       setState(state);
       return;
     }
 
-    let start = data.columns[source.droppableId];
-    let finish = data.columns[destination.droppableId];
+    let start = spaceData.columns[source.droppableId];
+    let finish = spaceData.columns[destination.droppableId];
 
     if (
       source.droppableId === 'unManagedColumn' &&
       destination.droppableId === 'catcher'
     ) {
+      console.log('source UnmanageTabs ===> catcher');
       const newColumn = createNewColumn();
       finish = newColumn;
       const unManagedtabsClone = Array.from(unManagedTabs);
@@ -88,14 +99,20 @@ export default function useDraDrop() {
 
           const state = {
             ...data,
-            columnOrder: [...data.columnOrder, finish.id],
-            columns: {
-              ...data.columns,
-              [newFinish.id]: newFinish
-            },
-            tasks: {
-              ...data.tasks,
-              [TabId]: el
+            spaces: {
+              ...data.spaces,
+              [spaceData.id]: {
+                ...spaceData,
+                columnOrder: [...spaceData.columnOrder, finish.id],
+                columns: {
+                  ...spaceData.columns,
+                  [newFinish.id]: newFinish
+                },
+                tasks: {
+                  ...spaceData.tasks,
+                  [TabId]: el
+                }
+              }
             }
           };
           setState(state);
@@ -125,15 +142,21 @@ export default function useDraDrop() {
           };
           const state = {
             ...data,
-            columnOrder: [...data.columnOrder, finish.id],
-            columns: {
-              ...data.columns,
-              [newStart.id]: newStart,
-              [newFinish.id]: newFinish
-            },
-            tasks: {
-              ...data.tasks,
-              [TabId]: data.tasks[el]
+            spaces: {
+              ...data.spaces,
+              [spaceData.id]: {
+                ...spaceData,
+                columnOrder: [...spaceData.columnOrder, finish.id],
+                columns: {
+                  ...spaceData.columns,
+                  [newStart.id]: newStart,
+                  [newFinish.id]: newFinish
+                },
+                tasks: {
+                  ...spaceData.tasks,
+                  [TabId]: spaceData.tasks[el]
+                }
+              }
             }
           };
           setState(state);
@@ -143,6 +166,7 @@ export default function useDraDrop() {
     }
 
     if (source.droppableId === 'unManagedColumn') {
+      console.log('source is unManagedcolumn');
       const unManagedtabsClone = Array.from(unManagedTabs);
       const managedTabsClone = Array.from(managedTabs);
 
@@ -153,7 +177,9 @@ export default function useDraDrop() {
           managedTabsClone.push(TabId); //add to array
           setManagedTabs(managedTabsClone);
           setUnmanagedTabs(unManagedtabsClone);
-          const finishTaskIds = Array.from(data.columns[finish.id].taskIds);
+          const finishTaskIds = Array.from(
+            spaceData.columns[finish.id].taskIds
+          );
 
           const newFinish = {
             ...finish,
@@ -161,13 +187,19 @@ export default function useDraDrop() {
           };
           const state = {
             ...data,
-            columns: {
-              ...data.columns,
-              [newFinish.id]: newFinish
-            },
-            tasks: {
-              ...data.tasks,
-              [TabId]: el
+            spaces: {
+              ...data.spaces,
+              [spaceData.id]: {
+                ...spaceData,
+                columns: {
+                  ...spaceData.columns,
+                  [newFinish.id]: newFinish
+                },
+                tasks: {
+                  ...spaceData.tasks,
+                  [TabId]: el
+                }
+              }
             }
           };
           setState(state);
@@ -190,9 +222,15 @@ export default function useDraDrop() {
 
       const state = {
         ...data,
-        columns: {
-          ...data.columns,
-          [newColumn.id]: newColumn
+        spaces: {
+          ...data.spaces,
+          [spaceData.id]: {
+            ...spaceData,
+            columns: {
+              ...spaceData.columns,
+              [newColumn.id]: newColumn
+            }
+          }
         }
       };
       setState(state);
@@ -215,10 +253,16 @@ export default function useDraDrop() {
     };
     const state = {
       ...data,
-      columns: {
-        ...data.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish
+      spaces: {
+        ...data.spaces,
+        [spaceData.id]: {
+          ...spaceData,
+          columns: {
+            ...spaceData.columns,
+            [newStart.id]: newStart,
+            [newFinish.id]: newFinish
+          }
+        }
       }
     };
     setState(state);

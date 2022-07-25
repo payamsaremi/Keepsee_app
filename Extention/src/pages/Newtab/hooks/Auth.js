@@ -2,12 +2,14 @@ import React, { useContext, createContext, useState, useEffect } from 'react';
 
 import { supabase } from '../../../supabaseClient';
 import useSetState from './useSetState';
+import { v4 as uuidv4 } from 'uuid';
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState();
   const [profile, setProfile] = useState();
   const [loading, setLoading] = useState(true);
+  const [spaceData, setSpaceData] = useState();
   const session = supabase.auth.session();
   const {
     data,
@@ -105,16 +107,28 @@ export function AuthProvider({ children }) {
         const backupData = userDataBackup.data;
         modifyData(backupData);
 
-        // Delete the old column-1 from columnOrder Array
-        const newColumnOrder = backupData.columnOrder.filter(
-          (col) => col !== 'column-1'
-        );
+        //Change the shape of data into spaces
+        console.log('backupData.spaces', backupData.spaces);
+        if (backupData.spaces) {
+          //! if its already with spaces dont do any modification on data
+          const state = { ...backupData };
+          setState(state);
+          return;
+        }
 
-        const state = {
-          ...backupData,
-          columnOrder: newColumnOrder
+        const id = 'space-' + uuidv4();
+        const newState = {
+          backupData: backupData.backUpCount,
+          spaces: {
+            [id]: {
+              id: id,
+              title: 'Untitled',
+              ...backupData
+            }
+          }
         };
-        setState(state);
+        setState(newState);
+        console.log(newState, 'newState');
       }
       if (error) {
         console.log(error);

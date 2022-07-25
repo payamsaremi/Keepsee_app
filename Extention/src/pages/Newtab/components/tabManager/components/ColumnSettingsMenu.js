@@ -5,7 +5,7 @@ import {
   Input,
   Box,
   Button,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
 import ColorPicker from '../../utils/ColorPicker';
 import EmojiPopOver from '../../utils/EmojiPopOver';
@@ -20,6 +20,7 @@ function ColumnSettingsMenu({
   color,
   title,
   setTitle,
+  spaceData
 }) {
   const [emoji, setEmoji] = useState(column?.emoji ? column.emoji : '');
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
@@ -27,18 +28,25 @@ function ColumnSettingsMenu({
     setEmoji(value);
     setIsEmojiOpen(false);
   };
+
   const dataSetter = (column) => {
     const state = {
       ...data,
-      columns: {
-        ...data.columns,
-        [column.id]: {
-          ...data.columns[column.id],
-          title: title,
-          color: color,
-          emoji: emoji,
-        },
-      },
+      spaces: {
+        ...data.spaces,
+        [spaceData.id]: {
+          ...spaceData,
+          columns: {
+            ...spaceData.columns,
+            [column.id]: {
+              ...spaceData.columns[column.id],
+              title: title,
+              color: color,
+              emoji: emoji
+            }
+          }
+        }
+      }
     };
     setState(state);
     return state;

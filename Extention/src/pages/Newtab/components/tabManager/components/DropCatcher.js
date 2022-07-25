@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, useColorModeValue } from '@chakra-ui/react';
 import { Droppable } from 'react-beautiful-dnd';
 function Column() {
   return (
@@ -7,7 +7,6 @@ function Column() {
       display={'flex'}
       justifyContent={'center'}
       alignItems={'start'}
-      mt={'14'}
       h={'100%'}
     >
       <Droppable droppableId={'catcher'} type={'tasks'}>
@@ -18,14 +17,15 @@ function Column() {
             display={'flex'}
             flexDir={'column'}
             rounded={'2xl'}
-            // transition={'all'}
-            // transitionDuration={'0.5s'}
             w={'xs'}
-            h={snapshot.isDraggingOver ? '2xl' : '200px'}
-            bgColor={snapshot.isDraggingOver ? 'white' : 'gray.100'}
-            bgGradient="linear(to-r, gray.50, white, gray.50)"
+            h={'xs'}
+            bgColor={
+              snapshot.isDraggingOver
+                ? useColorModeValue(`gray.100`, `gray.700`)
+                : useColorModeValue(`white`, `gray.800`)
+            }
             boxShadow="inner"
-            ring={snapshot.isDraggingOver ? '4px' : '0'}
+            ring={'1px'}
             ringColor={'white'}
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -42,8 +42,10 @@ function Column() {
                 <Text
                   w={'200px'}
                   textAlign={'center'}
-                  color={'gray.500'}
-                  fontSize={'lg'}
+                  color={'gray.300'}
+                  fontSize={'xl'}
+                  fontWeight={'thin'}
+                  lineHeight={'1'}
                 >
                   Drop here to create a new Space.
                 </Text>

@@ -25,11 +25,13 @@ export default function useSetState() {
 
   useEffect(() => {
     const tabs = [];
-    data.columnOrder.forEach((el) => {
-      tabs.push(...data.columns[el].taskIds);
+    Object.values(data.spaces).forEach((space) => {
+      space.columnOrder.forEach((el) => {
+        tabs.push(...data.spaces[space.id].columns[el].taskIds);
+      });
     });
     setManagedTabs(tabs);
-  }, [data]);
+  }, [data.spaces]);
   //**** managedTabs *****/
 
   const prevManagedTabs = useRef();
@@ -67,10 +69,10 @@ export default function useSetState() {
 
   // Handle closing a tab and removing it from un-managed tabs
   useEffect(() => {
-    console.log('running  chrome.tabs.onRemoved');
     chrome.tabs.onRemoved.addListener((tabId) => {
       handleTabs();
     });
+    //TODO: use Effect should have a return function to clear this listener
   }, []);
 
   const handleTabs = () => {

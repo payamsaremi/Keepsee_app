@@ -9,7 +9,7 @@ import {
   ModalCloseButton,
   Box,
   Spinner,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { Button, Text } from '@chakra-ui/react';
 function BasicModal({
@@ -20,7 +20,7 @@ function BasicModal({
   onSave,
   onClose,
   isSaving,
-  dataUnready,
+  dataUnready
 }) {
   // const [color, setColor] = useState('cyan');
   return (
@@ -83,16 +83,18 @@ function BasicModal({
                 >
                   Close
                 </Button>
-                <Button
-                  variant={'ghost'}
-                  rounded={'2xl'}
-                  bg={useColorModeValue(`${'gray'}.100`, `gray.600`)}
-                  colorScheme={'gray'}
-                  onClick={onSave}
-                  isLoading={isSaving}
-                >
-                  {buttonTitle}
-                </Button>
+                {onSave && (
+                  <Button
+                    variant={'ghost'}
+                    rounded={'2xl'}
+                    bg={useColorModeValue(`${'gray'}.100`, `gray.600`)}
+                    colorScheme={'gray'}
+                    onClick={onSave}
+                    isLoading={isSaving}
+                  >
+                    {buttonTitle}
+                  </Button>
+                )}
               </ModalFooter>
             </ModalContent>
           </>

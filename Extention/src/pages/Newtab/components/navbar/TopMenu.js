@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 function TopMenu({ navItems, activeButton, toggleMenu }) {
   const [currentpath, setCurrentPath] = useState('');
-  let location = useLocation();
-  useEffect(() => {
-    console.log(location.pathname);
-    setCurrentPath(location.pathname);
-  }, [location]);
+  // let location = useLocation();
+  // useEffect(() => {
+  //   console.log(location.pathname);
+  //   setCurrentPath(location.pathname);
+  // }, [location]);
   return (
     <>
       {' '}

@@ -6,7 +6,7 @@ import {
   Input,
   VStack,
   Box,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
@@ -14,7 +14,7 @@ import { supabase } from '../../../../supabaseClient';
 import { useAuth } from '../../hooks/Auth';
 import BasicModal from '../modal/BasicModal';
 import Google from '../../../../compponents/icons/Google';
-function SignIn({ setToggleSideMenu, data, setState }) {
+function SignIn({ setToggle, data, setState }) {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +30,7 @@ function SignIn({ setToggleSideMenu, data, setState }) {
       duration: 4000,
       isClosable: true,
       variant: 'solid',
-      position: 'top',
+      position: 'top'
     });
   };
 
@@ -38,14 +38,14 @@ function SignIn({ setToggleSideMenu, data, setState }) {
     setIsLoading(true);
     const { user: newUser, error } = await signIn({
       email: email,
-      password: password,
+      password: password
     });
     if (newUser) {
       // setUserBackupData(newUser);
       toaster('You have logged in successfully.', '', 'success');
       setEmail('');
       setPassword('');
-      setToggleSideMenu(false);
+      setToggle(false);
       setIsOpen(false);
       setIsLoading(false);
     }

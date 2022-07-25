@@ -5,8 +5,8 @@ import { extendTheme } from '@chakra-ui/react';
 
 // 2. Add your color mode config
 const config = {
-  initialColorMode: 'system',
-  useSystemColorMode: true,
+  initialColorMode: 'light',
+  useSystemColorMode: false
 };
 const customColors = {
   colors: {
@@ -35,14 +35,14 @@ const customColors = {
       600: '#60636C',
       700: '#484A51',
       800: '#282C2F',
-      900: '#202124',
-    },
-  },
+      900: '#202124'
+    }
+  }
 };
 // 3. extend the theme
 const theme = extendTheme({
   config,
-  ...customColors,
+  ...customColors
 });
 
 export default theme;

@@ -1,29 +1,61 @@
 import React, { useState } from 'react';
+import useSpace from '../../../hooks/useSpace';
 import Task from './Task';
 import {
   Box,
   Button,
   IconButton,
   useColorModeValue,
-  Text
+  Text,
+  HStack
 } from '@chakra-ui/react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-
 import { cuteScrollbar } from '../../../../../../utils/cuteScrollbar';
 import ColumnHeader from './ColumnHeader';
+import { BiCog, BiPlus } from 'react-icons/bi';
+import { Note } from 'tabler-icons-react';
+import BasicIconButton from '../../utils/BasicIconButton';
+import AddToColumnButton from './AddToColumnButton';
 
-function Column({ column, setState, data, index, removeColumn, isHidden }) {
+function Column({
+  column,
+  setState,
+  data,
+  index,
+  removeColumn,
+  isHidden,
+  spaceData
+}) {
   const [showSettings, setShowSettings] = useState(false);
   const [mouseOver, setMouseOver] = useState('');
   const [collapseColumn, setCollapseColumn] = useState(false);
   const bgColor = column.color ? `${column.color}.300` : 'white';
-  const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
+  const tasks = column.taskIds.map((taskId) => spaceData.tasks[taskId]);
   const bgGradient = useColorModeValue(
     `radial(${column.color}.50, ${column.color}.200)`,
     `radial(${column.color}.400, ${column.color}.500)`
   );
   const mouseOverColumn = (column) => {
     setMouseOver(column.id);
+  };
+
+  const outerBoxStyles = {
+    boxSize: '250px',
+    p: '10',
+    background:
+      'url(https://picsum.photos/id/1068/200/300) center/cover no-repeat'
+  };
+
+  const innerBoxStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    boxSize: 'full',
+    color: 'white',
+    textShadow: '0 0 20px black',
+    fontWeight: 'bold',
+    fontSize: '20px'
   };
 
   return (
@@ -42,6 +74,7 @@ function Column({ column, setState, data, index, removeColumn, isHidden }) {
                 tasks={tasks}
                 setState={setState}
                 data={data}
+                spaceData={spaceData}
                 mouseOver={mouseOver}
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
@@ -89,9 +122,13 @@ function Column({ column, setState, data, index, removeColumn, isHidden }) {
                     )}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
+                    sx={cuteScrollbar}
+                    overflow={'auto'}
+                    maxH={'70vh'}
+                    //TODO: Beautiful DND gives warning for having multiple scroll so migrating DnD to other library
                   >
-                    <Box sx={cuteScrollbar} h={'100%'}>
-                      <Box>
+                    <Box>
+                      <Box pb={'4'}>
                         {tasks.map((task, index) => {
                           return (
                             <Task
@@ -101,14 +138,13 @@ function Column({ column, setState, data, index, removeColumn, isHidden }) {
                               setState={setState}
                               data={data}
                               column={column}
+                              spaceData={spaceData}
                             />
                           );
                         })}
                         {provided.placeholder}
                       </Box>
-                      <Box>
-                        <Box w={'full'} p={'1'}></Box>
-                      </Box>
+
                       <Box>
                         {tasks.length === 0 && (
                           <Box
@@ -116,6 +152,7 @@ function Column({ column, setState, data, index, removeColumn, isHidden }) {
                             flexDirection={'column'}
                             alignItems={'center'}
                             justifyContent={'center'}
+                            mb={'12'}
                           >
                             <Text fontSize={'lg'} mb={'5'}>
                               Drop something here
@@ -130,25 +167,7 @@ function Column({ column, setState, data, index, removeColumn, isHidden }) {
                         )}
                       </Box>
                     </Box>
-                    <Box
-                      display={'flex'}
-                      h={'45px'}
-                      justifyContent={'end'}
-                      alignItems={'end'}
-                    >
-                      {mouseOver && (
-                        <Box>
-                          {/* <IconButton
-                            onClick={() => setShowSettings(!showSettings)}
-                            _focus={{ boxShadow: 'none' }}
-                            color={'gray.400'}
-                            rounded={'lg'}
-                            variant={'ghost'}
-                            icon={<BiCog size={25} />}
-                          /> */}
-                        </Box>
-                      )}
-                    </Box>
+                    {/* <AddToColumnButton mouseOver={mouseOver} /> */}
                   </Box>
                 )}
               </Droppable>

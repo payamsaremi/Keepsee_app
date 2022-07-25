@@ -3,7 +3,7 @@ import React from 'react';
 import { useAuth } from '../../hooks/Auth';
 import useBackupData from '../../hooks/useBackupData';
 import { useNavigate } from 'react-router-dom';
-export default function SignOut({ setToggleSideMenu, data, setState }) {
+export default function SignOut({ setToggle, data, setState }) {
   const { signOut, user } = useAuth();
 
   const getBackup = useBackupData(user, data);
@@ -15,8 +15,8 @@ export default function SignOut({ setToggleSideMenu, data, setState }) {
     signOut();
     // window.localStorage.clear(); //TODO: What to do with this?
     setState(); //just set to initial state
-    setToggleSideMenu(false);
-    navigate('/tabManager', { replace: true });
+    setToggle(false);
+    // navigate('/tabManager', { replace: true });
   };
   return (
     <>

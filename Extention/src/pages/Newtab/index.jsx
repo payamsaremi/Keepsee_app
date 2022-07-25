@@ -10,7 +10,7 @@ import { AuthProvider } from './hooks/Auth';
 import { ChakraProvider } from '@chakra-ui/react';
 
 render(
-  <MemoryRouter initialEntries={['/tabManager']}>
+  <MemoryRouter initialEntries={['/space']}>
     <AuthProvider>
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />

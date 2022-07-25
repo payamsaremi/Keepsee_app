@@ -5,7 +5,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import { cuteScrollbar } from '../../../../../../utils/cuteScrollbar';
 import useColumn from '../../../hooks/useColumn';
 import formattedDate from '../../utils/getFormattedDate';
-function UnmanagedTabsColumn({ data, setState, unManagedTabs }) {
+function UnmanagedTabsColumn({ data, setState, unManagedTabs, spaceData }) {
   const { create } = useColumn(setState, data);
   const taskIds = Array();
   for (const item in unManagedTabs) {
@@ -91,6 +91,7 @@ function UnmanagedTabsColumn({ data, setState, unManagedTabs }) {
                           index={index}
                           setState={setState}
                           data={data}
+                          spaceData={spaceData}
                           // column={column}
                         />
                       );

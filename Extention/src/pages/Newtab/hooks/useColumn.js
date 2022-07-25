@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { getRandomColor } from '../../../../utils/color';
+import { useAuth } from './Auth';
+import useSpace from './useSpace';
 const removeTabsFromChrome = (tabs) => {
   const tabIds = tabs?.reduce((a, x) => {
     a.push(x.id);
@@ -11,7 +13,7 @@ const removeTabsFromChrome = (tabs) => {
   }
 };
 
-const createColumn = (data, title, tasks) => {
+const createColumn = (data, spaceData, title, tasks) => {
   //create a column with random id
   const id = 'column-' + Math.floor(Math.random() * 10000); //TODO:make  this better
   const newColumn = {
@@ -35,25 +37,38 @@ const createColumn = (data, title, tasks) => {
     ...newColumn,
     taskIds: newTaskIds
   };
-  const newColumnOrder = [...data.columnOrder];
+  const newColumnOrder = [...spaceData.columnOrder];
+  console.log('newColumnOrder', newColumnOrder);
   newColumnOrder.unshift(newColumn.id);
+
   const state = {
     ...data,
-    columns: {
-      ...data.columns,
-      [newColumn.id]: col
-    },
-    columnOrder: newColumnOrder,
-    tasks: { ...data.tasks, ...newTasks }
+    spaces: {
+      ...data.spaces,
+      [spaceData.id]: {
+        ...spaceData,
+        columns: {
+          ...spaceData.columns,
+          [newColumn.id]: col
+        },
+        columnOrder: newColumnOrder,
+        tasks: { ...spaceData.tasks, ...newTasks }
+      }
+    }
   };
+
   return state;
 };
 
-export default function useColumn(setState, data) {
+export default function useColumn() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data, setState } = useAuth();
+  const { spaceId } = useSpace();
+
+  const spaceData = data.spaces[spaceId];
 
   const create = (title, tasks) => {
-    const newState = createColumn(data, title, tasks);
+    const newState = createColumn(data, spaceData, title, tasks);
     console.log(newState);
     setState(newState);
     removeTabsFromChrome(tasks); //Close all tabs

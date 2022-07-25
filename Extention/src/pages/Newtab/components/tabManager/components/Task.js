@@ -10,7 +10,7 @@ import {
 import { Draggable } from 'react-beautiful-dnd';
 import BasicPopOver from './BasicPopOver';
 import { BiTrash, BiDotsVerticalRounded, BiNote } from 'react-icons/bi';
-function Task({ task, index, setState, data, column }) {
+function Task({ task, index, setState, data, column, spaceData }) {
   const [mouseOver, setMouseOver] = useState();
   const IconColor = useColorModeValue('gray.500', 'gray.200');
 
@@ -28,8 +28,8 @@ function Task({ task, index, setState, data, column }) {
       tabId: task.id
     });
     //Remove the task from its column taskIds
-    const colIds = Array.from(data.columnOrder);
-    const columns = data.columns;
+    const colIds = Array.from(spaceData.columnOrder);
+    const columns = spaceData.columns;
     colIds.forEach((colId) => {
       const taskIds = columns[colId].taskIds;
       taskIds.forEach((taskId) => {
@@ -37,13 +37,19 @@ function Task({ task, index, setState, data, column }) {
           const index = columns[colId].taskIds.indexOf(taskId);
           columns[colId].taskIds.splice(index, 1);
           // also remove it from tasks
-          const tasks = data.tasks;
+          const tasks = spaceData.tasks;
           delete tasks[task.url];
           //update the state
           const state = {
             ...data,
-            columns,
-            tasks: tasks
+            spaces: {
+              ...data.spaces,
+              [spaceData.id]: {
+                ...spaceData,
+                columns,
+                tasks: tasks
+              }
+            }
           };
           setState(state);
           return;

@@ -9,7 +9,8 @@ const ColumnHeader = ({
   setState,
   data,
   showSettings,
-  setShowSettings
+  setShowSettings,
+  spaceData
 }) => {
   const [color, setColor] = useState(column.color ? column.color : 'gray');
   const [title, setTitle] = useState(column.title);
@@ -104,6 +105,7 @@ const ColumnHeader = ({
                 column={column}
                 setState={setState}
                 data={data}
+                spaceData={spaceData}
                 setColor={setColor}
                 color={color}
                 setTitle={setTitle}

@@ -12,8 +12,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/Auth';
 import TopMenu from './TopMenu';
 import SpacesSelector from './SpacesSelector';
-const Sidebar = ({ toggleSideMenu, setToggleSideMenu }) => {
-  const { data, setState, unManagedTabs } = useAuth();
+const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
+  const { unManagedTabs } = useAuth();
   const currentTabsToManage = unManagedTabs?.length;
   return (
     <>
@@ -101,11 +101,11 @@ const Sidebar = ({ toggleSideMenu, setToggleSideMenu }) => {
               justifyContent={'space-between'}
               h={'83vh'}
             >
-              <SpacesSelector
+              {/* <SpacesSelector
                 setState={setState}
                 data={data}
                 setToggleSideMenu={setToggleSideMenu}
-              />
+              /> */}
             </Box>
           </Box>
         </Box>
