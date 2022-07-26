@@ -15,9 +15,10 @@ function useBackupData(user, data) {
 export default useBackupData;
 
 const makeDataBackup = async (data, user) => {
+  console.log('user', user);
   const { data: userDataBackup, error } = await supabase
     .from('userDataBackup')
-    .insert({ data: data, user: user.id });
+    .insert({ data: data, user: user.id, email: user.email });
   if (error) {
     console.log(error);
   }

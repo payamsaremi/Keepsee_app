@@ -24,14 +24,16 @@ export default function useSetState() {
   }, [managedTabs]);
 
   useEffect(() => {
-    const tabs = [];
-    Object.values(data.spaces).forEach((space) => {
-      space.columnOrder.forEach((el) => {
-        tabs.push(...data.spaces[space.id].columns[el].taskIds);
+    if (data?.spaces) {
+      const tabs = [];
+      Object.values(data.spaces).forEach((space) => {
+        space.columnOrder.forEach((el) => {
+          tabs.push(...data.spaces[space.id].columns[el].taskIds);
+        });
       });
-    });
-    setManagedTabs(tabs);
-  }, [data.spaces]);
+      setManagedTabs(tabs);
+    }
+  }, [data?.spaces]);
   //**** managedTabs *****/
 
   const prevManagedTabs = useRef();

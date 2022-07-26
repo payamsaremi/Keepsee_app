@@ -6,6 +6,7 @@ import BasicIconButton from '../../components/utils/BasicIconButton';
 import { HiOutlineEmojiHappy } from 'react-icons/hi';
 import MenuPopOver from '../tabManager/components/MenuPopOver';
 import EmojiPicker from '../utils/EmojiPicker';
+import EmptyModal from '../modal/EmptyModal';
 function EmojiPopOver({ setEmoji, emoji, isEmojiOpen, setIsEmojiOpen }) {
   return (
     <>
@@ -34,13 +35,14 @@ function EmojiPopOver({ setEmoji, emoji, isEmojiOpen, setIsEmojiOpen }) {
             />
           )}
         </Box>
-        <MenuPopOver
-          placement={'left'}
+
+        <EmptyModal
           isOpen={isEmojiOpen}
           setIsOpen={setIsEmojiOpen}
+          onClose={() => setIsEmojiOpen(!isEmojiOpen)}
         >
-          <EmojiPicker size={'16'} onEmojiSelect={setEmoji} />
-        </MenuPopOver>
+          <EmojiPicker onEmojiSelect={setEmoji} />
+        </EmptyModal>
       </Box>
     </>
   );

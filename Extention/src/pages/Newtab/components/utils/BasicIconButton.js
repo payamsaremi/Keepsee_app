@@ -1,13 +1,21 @@
 import React from 'react';
 import { IconButton, useColorModeValue, Box } from '@chakra-ui/react';
 import { css } from '@emotion/react';
-function BasicIconButton({ icon, onClick, size = 'sm', notification }) {
+function BasicIconButton({
+  icon,
+  onClick,
+  size = 'sm',
+  notification,
+  isActive
+}) {
   return (
     <>
       <IconButton
         css={css`
           position: relative !important;
         `}
+        border={isActive ? '1px' : ''}
+        borderColor={'orange.400'}
         bgColor={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.700', 'gray.300')}
         _focus={{ boxShadow: 'none' }}

@@ -12,12 +12,13 @@ export default function useSpace() {
     navigate(`/space/${spaceId}`);
   };
 
-  const create = (title) => {
+  const create = (title, emoji) => {
     const id = 'space-' + uuidv4();
     const newSpace = {
       [id]: {
         id: id,
         title: title ? title : 'Undefined',
+        emoji: emoji ? emoji : '',
         dateCreated: new Date(),
         tasks: {},
         columns: {},

@@ -7,9 +7,9 @@ import {
   FormLabel,
   Input,
   VStack,
-  Divider,
+  Divider
 } from '@chakra-ui/react';
-import Google from '../../../../compponents/icons/Google';
+import Google from '../../../../components/icons/Google';
 import React, { useState } from 'react';
 
 function SignUp({
@@ -21,7 +21,7 @@ function SignUp({
   setEmail,
   setPassword,
   isLoading,
-  handleOAuthSignIn,
+  handleOAuthSignIn
 }) {
   return (
     <>

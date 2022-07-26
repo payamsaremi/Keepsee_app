@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, useColorModeValue, VStack } from '@chakra-ui/react';
 import Navbar from './components/navbar';
 import Sidebar from './components/sidebar';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from './hooks/Auth';
 import useDailyBackup from './hooks/useDailyBackup';
@@ -24,7 +24,7 @@ function Newtab() {
     <Box
       display={'flex'}
       flexDir={'row'}
-      bg={useColorModeValue('gray.50', 'blackAlpha.600')}
+      bg={useColorModeValue('gray.50', 'gray.950')}
       overflow={'hidden'}
       h={'100vh'}
     >
@@ -53,7 +53,6 @@ function Newtab() {
       <Box display={'flex'} flexDir={'column'} h={'100%'}>
         <Box>
           <Routes>
-            {/* <Route element={<AnimationLayout />}> */}
             <Route
               path="/space/*"
               element={<Space data={data} setState={setState} />}

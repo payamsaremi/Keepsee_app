@@ -1,13 +1,21 @@
-import { Box, HStack, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
+import {
+  Box,
+  Text,
+  Image,
+  SimpleGrid,
+  useColorModeValue,
+  HStack
+} from '@chakra-ui/react';
+import BasicPopOver from '../tabManager/components/BasicPopOver';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-import formattedDate from '../../utils/getFormattedDate';
-import BasicPopOver from './BasicPopOver';
-import SpaceDeleteButton from './SpaceDeleteButton';
-import SpaceEditButton from '../components/SpaceEditButton';
-
-function SpaceTopSection({ spaceData }) {
-  const color = spaceData.color ? spaceData.color : 'gray';
+import SpaceEditButton from '../tabManager/components/SpaceEditButton';
+import SpaceDeleteButton from '../tabManager/components/SpaceDeleteButton';
+import formattedDate from '../utils/getFormattedDate';
+function SpaceCard({ columnId, data }) {
+  const spaceData = data.spaces[columnId];
+  const color = spaceData.color;
+  console.log(spaceData);
   return (
     <>
       <Box
@@ -74,4 +82,4 @@ function SpaceTopSection({ spaceData }) {
   );
 }
 
-export default SpaceTopSection;
+export default SpaceCard;

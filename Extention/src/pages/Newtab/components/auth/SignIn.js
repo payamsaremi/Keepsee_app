@@ -13,7 +13,7 @@ import { useToast } from '@chakra-ui/react';
 import { supabase } from '../../../../supabaseClient';
 import { useAuth } from '../../hooks/Auth';
 import BasicModal from '../modal/BasicModal';
-import Google from '../../../../compponents/icons/Google';
+import Google from '../../../../components/icons/Google';
 function SignIn({ setToggle, data, setState }) {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');

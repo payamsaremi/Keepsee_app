@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../../../compponents/Logo';
+import Logo from '../../../components/Logo';
 import { useNavigate } from 'react-router-dom';
 import { Box, Text, Link } from '@chakra-ui/react';
 function GreetingPage() {

@@ -12,3 +12,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.mesh {
+  height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.mesh span {
+  padding: 100px;
+}
+.mesh01 {
+  background: conic-gradient(
+      at 90% 105%,
+      transparent 50%,
+      #f469a9 75%,
+      #ff917b 80%,
+      transparent
+    ),
+    conic-gradient(at 50% -5%, #65ead1 25%, #fcffc1, #f469a9 75%);
+}

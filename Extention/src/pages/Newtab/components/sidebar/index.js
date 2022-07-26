@@ -11,7 +11,6 @@ import SignOut from '../auth/SignOut';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/Auth';
 import TopMenu from './TopMenu';
-import SpacesSelector from './SpacesSelector';
 const Sidebar = ({ toggleSideMenu, setToggleSideMenu, data, setState }) => {
   const { unManagedTabs } = useAuth();
   const currentTabsToManage = unManagedTabs?.length;

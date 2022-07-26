@@ -9,7 +9,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState();
   const [profile, setProfile] = useState();
   const [loading, setLoading] = useState(true);
-  const [spaceData, setSpaceData] = useState();
   const session = supabase.auth.session();
   const {
     data,
@@ -37,6 +36,7 @@ export function AuthProvider({ children }) {
           getUserProfile(null);
           setLoading(false);
           console.log('SIGNED_OUT :((((((((', session);
+          return;
         }
         if (event == 'TOKEN_REFRESHED') console.log('TOKEN_REFRESHED', session);
         if (event == 'SIGNED_IN') {
@@ -103,10 +103,8 @@ export function AuthProvider({ children }) {
         .single();
       if (userDataBackup) {
         console.log('userDataBackup', userDataBackup);
-
         const backupData = userDataBackup.data;
         modifyData(backupData);
-
         //Change the shape of data into spaces
         console.log('backupData.spaces', backupData.spaces);
         if (backupData.spaces) {
@@ -122,13 +120,23 @@ export function AuthProvider({ children }) {
           spaces: {
             [id]: {
               id: id,
-              title: 'Untitled',
+              title: 'First space',
+              emoji: {
+                id: 'grinning',
+                name: 'Grinning Face',
+                native: '😀',
+                unified: '1f600',
+                keywords: ['smile', 'happy', 'joy', ':D'],
+                shortcodes: ':grinning:',
+                emoticons: [':D']
+              },
+              color: 'purple',
               ...backupData
             }
           }
         };
         setState(newState);
-        console.log(newState, 'newState');
+        return;
       }
       if (error) {
         console.log(error);

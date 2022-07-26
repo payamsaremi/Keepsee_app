@@ -1,17 +1,29 @@
-import { FormControl, VStack, FormLabel, Input } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { FormControl, VStack, FormLabel, Input, Box } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
+import { useAuth } from '../../../hooks/Auth';
 import BasicModal from '../../modal/BasicModal';
 import BasicIconButton from '../../utils/BasicIconButton';
+import EmojiPopOver from '../../utils/EmojiPopOver';
 
-export default function CreateSpaceButton({ create }) {
+export default function CreateSpaceButton({ create, data }) {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
+  const [emoji, setEmoji] = useState('');
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false);
+  const { user, loading } = useAuth();
+
+  const emojiSetter = (value) => {
+    setEmoji(value);
+    setIsEmojiOpen(false);
+  };
+
   const createSpace = () => {
-    create(title);
+    create(title, emoji);
     setIsOpen(false);
     setTitle('');
   };
+
   return (
     <>
       <BasicIconButton
@@ -20,7 +32,7 @@ export default function CreateSpaceButton({ create }) {
       />
       {/* //* Modal for creating new Space */}
       <BasicModal
-        title={'Create new space'}
+        title={'Create a new space'}
         buttonTitle={'Create'}
         isOpen={isOpen}
         onOpen={() => setIsOpen(true)}
@@ -30,6 +42,14 @@ export default function CreateSpaceButton({ create }) {
         // isSaving={isSaving}
       >
         <VStack spacing={'2'}>
+          <Box>
+            <EmojiPopOver
+              setEmoji={emojiSetter}
+              emoji={emoji}
+              isEmojiOpen={isEmojiOpen}
+              setIsEmojiOpen={setIsEmojiOpen}
+            />
+          </Box>
           <FormControl>
             <FormLabel>Title</FormLabel>
             <Input
