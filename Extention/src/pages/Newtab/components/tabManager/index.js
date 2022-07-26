@@ -39,7 +39,6 @@ function TabManager({ showCatcher, setSpaceId }) {
     console.log('newstate', state);
     setState(state);
   };
-
   if (!spaceData) {
     return <>Loading...</>;
   }

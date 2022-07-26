@@ -6,7 +6,6 @@ import useDragDrop from '../../hooks/useDragDrop';
 import useSpace from '../../hooks/useSpace';
 import { Route } from 'react-router-dom';
 import TabManager from '../tabManager';
-import Spaces from './spaces';
 import SpaceCard from './SpaceCard';
 import AnimationLayout from '../AnimationLayout';
 export default function Space({ data, setState }) {

@@ -14,11 +14,6 @@ import DarkModeToggle from '../utils/DarkModeToggle';
 import BasicIconButton from '../utils/BasicIconButton';
 function NavBar({ toggleSideMenu, setToggleSideMenu, user, data, setState }) {
   const navItems = [
-    // {
-    //   name: 'Spaces',
-    //   icon: <BiWindows size={25} />,
-    //   link: '/spaces',
-    // },
     {
       name: 'tabManager',
       icon: <BiCarousel size={'20'} />,
