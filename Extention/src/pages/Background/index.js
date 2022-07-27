@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener((reason) => {
     //   console.log(window);
     // });
     chrome.tabs.create({
-      url: 'Onboarding.html',
+      url: 'Onboarding.html'
       // windowId: window.id,
       // pinned: true,
     });
@@ -63,7 +63,7 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.message === 'openTab') {
     chrome.tabs.create(
       {
-        url: req.url,
+        url: req.url
       },
       (t) => {
         console.log(t);
@@ -72,15 +72,6 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     return true;
   }
 });
-
-// chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-//   if (req.message === 'removeTab') {
-//     chrome.tabs.remove(req.tabId, (tab) => {
-//       console.log('removed tab ===>', tab);
-//     });
-//     return true;
-//   }
-// });
 
 //? Toggle Workspace (Open tabs, Close Tabs within a column or group)
 chrome.runtime.onMessage.addListener((req) => {
@@ -111,7 +102,7 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
     chrome.tabs.remove(Number(req.tabId));
   }
   sendResponse({
-    message: `Tab with id:${tabId} was removed from current open tabs`,
+    message: `Tab with id:${tabId} was removed from current open tabs`
   });
   return true;
 });
