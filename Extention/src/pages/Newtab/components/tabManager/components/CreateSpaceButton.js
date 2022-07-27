@@ -5,23 +5,25 @@ import { useAuth } from '../../../hooks/Auth';
 import BasicModal from '../../modal/BasicModal';
 import BasicIconButton from '../../utils/BasicIconButton';
 import EmojiPopOver from '../../utils/EmojiPopOver';
-
+import ColorPicker from '../../utils/ColorPicker';
 export default function CreateSpaceButton({ create, data }) {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [emoji, setEmoji] = useState('');
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const { user, loading } = useAuth();
-
+  const [color, setColor] = useState('gray');
   const emojiSetter = (value) => {
     setEmoji(value);
     setIsEmojiOpen(false);
+    setColor(color);
   };
 
   const createSpace = () => {
-    create(title, emoji);
+    create(title, emoji, color);
     setIsOpen(false);
     setTitle('');
+    setEmoji('');
   };
 
   return (
@@ -50,6 +52,13 @@ export default function CreateSpaceButton({ create, data }) {
               setIsEmojiOpen={setIsEmojiOpen}
             />
           </Box>
+          <FormControl>
+            <ColorPicker
+              color={color}
+              setColor={setColor}
+              // saveColumnSettings={() => saveChanges()}
+            />
+          </FormControl>
           <FormControl>
             <FormLabel>Title</FormLabel>
             <Input
