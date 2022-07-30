@@ -72,6 +72,7 @@ export default function useSetState() {
   // Handle closing a tab and removing it from un-managed tabs
   useEffect(() => {
     chrome.tabs.onRemoved.addListener((tabId) => {
+      console.log('tabId from state', tabId);
       handleTabs();
     });
     //TODO: use Effect should have a return function to clear this listener

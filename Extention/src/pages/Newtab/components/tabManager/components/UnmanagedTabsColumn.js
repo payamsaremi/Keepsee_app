@@ -57,9 +57,9 @@ function UnmanagedTabsColumn({ data, setState, unManagedTabs, spaceData }) {
                 rounded={'xl'}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                sx={cuteScrollbar}
-                overflow={'auto'}
-                maxH={'85vh'}
+                // sx={cuteScrollbar}
+                // overflow={'auto'}
+                // maxH={'85vh'}
                 //TODO: Beautiful DND gives warning for having multiple scroll so migrating DnD to other library
               >
                 <Box sx={cuteScrollbar} h={'100%'}>

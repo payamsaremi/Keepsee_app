@@ -177,14 +177,14 @@ export default function useDragDrop(spaceId) {
           managedTabsClone.push(TabId); //add to array
           setManagedTabs(managedTabsClone);
           setUnmanagedTabs(unManagedtabsClone);
-          const finishTaskIds = Array.from(
-            spaceData.columns[finish.id].taskIds
-          );
 
+          const finishTaskIds = Array.from(finish.taskIds);
+          finishTaskIds.splice(destination.index, 0, draggableId);
           const newFinish = {
             ...finish,
-            taskIds: [...finishTaskIds, TabId]
+            taskIds: finishTaskIds
           };
+
           const state = {
             ...data,
             spaces: {

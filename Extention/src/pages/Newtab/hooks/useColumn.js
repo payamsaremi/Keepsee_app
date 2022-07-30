@@ -71,16 +71,18 @@ export default function useColumn() {
     const newState = createColumn(data, spaceData, title, tasks);
     console.log(newState);
     setState(newState);
-    removeTabsFromChrome(tasks); //Close all tabs
-
-    //*** recently implemented */
-    const unmanagedTabsClone = Array.from(unManagedTabs);
-    Object.keys(tasks).forEach((index) => {
-      unmanagedTabsClone.splice(index, 1);
-    });
-    console.log('unmanagedTabsClone', unmanagedTabsClone);
-    setUnmanagedTabs(unmanagedTabsClone);
-    //*** recently implemented */
+    if (tasks) {
+      //if column is created with tasks
+      removeTabsFromChrome(tasks); //Close all tabs
+      //*** recently implemented */
+      const unmanagedTabsClone = Array.from(unManagedTabs);
+      Object.keys(tasks).forEach((index) => {
+        unmanagedTabsClone.splice(index, 1);
+      });
+      console.log('unmanagedTabsClone', unmanagedTabsClone);
+      setUnmanagedTabs(unmanagedTabsClone);
+      //*** recently implemented */
+    }
 
     setIsOpen(!isOpen);
   };

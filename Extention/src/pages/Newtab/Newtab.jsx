@@ -21,6 +21,7 @@ function Newtab() {
 
   //*Just  to make Paths persist through memoryRouter
   const { pathname } = useLocation();
+  console.log(pathname);
   const navigate = useNavigate();
   useEffect(() => {
     const latestPaths = JSON.parse(window.localStorage.getItem('pathHistory'))

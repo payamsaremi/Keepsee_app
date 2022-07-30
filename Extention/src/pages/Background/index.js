@@ -15,31 +15,6 @@ chrome.runtime.onInstalled.addListener((reason) => {
   }
 });
 
-/*global chrome*/
-// contextMenuItem = {
-//   id: 'openModal',
-//   title: 'Open modal',
-//   contexts: ['all'],
-// };
-
-// chrome.contextMenus.create(contextMenuItem);
-// chrome.contextMenus.onClicked.addListener((clickData) => {
-//   if (clickData.menuItemId === 'openModal' && clickData.selectionText) {
-//     openModal(clickData);
-//   }
-// });
-
-// function openModal(data) {
-//   console.log('modal is open');
-//   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//     chrome.tabs.sendMessage(tabs[0].id, { data: data }, function (response) {
-//       if (response) {
-//         console.log(response);
-//       }
-//     });
-//   });
-// }
-
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.message === 'tabsList') {
     chrome.windows.getAll({ populate: true }, (windows) => {

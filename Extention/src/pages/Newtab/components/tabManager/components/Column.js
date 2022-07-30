@@ -39,25 +39,6 @@ function Column({
     setMouseOver(column.id);
   };
 
-  const outerBoxStyles = {
-    boxSize: '250px',
-    p: '10',
-    background:
-      'url(https://picsum.photos/id/1068/200/300) center/cover no-repeat'
-  };
-
-  const innerBoxStyles = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    boxSize: 'full',
-    color: 'white',
-    textShadow: '0 0 20px black',
-    fontWeight: 'bold',
-    fontSize: '20px'
-  };
-
   return (
     <Box display={isHidden && 'none'}>
       <Draggable draggableId={column.id} index={index}>
@@ -122,9 +103,9 @@ function Column({
                     )}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    sx={cuteScrollbar}
-                    overflow={'auto'}
-                    maxH={'70vh'}
+                    // sx={cuteScrollbar}
+                    // overflow={'auto'}
+                    // maxH={'70vh'}
                     //TODO: Beautiful DND gives warning for having multiple scroll so migrating DnD to other library
                   >
                     <Box>
