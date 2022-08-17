@@ -25,7 +25,7 @@ function TopMenu({ setToggleSideMenu, data, setState }) {
             fontSize={'xl'}
             fontWeight={'medium'}
           >
-            👋 Hello, {profile?.full_name ?? 'There'}
+            Space name
           </Text>
         </Box>
 

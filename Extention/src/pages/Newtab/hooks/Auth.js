@@ -32,11 +32,10 @@ export function AuthProvider({ children }) {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event == 'SIGNED_OUT') {
-          setUser(null);
-          getUserProfile(null);
-          setLoading(false);
+          // setUser(null);
+          // getUserProfile(null);
+          // setLoading(false);
           console.log('SIGNED_OUT :((((((((', session);
-          return;
         }
         if (event == 'TOKEN_REFRESHED') console.log('TOKEN_REFRESHED', session);
         if (event == 'SIGNED_IN') {

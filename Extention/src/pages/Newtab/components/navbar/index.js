@@ -41,7 +41,7 @@ function NavBar({ toggleSideMenu, setToggleSideMenu, user, data, setState }) {
         px={'4'}
       >
         <Box w={'330px'}>
-          {/* <Box>
+          <Box>
             <BasicIconButton
               icon={
                 toggleSideMenu ? (
@@ -52,7 +52,7 @@ function NavBar({ toggleSideMenu, setToggleSideMenu, user, data, setState }) {
               }
               onClick={() => setToggleSideMenu(!toggleSideMenu)}
             />
-          </Box> */}
+          </Box>
         </Box>
         <Box w={'330px'} display={'flex'} justifyContent={'center'}>
           <TopMenu
