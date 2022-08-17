@@ -8,8 +8,6 @@ import UnmanagedTabsColumn from './components/UnmanagedTabsColumn';
 import CreateTabsColumn from './components/CreateTabsColumn';
 import { useAuth } from '../../hooks/Auth';
 import { useParams } from 'react-router-dom';
-import useSpace from '../../hooks/useSpace';
-import formattedDate from '../utils/getFormattedDate';
 import SpaceTopSection from './components/SpaceTopSection';
 function TabManager({ showCatcher, setSpaceId }) {
   const { unManagedTabs, managedTabs, data, setState } = useAuth();
@@ -57,13 +55,11 @@ function TabManager({ showCatcher, setSpaceId }) {
           overflow={'auto'}
           sx={cuteScrollbar}
         >
-          <Box display={'flex'} flexDir={'row'} justifyContent={'start'}>
-            <UnmanagedTabsColumn
-              data={data}
-              setState={setState}
-              unManagedTabs={unManagedTabs}
-              spaceData={spaceData}
-            />
+          <Box
+            display={'flex'}
+            flexDir={'row'}
+            justifyContent={'space-between'}
+          >
             <Box display={'flex'} flexDir={'column'}>
               <SpaceTopSection spaceData={spaceData} />
               <Box display={'flex'} flexDir={'row'}>
@@ -74,6 +70,15 @@ function TabManager({ showCatcher, setSpaceId }) {
                   ml={'5'}
                 >
                   <CreateTabsColumn spaceData={spaceData} />
+                </Box>
+
+                <Box>
+                  <UnmanagedTabsColumn
+                    data={data}
+                    setState={setState}
+                    unManagedTabs={unManagedTabs}
+                    spaceData={spaceData}
+                  />
                 </Box>
 
                 {spaceData.columnOrder.map((columnId, index) => {
@@ -92,6 +97,7 @@ function TabManager({ showCatcher, setSpaceId }) {
                 })}
 
                 {provided.placeholder}
+
                 <ScaleFade initialScale={0.9} in={showCatcher}>
                   {showCatcher ? (
                     <DropCatcher />

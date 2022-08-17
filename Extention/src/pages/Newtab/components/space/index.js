@@ -24,18 +24,6 @@ export default function Space({ data, setState }) {
         rounded={'2xl'}
       >
         <Box>
-          {/* <Text fontSize={'xxx-large'}>Hello, Payam.</Text>
-          <Box maxH={'100vh'} overflow={'auto'}>
-            {Object.keys(data.spaces).map((spaceId) => {
-              return (
-                <Box key={spaceId}>
-                  <SpaceCard columnId={spaceId} data={data} />
-                </Box>
-              );
-            })}
-          </Box> */}
-        </Box>
-        <Box>
           <DragDropContext
             onDragEnd={onDragEnd}
             onBeforeCapture={onBeforeCapture}

@@ -116,6 +116,7 @@ export function AuthProvider({ children }) {
         const id = 'space-' + uuidv4();
         const newState = {
           backupData: backupData.backUpCount,
+
           spaces: {
             [id]: {
               id: id,

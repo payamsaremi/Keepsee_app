@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import useSpace from '../../../hooks/useSpace';
 import Task from './Task';
 import {
   Box,
